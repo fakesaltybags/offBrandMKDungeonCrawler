@@ -53,7 +53,7 @@ public class Blaze implements SecretBoss{
 
     @Override
     public String getName() {
-        return null;
+        return "Blaze";
     }
 
     @Override

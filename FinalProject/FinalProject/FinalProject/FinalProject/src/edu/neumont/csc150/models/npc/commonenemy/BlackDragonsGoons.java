@@ -48,7 +48,7 @@ public class BlackDragonsGoons implements Lackies{
 
     @Override
     public String getName() {
-        return null;
+        return "Black Dragon Goons";
     }
 
     @Override

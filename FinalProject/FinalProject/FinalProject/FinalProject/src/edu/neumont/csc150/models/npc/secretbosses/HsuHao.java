@@ -50,7 +50,7 @@ public class HsuHao implements SecretBoss{
 
     @Override
     public String getName() {
-        return null;
+        return "Hsu Hao";
     }
 
     @Override

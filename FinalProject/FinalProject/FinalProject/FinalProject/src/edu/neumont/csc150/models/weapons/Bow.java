@@ -12,16 +12,21 @@ public class Bow implements Weapon{
 
     @Override
     public int attack() {
-        return 0;
+        return 80;
     }
 
     @Override
     public int defend() {
-        return 0;
+        return 70;
     }
 
     @Override
     public int specialAttack() {
-        return 0;
+        return 150;
+    }
+
+    @Override
+    public String getWeaponName() {
+        return "Bow and Arrow";
     }
 }

@@ -50,7 +50,7 @@ public class Kintaro implements SecretBoss{
 
     @Override
     public String getName() {
-        return null;
+        return "Kintaro";
     }
 
     @Override

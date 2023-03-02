@@ -10,16 +10,21 @@ package edu.neumont.csc150.models.spells;
 public class LightningStrike implements Spell{
     @Override
     public int range() {
-        return 0;
+        return 100;
     }
 
     @Override
     public int damage() {
-        return 0;
+        return 25;
     }
 
     @Override
     public int magicPoint() {
-        return 0;
+        return 3;
+    }
+
+    @Override
+    public String getSpellName() {
+        return "Lightning Strike";
     }
 }

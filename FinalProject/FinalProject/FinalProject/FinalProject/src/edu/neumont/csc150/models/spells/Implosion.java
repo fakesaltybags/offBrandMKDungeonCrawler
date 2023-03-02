@@ -12,16 +12,21 @@ public class Implosion implements Spell{
 
     @Override
     public int range() {
-        return 0;
+        return 100;
     }
 
     @Override
     public int damage() {
-        return 0;
+        return 1000000;
     }
 
     @Override
     public int magicPoint() {
-        return 0;
+        return 15;
+    }
+
+    @Override
+    public String getSpellName() {
+        return "Implosion";
     }
 }

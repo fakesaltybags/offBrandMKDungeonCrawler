@@ -48,7 +48,7 @@ public class Skeleton implements Lackies{
 
     @Override
     public String getName() {
-        return null;
+        return "Skeleton";
     }
 
     @Override

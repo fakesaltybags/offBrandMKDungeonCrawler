@@ -50,7 +50,7 @@ public class Ghast implements SecretBoss{
 
     @Override
     public String getName() {
-        return null;
+        return "Ghast";
     }
 
     @Override

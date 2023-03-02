@@ -12,16 +12,21 @@ public class Glock implements Weapon{
 
     @Override
     public int attack() {
-        return 0;
+        return 1000;
     }
 
     @Override
     public int defend() {
-        return 0;
+        return 5000;
     }
 
     @Override
     public int specialAttack() {
-        return 0;
+        return 5000;
+    }
+
+    @Override
+    public String getWeaponName() {
+        return "Glock";
     }
 }

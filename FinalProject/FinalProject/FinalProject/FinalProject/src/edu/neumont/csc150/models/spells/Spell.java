@@ -10,4 +10,5 @@ public interface Spell {
     public int range();
     public int damage();
     public int magicPoint();
+    String getSpellName();
 }

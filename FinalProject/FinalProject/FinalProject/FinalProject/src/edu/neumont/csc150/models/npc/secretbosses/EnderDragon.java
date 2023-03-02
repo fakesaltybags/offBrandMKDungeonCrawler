@@ -53,7 +53,7 @@ public class EnderDragon implements SecretBoss{
 
     @Override
     public String getName() {
-        return null;
+        return "Ender Dragon";
     }
 
     @Override

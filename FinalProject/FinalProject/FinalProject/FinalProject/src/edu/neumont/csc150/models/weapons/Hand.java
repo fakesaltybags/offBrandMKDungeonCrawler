@@ -15,11 +15,16 @@ public class Hand implements Weapon{
 
     @Override
     public int defend() {
-        return 0;
+        return 20;
     }
 
     @Override
     public int specialAttack() {
-        return 0;
+        return 30;
+    }
+
+    @Override
+    public String getWeaponName() {
+        return "Fists";
     }
 }

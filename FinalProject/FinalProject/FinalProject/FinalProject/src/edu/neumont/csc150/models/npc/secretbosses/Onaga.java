@@ -54,7 +54,7 @@ public class Onaga implements SecretBoss {
 
     @Override
     public String getName() {
-        return null;
+        return "Onaga";
     }
 
     @Override

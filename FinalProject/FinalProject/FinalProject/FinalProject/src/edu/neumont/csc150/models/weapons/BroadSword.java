@@ -12,16 +12,21 @@ public class BroadSword implements Weapon{
 
     @Override
     public int attack() {
-        return 0;
+        return 90;
     }
 
     @Override
     public int defend() {
-        return 0;
+        return 65;
     }
 
     @Override
     public int specialAttack() {
-        return 0;
+        return 120;
+    }
+
+    @Override
+    public String getWeaponName() {
+        return "Broad Sword";
     }
 }

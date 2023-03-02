@@ -54,7 +54,7 @@ public class Baraka implements Bosses {
 
     @Override
     public String getName() {
-        return null;
+        return "Baraka";
     }
 
     @Override

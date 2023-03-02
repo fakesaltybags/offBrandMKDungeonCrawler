@@ -12,16 +12,21 @@ public class Spear implements Weapon{
 
     @Override
     public int attack() {
-        return 0;
+        return 100;
     }
 
     @Override
     public int defend() {
-        return 0;
+        return 130;
     }
 
     @Override
     public int specialAttack() {
-        return 0;
+        return 160;
+    }
+
+    @Override
+    public String getWeaponName() {
+        return "Spear";
     }
 }

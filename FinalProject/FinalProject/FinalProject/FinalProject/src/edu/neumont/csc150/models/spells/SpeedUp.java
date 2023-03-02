@@ -20,6 +20,11 @@ public class SpeedUp implements Spell{
 
     @Override
     public int magicPoint() {
-        return 0;
+        return 3;
+    }
+
+    @Override
+    public String getSpellName() {
+        return "Speed Up";
     }
 }

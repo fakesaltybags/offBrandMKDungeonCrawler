@@ -20,6 +20,11 @@ public class MPRecovery implements Spell{
 
     @Override
     public int magicPoint() {
-        return 0;
+        return 1;
+    }
+
+    @Override
+    public String getSpellName() {
+        return "MP Recover";
     }
 }

@@ -6,7 +6,7 @@
  */
 
 package edu.neumont.csc150.models.spells;
-
+//ask pachi later
 public class Heal implements Spell{
     @Override
     public int range() {
@@ -20,6 +20,11 @@ public class Heal implements Spell{
 
     @Override
     public int magicPoint() {
-        return 0;
+        return 2;
+    }
+
+    @Override
+    public String getSpellName() {
+        return "Heal";
     }
 }

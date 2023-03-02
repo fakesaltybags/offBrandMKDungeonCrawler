@@ -10,4 +10,5 @@ public interface Weapon {
     public int attack();
     public int defend();
     public int specialAttack();
+    String getWeaponName();
 }

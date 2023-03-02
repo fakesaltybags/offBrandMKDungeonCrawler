@@ -50,7 +50,7 @@ public class QuanChi implements SecretBoss{
 
     @Override
     public String getName() {
-        return null;
+        return "Quan Chi";
     }
 
     @Override

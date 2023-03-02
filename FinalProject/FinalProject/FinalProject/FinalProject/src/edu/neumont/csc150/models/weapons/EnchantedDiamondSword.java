@@ -12,16 +12,21 @@ public class EnchantedDiamondSword implements Weapon{
 
     @Override
     public int attack() {
-        return 0;
+        return 500;
     }
 
     @Override
     public int defend() {
-        return 0;
+        return 1200;
     }
 
     @Override
     public int specialAttack() {
-        return 0;
+        return 1500;
+    }
+
+    @Override
+    public String getWeaponName() {
+        return "Enchanted Diamond Sword";
     }
 }

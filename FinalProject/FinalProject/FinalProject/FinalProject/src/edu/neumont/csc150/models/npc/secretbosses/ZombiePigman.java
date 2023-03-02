@@ -50,7 +50,7 @@ public class ZombiePigman implements SecretBoss{
 
     @Override
     public String getName() {
-        return null;
+        return "Zombie Pigman";
     }
 
     @Override

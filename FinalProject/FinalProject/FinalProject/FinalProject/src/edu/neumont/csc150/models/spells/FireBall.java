@@ -9,16 +9,21 @@ package edu.neumont.csc150.models.spells;
 public class FireBall implements Spell{
     @Override
     public int range() {
-        return 0;
+        return 80;
     }
 
     @Override
     public int damage() {
-        return 0;
+        return 40;
     }
 
     @Override
     public int magicPoint() {
-        return 0;
+        return 4;
+    }
+
+    @Override
+    public String getSpellName() {
+        return "FireBall";
     }
 }

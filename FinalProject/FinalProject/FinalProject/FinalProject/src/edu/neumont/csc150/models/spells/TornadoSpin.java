@@ -10,16 +10,21 @@ package edu.neumont.csc150.models.spells;
 public class TornadoSpin implements Spell{
     @Override
     public int range() {
-        return 0;
+        return 90;
     }
 
     @Override
     public int damage() {
-        return 0;
+        return 20;
     }
 
     @Override
     public int magicPoint() {
-        return 0;
+        return 5;
+    }
+
+    @Override
+    public String getSpellName() {
+        return "Tornado Spin";
     }
 }

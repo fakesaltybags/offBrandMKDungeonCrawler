@@ -11,16 +11,21 @@ public class Mallot implements Weapon{
     int rank = 3;
     @Override
     public int attack() {
-        return 0;
+        return 30;
     }
 
     @Override
     public int defend() {
-        return 0;
+        return 50;
     }
 
     @Override
     public int specialAttack() {
-        return 0;
+        return 70;
+    }
+
+    @Override
+    public String getWeaponName() {
+        return "Mallot";
     }
 }

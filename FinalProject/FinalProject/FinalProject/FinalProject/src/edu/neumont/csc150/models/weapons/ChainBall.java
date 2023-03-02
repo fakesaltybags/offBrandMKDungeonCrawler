@@ -12,16 +12,21 @@ public class ChainBall implements Weapon{
 
     @Override
     public int attack() {
-        return 0;
+        return 45;
     }
 
     @Override
     public int defend() {
-        return 0;
+        return 30;
     }
 
     @Override
     public int specialAttack() {
-        return 0;
+        return 65;
+    }
+
+    @Override
+    public String getWeaponName() {
+        return "Chain and ball";
     }
 }

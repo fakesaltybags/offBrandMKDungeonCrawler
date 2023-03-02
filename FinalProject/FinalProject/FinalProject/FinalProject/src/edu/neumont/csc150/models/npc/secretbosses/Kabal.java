@@ -50,7 +50,7 @@ public class Kabal implements SecretBoss{
 
     @Override
     public String getName() {
-        return null;
+        return "Kabal";
     }
 
     @Override

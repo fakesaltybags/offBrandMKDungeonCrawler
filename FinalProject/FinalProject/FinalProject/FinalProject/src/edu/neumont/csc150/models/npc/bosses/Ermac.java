@@ -59,7 +59,7 @@ public class Ermac implements Bosses {
 
     @Override
     public String getName() {
-        return null;
+        return "Ermac";
     }
 
     @Override

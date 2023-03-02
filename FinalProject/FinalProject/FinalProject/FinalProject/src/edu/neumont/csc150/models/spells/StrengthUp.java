@@ -20,6 +20,11 @@ public class StrengthUp implements Spell{
 
     @Override
     public int magicPoint() {
-        return 0;
+        return 4;
+    }
+
+    @Override
+    public String getSpellName() {
+        return "Strength Up";
     }
 }
