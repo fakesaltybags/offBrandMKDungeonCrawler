@@ -8,7 +8,6 @@ package edu.neumont.csc150.controllers;
 
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.npc.commonenemy.Zombie;
-import edu.neumont.csc150.models.npc.secretbosses.SecretBoss;
 import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.views.GameUI;
 
@@ -91,6 +90,7 @@ public class BattleController {
                 //TODO: make the logic for more than one player
             }
         } while (inBattle);
+        return false;
     }
 
     private void playerTurn(Player player, ArrayList<Lackie> enemies) {
