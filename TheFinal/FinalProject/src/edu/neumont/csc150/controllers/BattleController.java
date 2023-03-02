@@ -90,7 +90,6 @@ public class BattleController {
                 //TODO: make the logic for more than one player
             }
         } while (inBattle);
-        return false;
     }
 
     private void playerTurn(Player player, ArrayList<Lackie> enemies) {
