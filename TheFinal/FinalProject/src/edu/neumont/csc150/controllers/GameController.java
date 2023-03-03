@@ -18,7 +18,6 @@ public class GameController {
     private Player currentPLayer;
     private int difficulty;
     private int range;
-    private boolean isMultiplayer = false;
 
     public void run() {
         do {
@@ -26,15 +25,14 @@ public class GameController {
             switch (selection) {
                 case 1:
                     //start single player
-                    isMultiplayer = false;
-                    battleController.setMultiplayer(isMultiplayer);
-                    setupGame(isMultiplayer);
+                    battleController.setMultiplayer(false);
+                    setupGame(false);
                     startGame();
                     break;
                 case 2:
-                    isMultiplayer = true;
-                    setupGame(isMultiplayer);
                     //start multiplayer
+                    battleController.setMultiplayer(true);
+                    setupGame(true);
                     startGame();
                     break;
                 case 3:

@@ -14,6 +14,7 @@ import edu.neumont.csc150.views.Console;
 import edu.neumont.csc150.views.GameUI;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BattleController {
     private boolean isMultiplayer = true;
@@ -74,9 +75,9 @@ public class BattleController {
     private boolean commenceBattle(ArrayList<Player> players, ArrayList<Lackie> enemies) {
         GameUI.displayEnemies(enemies);
         boolean enemyGoFirst;
+        Player player = players.get(0);
+        enemyGoFirst = enemies.get(0).getBadGuySpeed() > player.getSpeed();
         if (!isMultiplayer) {
-            Player player = players.get(0);
-            enemyGoFirst = enemies.get(0).getBadGuySpeed() > player.getSpeed();
             if (enemyGoFirst) {
                 do {
                     for (Lackie enemy :
@@ -90,7 +91,7 @@ public class BattleController {
                     }
                     playerTurn(player, enemies, players);
                     if (isAllEnemiesDead(enemies)) {
-                        battleWon(enemies);
+                        battleWon(enemies, players);
                         return true;
                     }
                 } while (true);
@@ -98,7 +99,7 @@ public class BattleController {
                 do {
                     playerTurn(player, enemies, players);
                     if (isAllEnemiesDead(enemies)) {
-                        battleWon(enemies);
+                        battleWon(enemies, players);
                         return true;
                     }
                     for (Lackie enemy :
@@ -113,21 +114,103 @@ public class BattleController {
                 } while (true);
             }
         } else {
-            //TODO: make the logic for more than one player DO THIS FIRST LEFT OFF HERE
-            Player currentPlayer = players.get(0);
-            enemyGoFirst = enemies.get(0).getBadGuySpeed() > currentPlayer.getSpeed();
             if(enemyGoFirst){
                 do{
-                    for (Lackie enemy :
-                            enemies) {
-                        int attackDMG = enemy.badGuyAttack();
-                        if(!players.get(0).isDead() && !players.get(1).isDead()){
-
+                    //enemy turn
+                    if (enemyTurn(players, enemies)) return false;
+                    //players turn
+                    if(getPlayersAlive(players) == 3){
+                        player = players.get(0);
+                        playerTurn(player, enemies, players);
+                        if(isAllEnemiesDead(enemies)){
+                            battleWon(enemies, players);
+                            return true;
                         }
+                        player = players.get(1);
+                    } else if(getPlayersAlive(players) == 1){
+                        player = players.get(0);
+                    } else if(getPlayersAlive(players) == 2){
+                        player = players.get(1);
+                    } else {
+                        return false;
                     }
-                }
+                    playerTurn(player, enemies, players);
+                    if(isAllEnemiesDead(enemies)){
+                        battleWon(enemies, players);
+                        return true;
+                    }
+                }while(true);
+            } else {
+                do {
+                    //players turn
+                    if (getPlayersAlive(players) == 3) {
+                        player = players.get(0);
+                        playerTurn(player, enemies, players);
+                        if (isAllEnemiesDead(enemies)) {
+                            battleWon(enemies, players);
+                            return true;
+                        }
+                        player = players.get(1);
+                    } else if (getPlayersAlive(players) == 1) {
+                        player = players.get(0);
+                    } else if (getPlayersAlive(players) == 2) {
+                        player = players.get(1);
+                    } else {
+                        return false;
+                    }
+                    playerTurn(player, enemies, players);
+                    if (isAllEnemiesDead(enemies)) {
+                        battleWon(enemies, players);
+                        return true;
+                    }
+                    //enemy turn
+                    if (enemyTurn(players, enemies)) return false;
+                }while(true);
             }
         }
+    }
+
+    /**
+     * Gets the state of the players' lives
+     * @return 0 if both are dead 1 if player one is alive 2 if player 2 is alive and 3 if both are alive
+     */
+    private int getPlayersAlive(ArrayList<Player> players){
+        if(!players.get(0).isDead() && !players.get(1).isDead()){
+            return 3;
+        }
+        if(players.get(0).isDead() &&!players.get(1).isDead()){
+            return 2;
+        }
+        if(!players.get(0).isDead() && players.get(1).isDead()){
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+     * Takes the enemies turn in a multiplayer game
+     * @param players the players that are in battle
+     * @param enemies the enemies that are in battle
+     * @return true if all players are dead
+     */
+    private boolean enemyTurn(ArrayList<Player> players, ArrayList<Lackie> enemies) {
+        for (Lackie enemy :
+                enemies) {
+            int attackDMG = enemy.badGuyAttack();
+            int playerNo;
+            if (!players.get(0).isDead() && !players.get(1).isDead()) {
+                playerNo = new Random().nextInt(2);
+            } else if (!players.get(0).isDead() && players.get(1).isDead()) {
+                playerNo = 0;
+            } else if (players.get(0).isDead() && !players.get(1).isDead()) {
+                playerNo = 1;
+            } else {
+                return true;
+            }
+            players.get(playerNo).setHealth(players.get(playerNo).getHealth() - attackDMG);
+            GameUI.displayPlayerHit(playerNo + 1, attackDMG);
+        }
+        return false;
     }
 
     private void playerTurn(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
@@ -260,17 +343,26 @@ public class BattleController {
             Lackie currentEnemy = enemies.get(response - 1);
             currentEnemy.setBadGuyHealth(currentEnemy.getBadGuyHealth() - attackDMG);
             GameUI.displayEnemyHit(currentEnemy, attackDMG);
+            if(isAllEnemiesDead(enemies)){
+                return;
+            }
         }
     }
 
-    private void battleWon(ArrayList<Lackie> enemies) {
+    private void battleWon(ArrayList<Lackie> enemies, ArrayList<Player> players) {
         int amountOfGold = 0;
         for (Lackie enemy :
                 enemies) {
             amountOfGold += enemy.dropGold();
         }
+        if(isMultiplayer()){
+            players.get(0).setGold(players.get(0).getGold() + amountOfGold / 2);
+            players.get(1).setGold(players.get(1).getGold() + amountOfGold / 2);
+        } else {
+            players.get(0).setGold(players.get(0).getGold() + amountOfGold);
+        }
         GameUI.displayWin(amountOfGold, isMultiplayer());
-
+        GameUI.displayGold(players, isMultiplayer());
     }
 
     private boolean isAllEnemiesDead(ArrayList<Lackie> enemies) {

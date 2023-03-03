@@ -160,9 +160,13 @@ public class GameUI {
         } while (true);
     }
 
-    public static void displayWin(int amountOfGold, boolean isOnePlayer) {
+    public static void displayWin(int amountOfGold, boolean isMultiPlayer) {
         Console.writeLn("YOU WIN!", Console.TextColor.YELLOW);
-
+        if(isMultiPlayer){
+            Console.writeLn("Each player got " + (amountOfGold / 2) + " GP");
+        } else {
+            Console.writeLn("Player got " + amountOfGold + " GP");
+        }
     }
 
     public static void displayEnemies(ArrayList<Lackie> enemies) {
@@ -302,5 +306,12 @@ public class GameUI {
 
     public static void displayTurnOver() {
         Console.writeLn("Your turn is now over", Console.TextColor.GREEN);
+    }
+
+    public static void displayGold(ArrayList<Player> players, boolean multiplayer) {
+        Console.writeLn("Player 1 now has " + players.get(0).getGold() + " GP!", Console.TextColor.YELLOW);
+        if(multiplayer){
+            Console.writeLn("Player 2 now has " + players.get(1).getGold() + " GP!", Console.TextColor.YELLOW);
+        }
     }
 }

@@ -20,6 +20,7 @@ public class Player {
     private int speed;
     private boolean strengthUp = false;
     private int availableSpecialAttacks;
+    private int gold;
     private ArrayList<Item> items;
     private ArrayList<Weapon> weapons;
     private Weapon selectedWeapon;
@@ -42,6 +43,17 @@ public class Player {
     }
 
     //region get/set
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        if(gold < 0){
+            throw new IllegalArgumentException("amount of gold cannot be lower than zero");
+        }
+        this.gold = gold;
+    }
+
     public ArrayList<Item> getItems() {
         return items;
     }
