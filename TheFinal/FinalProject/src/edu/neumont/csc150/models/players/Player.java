@@ -9,6 +9,7 @@ package edu.neumont.csc150.models.players;
 import edu.neumont.csc150.models.items.*;
 import edu.neumont.csc150.models.spells.*;
 import edu.neumont.csc150.models.weapons.*;
+
 import java.util.ArrayList;
 
 public class Player {
@@ -39,12 +40,57 @@ public class Player {
         setAvailableSpecialAttacks(MAX_SPECIAL_ATTACKS);
     }
 
+    //region get/set
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(ArrayList<Item> items) {
+        if (items == null) {
+            throw new IllegalArgumentException("Items has to be initialized");
+        }
+        this.items = items;
+    }
+
+    public ArrayList<Weapon> getWeapons() {
+        return weapons;
+    }
+
+    public void setWeapons(ArrayList<Weapon> weapons) {
+        if (weapons == null) {
+            throw new IllegalArgumentException("Weapons has to be initialized");
+        }
+        this.weapons = weapons;
+    }
+
+    public Weapon getSelectedWeapon() {
+        return selectedWeapon;
+    }
+
+    public void setSelectedWeapon(Weapon selectedWeapon) {
+        if (selectedWeapon == null) {
+            throw new IllegalArgumentException("Selected weapon has to be initialized");
+        }
+        this.selectedWeapon = selectedWeapon;
+    }
+
+    public ArrayList<Spell> getSpells() {
+        return spells;
+    }
+
+    public void setSpells(ArrayList<Spell> spells) {
+        if (spells == null) {
+            throw new IllegalArgumentException("Spells has to be initialized");
+        }
+        this.spells = spells;
+    }
+
     public int getAvailableSpecialAttacks() {
         return availableSpecialAttacks;
     }
 
     public void setAvailableSpecialAttacks(int availableSpecialAttacks) {
-        if(availableSpecialAttacks < 0 || availableSpecialAttacks > 5){
+        if (availableSpecialAttacks < 0 || availableSpecialAttacks > 5) {
             throw new IllegalArgumentException("Special attacks done can only be between 0 and 5");
         }
         this.availableSpecialAttacks = availableSpecialAttacks;
@@ -55,7 +101,7 @@ public class Player {
     }
 
     public void setMaxMagic(int maxMagic) {
-        if(maxMagic < 5){
+        if (maxMagic < 5) {
             throw new IllegalArgumentException("Max magic cannot be lower than " + MIN_MAX_MAGIC);
         }
         this.maxMagic = maxMagic;
@@ -74,7 +120,7 @@ public class Player {
     }
 
     public void setMaxHP(int maxHP) {
-        if(maxHP < MIN_MAX_HP){
+        if (maxHP < MIN_MAX_HP) {
             throw new IllegalArgumentException("Max HP cannot be lower than " + MIN_MAX_HP);
         }
         this.maxHP = maxHP;
@@ -85,7 +131,7 @@ public class Player {
     }
 
     public void setHealth(int health) {
-        if(health < getMaxHP()){
+        if (health < getMaxHP()) {
             this.health = getMaxHP();
             return;
         }
@@ -99,26 +145,27 @@ public class Player {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
+    //endregion
 
-    public int attack(){
+    public int attack() {
         return selectedWeapon.attack();
     }
 
-    public void heal(int healAmount){
-        if(healAmount < 1){
+    public void heal(int healAmount) {
+        if (healAmount < 1) {
             throw new IllegalArgumentException("Heal amount cannot be lower than 1");
         }
         setHealth(getHealth() + healAmount);
     }
 
-    public void mpRecover(int mpAmount){
-        if(mpAmount < 1){
+    public void mpRecover(int mpAmount) {
+        if (mpAmount < 1) {
             throw new IllegalArgumentException("Mp recover amount cannot be lower than 1");
         }
         setMagic(getMagic() + mpAmount);
     }
 
-    public String getInventory(){
+    public String getInventory() {
         String returnString = "";
         for (Weapon weapon :
                 weapons) {
@@ -135,39 +182,37 @@ public class Player {
         return returnString;
     }
 
-    public int getAmountOfAttacks(){
-        if(selectedWeapon instanceof Hand){
+    public int getAmountOfAttacks() {
+        if (selectedWeapon instanceof Hand) {
             return 20;
         }
-        if (selectedWeapon instanceof Stick){
+        if (selectedWeapon instanceof Stick) {
             return 7;
         }
-        if (selectedWeapon instanceof Mallot){
+        if (selectedWeapon instanceof Mallot) {
             return 10;
         }
-        if (selectedWeapon instanceof SlingShot){
+        if (selectedWeapon instanceof SlingShot) {
             return 5;
         }
-        if(selectedWeapon instanceof ChainBall){
+        if (selectedWeapon instanceof ChainBall) {
             return 8;
         }
-        if (selectedWeapon instanceof Spear){
+        if (selectedWeapon instanceof Spear) {
             return 3;
         }
-        if (selectedWeapon instanceof BroadSword){
+        if (selectedWeapon instanceof BroadSword) {
             return 6;
         }
-        if (selectedWeapon instanceof Bow){
+        if (selectedWeapon instanceof Bow) {
             return 5;
         }
-        if (selectedWeapon instanceof EnchantedDiamondSword){
+        if (selectedWeapon instanceof EnchantedDiamondSword) {
             return 3;
         }
-        if (selectedWeapon instanceof Glock){
+        if (selectedWeapon instanceof Glock) {
             return 1;
         }
-
-        //TODO: whenever your player class wants to load do this
         return 1;
     }
 }

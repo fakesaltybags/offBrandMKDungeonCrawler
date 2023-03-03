@@ -20,9 +20,7 @@ public class GameController {
     private int range;
     private boolean isMultiplayer = false;
 
-
-
-    public void run(){
+    public void run() {
         do {
             int selection = GameUI.displayMainMenu();
             switch (selection) {
@@ -46,7 +44,7 @@ public class GameController {
                     System.out.println("Enter a valid input!");
                     break;
             }
-        }while(true);
+        } while (true);
     }
 
     private void startGame() {
@@ -55,15 +53,15 @@ public class GameController {
         do {
             int movementOption = GameUI.getMovementOptions(currentMap);
             currentMap.moveParty(movementOption);
-            if(battleController.checkForBattle(currentMap.getCurrentFloor(), currentMap.getCurrentPos())){
-                if(battleController.battle(currentMap.getCurrentFloor(), currentMap.getCurrentPos(), players)){
+            if (battleController.checkForBattle(currentMap.getCurrentFloor(), currentMap.getCurrentPos())) {
+                if (battleController.battle(currentMap.getCurrentFloor(), currentMap.getCurrentPos(), players)) {
 
-                } else{
+                } else {
                     gameOver();
                     return;
                 }
             }
-        }while (floorNotCompleted);
+        } while (floorNotCompleted);
     }
 
     private void gameOver() {
@@ -71,16 +69,12 @@ public class GameController {
     }
 
     private void setupGame(boolean isMultiplayer) {
-        if(isMultiplayer){
-            players = new ArrayList<>();
+        players = new ArrayList<>();
+        if (isMultiplayer) {
             players.add(new Player());
-            players.add(new Player());
-            currentPLayer = players.get(0);
-        } else {
-            players = new ArrayList<>();
-            players.add(new Player());
-            currentPLayer = new Player();
         }
+        players.add(new Player());
+        currentPLayer = players.get(0);
         difficulty = 1;
     }
 }
