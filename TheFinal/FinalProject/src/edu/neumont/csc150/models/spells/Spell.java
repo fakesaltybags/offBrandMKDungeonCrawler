@@ -6,9 +6,12 @@
  */
 package edu.neumont.csc150.models.spells;
 
+import edu.neumont.csc150.models.npc.commonenemy.Lackie;
+import edu.neumont.csc150.models.players.Player;
+
 public interface Spell {
-    int range();
-    int damage();
+    void useOnEnemy(Lackie enemy);
+    void useOnPlayer(Player player);
     int magicPoint();
     String getSpellName();
 }

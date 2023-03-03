@@ -18,6 +18,7 @@ public class Player {
     private int magic;
     private int maxMagic;
     private int speed;
+    private boolean strengthUp = false;
     private int availableSpecialAttacks;
     private ArrayList<Item> items;
     private ArrayList<Weapon> weapons;
@@ -50,6 +51,14 @@ public class Player {
             throw new IllegalArgumentException("Items has to be initialized");
         }
         this.items = items;
+    }
+
+    public boolean isStrengthUp() {
+        return strengthUp;
+    }
+
+    public void setStrengthUp(boolean strengthUp) {
+        this.strengthUp = strengthUp;
     }
 
     public ArrayList<Weapon> getWeapons() {
@@ -147,7 +156,16 @@ public class Player {
     }
     //endregion
 
+    public boolean isDead(){
+        return getHealth() <= 0;
+    }
+
     public int attack() {
+        if(isStrengthUp()){
+            int attackAmount = selectedWeapon.attack() * 2;
+            setStrengthUp(false);
+            return attackAmount;
+        }
         return selectedWeapon.attack();
     }
 

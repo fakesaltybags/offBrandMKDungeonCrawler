@@ -6,16 +6,22 @@
  */
 
 package edu.neumont.csc150.models.spells;
+
+import edu.neumont.csc150.models.npc.commonenemy.Lackie;
+import edu.neumont.csc150.models.players.Player;
+
 //ask pachi later
-public class Heal implements Spell{
+public class Heal implements Spell {
+    public final int HEAL_AMOUNT = 50;
+
     @Override
-    public int range() {
-        return 0;
+    public void useOnEnemy(Lackie enemy) {
+        enemy.setBadGuyHealth(enemy.badGuyHealth() + HEAL_AMOUNT);
     }
 
     @Override
-    public int damage() {
-        return 50;
+    public void useOnPlayer(Player player) {
+        player.setHealth(player.getHealth() + HEAL_AMOUNT);
     }
 
     @Override

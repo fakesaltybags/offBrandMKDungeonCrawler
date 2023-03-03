@@ -7,15 +7,21 @@
 
 package edu.neumont.csc150.models.spells;
 
+import edu.neumont.csc150.models.npc.commonenemy.Lackie;
+import edu.neumont.csc150.models.players.Player;
+
 public class LightningStrike implements Spell{
+    public final int DAMAGE = 25;
+
+
     @Override
-    public int range() {
-        return 100;
+    public void useOnEnemy(Lackie enemy) {
+        enemy.setBadGuyHealth(enemy.badGuyHealth() - DAMAGE);
     }
 
     @Override
-    public int damage() {
-        return 25;
+    public void useOnPlayer(Player player) {
+        player.setHealth(player.getHealth() - DAMAGE);
     }
 
     @Override

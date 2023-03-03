@@ -7,15 +7,20 @@
 
 package edu.neumont.csc150.models.spells;
 
+import edu.neumont.csc150.models.npc.commonenemy.Lackie;
+import edu.neumont.csc150.models.players.Player;
+
 public class TornadoSpin implements Spell{
+    public final int DAMAGE = 20;
+
     @Override
-    public int range() {
-        return 90;
+    public void useOnEnemy(Lackie enemy) {
+        enemy.setBadGuyHealth(enemy.badGuyHealth() - DAMAGE);
     }
 
     @Override
-    public int damage() {
-        return 20;
+    public void useOnPlayer(Player player) {
+        player.setHealth(player.getHealth() - DAMAGE);
     }
 
     @Override

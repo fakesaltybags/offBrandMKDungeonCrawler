@@ -7,15 +7,19 @@
 
 package edu.neumont.csc150.models.spells;
 
-public class StrengthUp implements Spell{
+import edu.neumont.csc150.models.npc.commonenemy.Lackie;
+import edu.neumont.csc150.models.players.Player;
+
+public class StrengthUp implements Spell {
+
     @Override
-    public int range() {
-        return 0;
+    public void useOnEnemy(Lackie enemy) {
+    throw new IllegalArgumentException("Strength up cannot be used on enemies :(");
     }
 
     @Override
-    public int damage() {
-        return 0;
+    public void useOnPlayer(Player player) {
+        player.setStrengthUp(true);
     }
 
     @Override

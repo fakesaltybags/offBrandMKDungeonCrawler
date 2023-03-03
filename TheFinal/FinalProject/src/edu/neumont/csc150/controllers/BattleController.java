@@ -9,6 +9,8 @@ package edu.neumont.csc150.controllers;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.npc.commonenemy.Zombie;
 import edu.neumont.csc150.models.players.Player;
+import edu.neumont.csc150.models.spells.Spell;
+import edu.neumont.csc150.views.Console;
 import edu.neumont.csc150.views.GameUI;
 
 import java.util.ArrayList;
@@ -70,26 +72,49 @@ public class BattleController {
     }
 
     private boolean commenceBattle(ArrayList<Player> players, ArrayList<Lackie> enemies) {
-        boolean inBattle = true;
         GameUI.displayEnemies(enemies);
-        do {
-            boolean enemyGoFirst;
-            if (!isMultiplayer) {
-                Player player = players.get(0);
-                enemyGoFirst = enemies.get(0).badGuySpeed() > player.getSpeed();
-                if (enemyGoFirst) {
+        boolean enemyGoFirst;
+        if (!isMultiplayer) {
+            Player player = players.get(0);
+            enemyGoFirst = enemies.get(0).badGuySpeed() > player.getSpeed();
+            if (enemyGoFirst) {
+                do {
                     for (Lackie enemy :
                             enemies) {
                         int attackDMG = enemy.badGuyAttack();
                         player.setHealth(player.getHealth() - attackDMG);
-                        System.out.println(enemy.getName() + " did " + attackDMG + "DMG");
+                        GameUI.displayPlayerHit(1, attackDMG);
+                        if (player.isDead()) {
+                            return false;
+                        }
                     }
                     playerTurn(player, enemies, players);
-                }
+                    if (isAllEnemiesDead(enemies)) {
+                        battleWon(enemies);
+                        return true;
+                    }
+                } while (true);
             } else {
-                //TODO: make the logic for more than one player
+                do {
+                    playerTurn(player, enemies, players);
+                    if (isAllEnemiesDead(enemies)) {
+                        battleWon(enemies);
+                        return true;
+                    }
+                    for (Lackie enemy :
+                            enemies) {
+                        int attackDMG = enemy.badGuyAttack();
+                        player.setHealth(player.getHealth() - attackDMG);
+                        GameUI.displayPlayerHit(1, attackDMG);
+                        if (player.isDead()) {
+                            return false;
+                        }
+                    }
+                } while (true);
             }
-        } while (inBattle);
+        } else {
+            //TODO: make the logic for more than one player DO THIS FIRST LEFT OFF HERE
+        }
     }
 
     private void playerTurn(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
@@ -97,74 +122,122 @@ public class BattleController {
         do {
             selection = GameUI.getAttackOption(player);
         } while (selection <= 0 || selection >= 6);
-        switch (selection) {
-            case 1:
-                //attack
-                playerAttack(player, enemies);
-                break;
-            case 2:
-                //magic attack
-                break;
-            case 3:
-                //special attack
-                break;
-            case 4:
-                //Item menu
-                break;
-            case 5:
-                openInventory(player, enemies, players);
-                //Open inventory
-                break;
-            //TODO: finish this switch with methods
-            //TODO: left off here make the magic attack method
-        }
+        boolean isPlayerTurn = true;
+        do {
+            switch (selection) {
+                case 1:
+                    //attack
+                    playerAttack(player, enemies);
+                    isPlayerTurn = false;
+                    break;
+                case 2:
+                    //magic attack
+                    isPlayerTurn = magicAttack(player, enemies, players);
+                    break;
+                case 3:
+                    //special attack
+                    isPlayerTurn = specialAttack(player, enemies);
+                    break;
+                case 4:
+                    //Item menu
+                    isPlayerTurn = useItem(player, enemies, players);
+                    break;
+                case 5:
+                    //Open inventory
+                    isPlayerTurn = openInventory(player, enemies, players);
+                    break;
+            }
+        } while (isPlayerTurn);
+        GameUI.displayTurnOver();
     }
 
-    private void openInventory(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
+    private boolean specialAttack(Player player, ArrayList<Lackie> enemies) {
+        boolean confirmed = GameUI.getSpecialConfirmation();
+        if(!confirmed){
+            return true;
+        }
+        int damage = player.getSelectedWeapon().specialAttack();
+        int selection = GameUI.getEnemyBeingAttacked(enemies);
+        Lackie enemy = enemies.get(selection - 1);
+        enemy.setBadGuyHealth(enemy.badGuyHealth() - damage);
+        player.setAvailableSpecialAttacks(player.getAvailableSpecialAttacks() - 1);
+        GameUI.displaySpecialAttack(player, damage, enemy);
+        return false;
+    }
+
+    private boolean magicAttack(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
+        do {
+            int selection = GameUI.getSpellBeingUsed(player);
+            Spell selectedSpell = player.getSpells().get(selection - 1);
+            if (selection == player.getSpells().size()) {
+                return true;
+            } else if (selectedSpell.magicPoint() > player.getMagic()) {
+                Console.writeLn("You don't have enough MP to do this spell!", Console.TextColor.RED);
+            } else {
+                try {
+                    boolean targetEnemy = GameUI.isTargetEnemy();
+                    if (targetEnemy) {
+                        int selectedEnemy = GameUI.getEnemyBeingAttacked(enemies);
+                        selectedSpell.useOnEnemy(enemies.get(selectedEnemy - 1));
+                        //TODO: if you have time you can make a personalized message for each type of spell and the amount of damage it does in the UI
+                    } else {
+                        int selectedPlayer = GameUI.getSelectedPlayer(players);
+                        selectedSpell.useOnPlayer(players.get(selectedPlayer - 1));
+                        //TODO: if you have time you can make a personalized message for each type of spell and the amount of damage it does in the UI
+                    }
+                    player.setMagic(player.getMagic() - selectedSpell.magicPoint());
+                    return false;
+                } catch (IllegalArgumentException e) {
+                    GameUI.spellCantBeUsed();
+                }
+            }
+        } while (true);
+    }
+
+    private boolean openInventory(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
         int response = GameUI.displayPlayerInventory(player);
         switch (response) {
             case 1:
                 //select weapon
-                selectWeapon(player);
-                break;
+                return selectWeapon(player);
             case 2:
                 //use item
-                useItem(player, enemies, players);
-                break;
+                return useItem(player, enemies, players);
             case 3:
                 //exit
                 break;
         }
+        return true;
     }
 
-    private void useItem(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
-        do{
-            int selection = GameUI.getItemBeingUsed(player);
-            if(selection == player.getItems().size()){
-                return;
+    private boolean useItem(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
+        int selection = GameUI.getItemBeingUsed(player);
+        if (selection == player.getItems().size()) {
+            return true;
+        } else {
+            boolean targetEnemy = GameUI.isTargetEnemy();
+            if (targetEnemy) {
+                int selectedEnemy = GameUI.getEnemyBeingAttacked(enemies);
+                player.getItems().get(selection - 1).useOnEnemy(enemies.get(selectedEnemy - 1));
             } else {
-                boolean targetEnemy = GameUI.isTargetEnemy();
-                if(targetEnemy){
-                    int selectedEnemy = GameUI.getEnemyBeingAttacked(enemies);
-                    player.getItems().get(selection - 1).useOnEnemy(enemies.get(selectedEnemy - 1));
-                } else {
-                    int selectedPlayer = GameUI.getSelectedPlayer(players);
-                    player.getItems().get(selection - 1).useOnPLayer(players.get(selectedPlayer - 1));
-                }
-                player.getItems().remove(selection - 1);
+                int selectedPlayer = GameUI.getSelectedPlayer(players);
+                player.getItems().get(selection - 1).useOnPLayer(players.get(selectedPlayer - 1));
             }
-        }while(true);
+            player.getItems().remove(selection - 1);
+            return false;
+            //TODO: if you want you can make it so that the UI shows that the player used the item and it's effect on the battle
+        }
     }
 
-    private void selectWeapon(Player player) {
-        do {
-            int selection = GameUI.getWeaponBeingSwitchedTo(player);
-            if(selection == player.getWeapons().size()){
-                return;
-            } else {
-                player.setSelectedWeapon(player.getWeapons().get(selection - 1));
-            }
-        }while(true);
+    private boolean selectWeapon(Player player) {
+        int selection = GameUI.getWeaponBeingSwitchedTo(player);
+        if (selection == player.getWeapons().size()) {
+            return true;
+        } else {
+            player.setSelectedWeapon(player.getWeapons().get(selection - 1));
+            //TODO: you can make it so the UI shows the new selected weapon
+            return false;
+        }
     }
 
     private void playerAttack(Player player, ArrayList<Lackie> enemies) {
@@ -173,13 +246,8 @@ public class BattleController {
             int response = GameUI.getEnemyBeingAttacked(enemies);
             Lackie currentEnemy = enemies.get(response - 1);
             currentEnemy.setBadGuyHealth(currentEnemy.badGuyHealth() - attackDMG);
-            GameUI.displayHit(currentEnemy, attackDMG);
-            if (isAllEnemiesDead(enemies)) {
-                battleWon(enemies);
-                return;
-            }
+            GameUI.displayEnemyHit(currentEnemy, attackDMG);
         }
-
     }
 
     private void battleWon(ArrayList<Lackie> enemies) {

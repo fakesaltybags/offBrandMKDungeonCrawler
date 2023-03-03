@@ -134,8 +134,12 @@ public class GameUI {
         return listOfEnemies;
     }
 
-    public static void displayHit(Lackie enemy, int amountOfDamage) {
+    public static void displayEnemyHit(Lackie enemy, int amountOfDamage) {
         Console.writeLn(enemy.getName() + " was hit for " + amountOfDamage + "DMG!", Console.TextColor.BLUE);
+    }
+
+    public static void displayPlayerHit(int playerNo, int amountOfDamage){
+        Console.writeLn("Player " + playerNo + " was hit for " + amountOfDamage + "DMG!");
     }
 
     public static int displayPlayerInventory(Player player) {
@@ -223,6 +227,28 @@ public class GameUI {
         return itemString;
     }
 
+    public static int getSpellBeingUsed(Player player) {
+        String spellString = getSpellString(player);
+        do{
+            int response = Console.getIntInput(spellString);
+            if(response > 0 && response <= player.getSpells().size()){
+                return response;
+            } else{
+                Console.writeLn("Please enter a valid input!", Console.TextColor.RED);
+            }
+        }while(true);
+    }
+
+    private static String getSpellString(Player player){
+        String spellString = "";
+        int amountOfSpells = player.getSpells().size();
+        for (int i = 0; i < amountOfSpells; i++) {
+            spellString += "\n" + (i + 1) + ". " + player.getSpells().get(i);
+        }
+        spellString += "\n" + amountOfSpells + ". Back";
+        return spellString;
+    }
+
     public static boolean isTargetEnemy() {
         return Console.getBooleanInput("""
                 ---- Are you targeting a enemy? ----
@@ -255,5 +281,26 @@ public class GameUI {
         }
         playerString += "\n" + players.size() + ". Back";
         return playerString;
+    }
+
+    public static void spellCantBeUsed() {
+        Console.writeLn("This spell cannot be used in this way", Console.TextColor.RED);
+    }
+
+    public static boolean getSpecialConfirmation() {
+        return Console.getBooleanInput("""
+                ---- Are you sure you want to do this? ----
+                1. Yes
+                2. No
+                """, "1", "2", Console.TextColor.YELLOW);
+    }
+
+    public static void displaySpecialAttack(Player player, int damage, Lackie enemy) {
+        Console.writeLn("!!!!SPECIAL ATTACK!!!!\n" + player.getSelectedWeapon().getWeaponName() +
+                " did " + damage + " DMG to " + enemy.getName() + "\nRemaining uses: " + player.getAvailableSpecialAttacks());
+    }
+
+    public static void displayTurnOver() {
+        Console.writeLn("Your turn is now over", Console.TextColor.GREEN);
     }
 }

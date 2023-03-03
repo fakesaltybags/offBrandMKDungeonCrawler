@@ -7,15 +7,20 @@
 
 package edu.neumont.csc150.models.spells;
 
+import edu.neumont.csc150.models.npc.commonenemy.Lackie;
+import edu.neumont.csc150.models.players.Player;
+
 public class SpeedUp implements Spell{
+    public final int AMOUNT_UP = 5;
+
     @Override
-    public int range() {
-        return 0;
+    public void useOnEnemy(Lackie enemy) {
+        enemy.setBadGuySpeed(enemy.badGuySpeed() + AMOUNT_UP);
     }
 
     @Override
-    public int damage() {
-        return 0;
+    public void useOnPlayer(Player player) {
+        player.setSpeed(player.getSpeed() + AMOUNT_UP);
     }
 
     @Override

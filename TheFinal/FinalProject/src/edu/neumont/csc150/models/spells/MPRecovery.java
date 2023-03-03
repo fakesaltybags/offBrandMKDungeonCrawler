@@ -7,15 +7,20 @@
 
 package edu.neumont.csc150.models.spells;
 
+import edu.neumont.csc150.models.npc.commonenemy.Lackie;
+import edu.neumont.csc150.models.players.Player;
+
 public class MPRecovery implements Spell{
+    public final int RECOVER_AMOUNT = 10;
+
     @Override
-    public int range() {
-        return 0;
+    public void useOnEnemy(Lackie enemy) {
+        throw new IllegalArgumentException("This item cannot be used on enemies :(");
     }
 
     @Override
-    public int damage() {
-        return 10;
+    public void useOnPlayer(Player player) {
+        player.setMagic(player.getMagic() + RECOVER_AMOUNT);
     }
 
     @Override

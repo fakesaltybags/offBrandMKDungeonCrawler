@@ -7,17 +7,21 @@
 
 package edu.neumont.csc150.models.spells;
 
+import edu.neumont.csc150.models.npc.commonenemy.Lackie;
+import edu.neumont.csc150.models.players.Player;
+
 public class Implosion implements Spell{
     //Best spell in the game make a low chance to have
+    public final int DAMAGE = 1000000;
 
     @Override
-    public int range() {
-        return 100;
+    public void useOnEnemy(Lackie enemy) {
+        enemy.setBadGuyHealth(enemy.badGuyHealth() - DAMAGE);
     }
 
     @Override
-    public int damage() {
-        return 1000000;
+    public void useOnPlayer(Player player) {
+        player.setHealth(player.getHealth() - DAMAGE);
     }
 
     @Override
