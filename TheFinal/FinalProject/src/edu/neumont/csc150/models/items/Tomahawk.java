@@ -23,7 +23,7 @@ public class Tomahawk implements Item{
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.badGuyHealth() - axeThrown());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - axeThrown());
     }
 
     @Override

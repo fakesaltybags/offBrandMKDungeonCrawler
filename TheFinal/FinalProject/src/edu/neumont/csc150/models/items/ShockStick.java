@@ -23,7 +23,7 @@ public class ShockStick implements Item{
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.badGuyHealth() - shock());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - shock());
     }
 
     @Override

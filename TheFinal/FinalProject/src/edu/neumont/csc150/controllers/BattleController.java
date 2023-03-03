@@ -76,7 +76,7 @@ public class BattleController {
         boolean enemyGoFirst;
         if (!isMultiplayer) {
             Player player = players.get(0);
-            enemyGoFirst = enemies.get(0).badGuySpeed() > player.getSpeed();
+            enemyGoFirst = enemies.get(0).getBadGuySpeed() > player.getSpeed();
             if (enemyGoFirst) {
                 do {
                     for (Lackie enemy :
@@ -114,6 +114,19 @@ public class BattleController {
             }
         } else {
             //TODO: make the logic for more than one player DO THIS FIRST LEFT OFF HERE
+            Player currentPlayer = players.get(0);
+            enemyGoFirst = enemies.get(0).getBadGuySpeed() > currentPlayer.getSpeed();
+            if(enemyGoFirst){
+                do{
+                    for (Lackie enemy :
+                            enemies) {
+                        int attackDMG = enemy.badGuyAttack();
+                        if(!players.get(0).isDead() && !players.get(1).isDead()){
+
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -159,7 +172,7 @@ public class BattleController {
         int damage = player.getSelectedWeapon().specialAttack();
         int selection = GameUI.getEnemyBeingAttacked(enemies);
         Lackie enemy = enemies.get(selection - 1);
-        enemy.setBadGuyHealth(enemy.badGuyHealth() - damage);
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - damage);
         player.setAvailableSpecialAttacks(player.getAvailableSpecialAttacks() - 1);
         GameUI.displaySpecialAttack(player, damage, enemy);
         return false;
@@ -245,7 +258,7 @@ public class BattleController {
         for (int i = 0; i < player.getAmountOfAttacks() - 1; i++) {
             int response = GameUI.getEnemyBeingAttacked(enemies);
             Lackie currentEnemy = enemies.get(response - 1);
-            currentEnemy.setBadGuyHealth(currentEnemy.badGuyHealth() - attackDMG);
+            currentEnemy.setBadGuyHealth(currentEnemy.getBadGuyHealth() - attackDMG);
             GameUI.displayEnemyHit(currentEnemy, attackDMG);
         }
     }

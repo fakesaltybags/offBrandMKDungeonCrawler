@@ -6,84 +6,30 @@
  */
 package edu.neumont.csc150.models.npc.secretbosses;
 
-public class EnderDragon implements SecretBoss{
+import edu.neumont.csc150.models.items.Item;
+import edu.neumont.csc150.models.spells.Spell;
+
+import java.util.ArrayList;
+
+public class EnderDragon implements SecretBoss {
     //secret boss floor 9
+    public final int MAX_HEALTH = 170;
+    private int badGuyHealth;
     private int attack;
-    private int health;
-    private int maxHealth;
     private int goldDrop;
     private int speed;
-    private int itemAmount;
-    private int speacialAttackUsages;
-    private int spellUses;
-    public EnderDragon(){
+    private int specialAttackUses;
+    private ArrayList<Spell> spells;
+    private ArrayList<Item> items;
+
+    public EnderDragon() {
         setBadGuyAttack(140);
         setBadGuyHealth(150);
-        setMaxHealth(170);
         setBadGuyDroppedGold(200);
         setBadGuySpeed(17);
-        setBadGuyItemAmount(1);
         setBadGuySpecialAttackUses(8);
-        setBadGuySpellUses(14);
-    }
-    @Override
-    public int dropGold() {
-        return 0;
-    }
-
-    @Override
-    public int badGuyHealth() {
-        return 0;
-    }
-
-    @Override
-    public int badGuyMaxHealth() {
-        return 0;
-    }
-
-    @Override
-    public int badGuyAttack() {
-        return 0;
-    }
-
-    @Override
-    public int badGuySpeed() {
-        return 0;
-    }
-
-    @Override
-    public String getName() {
-        return "Ender Dragon";
-    }
-
-    @Override
-    public void setBadGuyHealth(int health) {
-
-    }
-
-    @Override
-    public void setMaxHealth(int maxHealth) {
-
-    }
-
-    @Override
-    public void setBadGuyAttack(int attack) {
-
-    }
-
-    @Override
-    public void setBadGuySpeed(int speed) {
-
-    }
-
-    @Override
-    public void setBadGuyDroppedGold(int gold) {
-
-    }
-
-    @Override
-    public boolean isDead() {
-        return false;
+        setBadGuyItems(1);
+        setBadGuySpells(14);
     }
 
     @Override
@@ -97,37 +43,123 @@ public class EnderDragon implements SecretBoss{
     }
 
     @Override
-    public int speacialAttack() {
-        return 0;
+    public int getSpecialAttackUses() {
+        return specialAttackUses;
     }
 
     @Override
-    public void setBadGuySpellUses(int spell) {
-
+    public void setBadGuySpells(ArrayList<Spell> spells) {
+        if (spells.get(0) == null) {
+            throw new IllegalArgumentException("Spells cannot be null");
+        }
+        this.spells = spells;
     }
 
     @Override
-    public void setBadGuyItemAmount(int item) {
-
+    public void setBadGuyItems(ArrayList<Item> items) {
+        if (items.get(0) == null) {
+            throw new IllegalArgumentException("Items cannot be null");
+        }
+        this.items = items;
     }
 
     @Override
     public void setBadGuySpecialAttackUses(int specialAttack) {
-
+        if (specialAttack <= 0) {
+            specialAttackUses = 0;
+            return;
+        }
+        specialAttackUses = specialAttack;
     }
 
     @Override
-    public int dropRareItem() {
+    public int specialAttack() {
         return 0;
+        //TODO: figure out how much the special attack will do + call GameUI.DoSpecialAttack() or something like that
+    }
+
+    @Override
+    public int dropGold() {
+        return goldDrop;
+    }
+
+    @Override
+    public int getBadGuyHealth() {
+        return badGuyHealth;
+    }
+
+    @Override
+    public int badGuyAttack() {
+        return attack;
+    }
+
+    @Override
+    public int getBadGuySpeed() {
+        return speed;
+    }
+
+    @Override
+    public void setBadGuyHealth(int health) {
+        if (health > MAX_HEALTH) {
+            badGuyHealth = MAX_HEALTH;
+            return;
+        }
+        if (health <= 0) {
+            badGuyHealth = 0;
+            return;
+        }
+        badGuyHealth = health;
+    }
+
+    @Override
+    public void setBadGuyAttack(int attack) {
+        if (attack >= 0) {
+            throw new IllegalArgumentException("Attack cannot be lower than 1");
+        }
+        this.attack = attack;
+    }
+
+    @Override
+    public void setBadGuySpeed(int speed) {
+        if (speed <= 0) {
+            throw new IllegalArgumentException("Speed cannot be lower than 1");
+        }
+        this.speed = speed;
+    }
+
+    @Override
+    public void setBadGuyDroppedGold(int gold) {
+        if (gold <= 0) {
+            throw new IllegalArgumentException("Gold amount cannot be lower than 1");
+        }
+        goldDrop = gold;
+    }
+
+    @Override
+    public boolean isDead() {
+        return getBadGuyHealth() <= 0;
+    }
+
+    @Override
+    public Item dropRareItem() {
+        return null;
+        //TODO: FIX THIS
     }
 
     @Override
     public int dropHealthUpgrade() {
         return 0;
+        //TODO: FIX THIS
     }
 
     @Override
     public int dropMpUpgrade() {
         return 0;
+        //TODO: FIX THIS
+    }
+
+    @Override
+    public String getName() {
+        return "Ender Dragon";
     }
 }

@@ -15,7 +15,7 @@ public class SpeedUp implements Spell{
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuySpeed(enemy.badGuySpeed() + AMOUNT_UP);
+        enemy.setBadGuySpeed(enemy.getBadGuySpeed() + AMOUNT_UP);
     }
 
     @Override

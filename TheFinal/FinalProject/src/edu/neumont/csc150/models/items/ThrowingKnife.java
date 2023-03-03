@@ -23,7 +23,7 @@ public class ThrowingKnife implements Item{
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.badGuyHealth() - knifeThrown());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - knifeThrown());
     }
 
     @Override

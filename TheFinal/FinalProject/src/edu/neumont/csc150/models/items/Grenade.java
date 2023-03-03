@@ -23,7 +23,7 @@ public class Grenade implements Item{
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.badGuyHealth() - exsplosin());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - exsplosin());
     }
 
     @Override

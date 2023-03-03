@@ -144,6 +144,10 @@ public class Player {
             this.health = getMaxHP();
             return;
         }
+        if(health <= 0){
+            this.health = 0;
+            return;
+        }
         this.health = health;
     }
 

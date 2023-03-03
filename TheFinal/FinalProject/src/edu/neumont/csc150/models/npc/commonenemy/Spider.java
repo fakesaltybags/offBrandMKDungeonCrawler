@@ -8,30 +8,26 @@ package edu.neumont.csc150.models.npc.commonenemy;
 
 public class Spider implements Lackie {
     private int badGuyHealth;
-    private int maxHealth;
+    public final int MAX_HEALTH = 10;
     private int attack;
     private int speed;
     private int goldDrop;
-    public Spider(){
+
+    public Spider() {
         setBadGuyAttack(3);
         setBadGuyHealth(7);
-        setMaxHealth(10);
         setBadGuySpeed(7);
         setBadGuyDroppedGold(2);
     }
+
     @Override
     public int dropGold() {
         return goldDrop;
     }
 
     @Override
-    public int badGuyHealth() {
+    public int getBadGuyHealth() {
         return badGuyHealth;
-    }
-
-    @Override
-    public int badGuyMaxHealth() {
-        return maxHealth;
     }
 
     @Override
@@ -40,42 +36,55 @@ public class Spider implements Lackie {
     }
 
     @Override
-    public int badGuySpeed() {
+    public int getBadGuySpeed() {
         return speed;
     }
 
     @Override
-    public String getName() {
-        return "Spider";
-    }
-
-    @Override
     public void setBadGuyHealth(int health) {
-
-    }
-
-    @Override
-    public void setMaxHealth(int maxHealth) {
-
+        if (health > MAX_HEALTH) {
+            badGuyHealth = MAX_HEALTH;
+            return;
+        }
+        if (health <= 0) {
+            badGuyHealth = 0;
+            return;
+        }
+        badGuyHealth = health;
     }
 
     @Override
     public void setBadGuyAttack(int attack) {
-
+        if (attack >= 0) {
+            throw new IllegalArgumentException("Attack cannot be lower than 1");
+        }
+        this.attack = attack;
     }
 
     @Override
     public void setBadGuySpeed(int speed) {
-
+        if (speed <= 0) {
+            throw new IllegalArgumentException("Speed cannot be lower than 1");
+        }
+        this.speed = speed;
     }
 
     @Override
     public void setBadGuyDroppedGold(int gold) {
-
+        if (gold <= 0) {
+            throw new IllegalArgumentException("Gold amount cannot be lower than 1");
+        }
+        goldDrop = gold;
     }
 
     @Override
     public boolean isDead() {
-        return false;
+        return getBadGuyHealth() <= 0;
+    }
+
+
+    @Override
+    public String getName() {
+        return "Spider";
     }
 }

@@ -14,7 +14,7 @@ public class FireBall implements Spell{
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.badGuyHealth() - DAMAGE);
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - DAMAGE);
     }
 
     @Override

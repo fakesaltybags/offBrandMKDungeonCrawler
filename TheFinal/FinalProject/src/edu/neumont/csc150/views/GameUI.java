@@ -129,7 +129,7 @@ public class GameUI {
         String listOfEnemies = "";
         for (int i = 0; i < enemies.size() - 1; i++) {
             Lackie currentEnemy = enemies.get(i);
-            listOfEnemies += "\n" + (i + 1) + " " + currentEnemy.getName() + " HP: " + currentEnemy.badGuyHealth() + "/" + currentEnemy.badGuyMaxHealth();
+            listOfEnemies += "\n" + (i + 1) + " " + currentEnemy.getName() + " HP: " + currentEnemy.getBadGuyHealth() + "/" + currentEnemy.badGuyMaxHealth();
         }
         return listOfEnemies;
     }

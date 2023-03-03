@@ -23,7 +23,7 @@ public class SmallHeal implements Item{
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.badGuyHealth() + smallHeal());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() + smallHeal());
     }
 
     @Override

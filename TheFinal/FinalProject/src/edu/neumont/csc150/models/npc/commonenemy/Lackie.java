@@ -8,17 +8,15 @@ package edu.neumont.csc150.models.npc.commonenemy;
 
 public interface Lackie {
     int dropGold();
-    int badGuyHealth();
-    int badGuyMaxHealth();
+    int getBadGuyHealth();
     int badGuyAttack();
-    int badGuySpeed();
-    String getName();
-
+    int getBadGuySpeed();
 
     void setBadGuyHealth(int health);
-    void setMaxHealth(int maxHealth);
+
     void setBadGuyAttack(int attack);
     void setBadGuySpeed(int speed);
     void setBadGuyDroppedGold(int gold);
     boolean isDead();
+    String getName();
 }

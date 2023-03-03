@@ -6,10 +6,11 @@
  */
 package edu.neumont.csc150.models.npc.secretbosses;
 
+import edu.neumont.csc150.models.items.Item;
 import edu.neumont.csc150.models.npc.bosses.Boss;
 
 public interface SecretBoss extends Boss {
-        int dropRareItem();
+        Item dropRareItem();
         int dropHealthUpgrade();
         int dropMpUpgrade();
 }

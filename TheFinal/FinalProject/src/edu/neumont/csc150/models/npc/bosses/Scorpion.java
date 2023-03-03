@@ -7,89 +7,30 @@
 
 package edu.neumont.csc150.models.npc.bosses;
 
+import edu.neumont.csc150.models.items.Item;
+import edu.neumont.csc150.models.spells.Spell;
+
+import java.util.ArrayList;
+
 public class Scorpion implements Boss {
     //floor 6 boss
-    private int health;
-    private int maxHealth;
-    private int spellUsage;
-    private int speacialAttackUsage;
+    public final int MAX_HEALTH = 73;
+    private int badGuyHealth;
+    private ArrayList<Spell> spells;
+    private int specialAttackUses;
     private int attack;
     private int goldDrop;
     private int speed;
-    private int itemUsage;
+    private ArrayList<Item> items;
 
-    public Scorpion(){
-        setRank(rank);
+    public Scorpion() {
         setBadGuyHealth(67);
-        setBadGuyItemAmount(8);
-        setBadGuySpellUses(9);
+        setBadGuyItems(8);
+        setBadGuySpells(9);
         setBadGuySpecialAttackUses(4);
         setBadGuyAttack(39);
         setBadGuyDroppedGold(300);
         setBadGuySpeed(18);
-        setMaxHealth(73);
-    }
-    int rank = 6;
-
-    @Override
-    public int dropGold() {
-        return 0;
-    }
-
-    @Override
-    public int badGuyHealth() {
-        badGuyHealth();
-        return 0;
-    }
-
-    @Override
-    public int badGuyMaxHealth() {
-        return 0;
-    }
-
-    @Override
-    public int badGuyAttack() {
-        return 0;
-    }
-
-    @Override
-    public int badGuySpeed() {
-        return 0;
-    }
-
-    @Override
-    public String getName() {
-        return "Scorpion";
-    }
-
-    @Override
-    public void setBadGuyHealth(int health) {
-
-    }
-
-    @Override
-    public void setMaxHealth(int maxHealth) {
-
-    }
-
-    @Override
-    public void setBadGuyAttack(int attack) {
-
-    }
-
-    @Override
-    public void setBadGuySpeed(int speed) {
-
-    }
-
-    @Override
-    public void setBadGuyDroppedGold(int gold) {
-
-    }
-
-    @Override
-    public boolean isDead() {
-        return false;
     }
 
     @Override
@@ -103,26 +44,105 @@ public class Scorpion implements Boss {
     }
 
     @Override
-    public int speacialAttack() {
-        return 0;
+    public int getSpecialAttackUses() {
+        return specialAttackUses;
     }
 
     @Override
-    public void setBadGuySpellUses(int spell) {
-
+    public void setBadGuySpells(ArrayList<Spell> spells) {
+        if (spells.get(0) == null) {
+            throw new IllegalArgumentException("Spells cannot be null");
+        }
+        this.spells = spells;
     }
 
     @Override
-    public void setBadGuyItemAmount(int item) {
-
+    public void setBadGuyItems(ArrayList<Item> items) {
+        if (items.get(0) == null) {
+            throw new IllegalArgumentException("Items cannot be null");
+        }
+        this.items = items;
     }
 
     @Override
     public void setBadGuySpecialAttackUses(int specialAttack) {
-
+        if (specialAttack <= 0) {
+            specialAttackUses = 0;
+            return;
+        }
+        specialAttackUses = specialAttack;
     }
 
-    public void setRank(int rank){
-        this.rank = rank;
+    @Override
+    public int specialAttack() {
+        return 0;
+        //TODO: figure out how much the special attack will do + call GameUI.DoSpecialAttack() or something like that
+    }
+
+    @Override
+    public int dropGold() {
+        return goldDrop;
+    }
+
+    @Override
+    public int getBadGuyHealth() {
+        return badGuyHealth;
+    }
+
+    @Override
+    public int badGuyAttack() {
+        return attack;
+    }
+
+    @Override
+    public int getBadGuySpeed() {
+        return speed;
+    }
+
+    @Override
+    public void setBadGuyHealth(int health) {
+        if (health > MAX_HEALTH) {
+            badGuyHealth = MAX_HEALTH;
+            return;
+        }
+        if (health <= 0) {
+            badGuyHealth = 0;
+            return;
+        }
+        badGuyHealth = health;
+    }
+
+    @Override
+    public void setBadGuyAttack(int attack) {
+        if (attack >= 0) {
+            throw new IllegalArgumentException("Attack cannot be lower than 1");
+        }
+        this.attack = attack;
+    }
+
+    @Override
+    public void setBadGuySpeed(int speed) {
+        if (speed <= 0) {
+            throw new IllegalArgumentException("Speed cannot be lower than 1");
+        }
+        this.speed = speed;
+    }
+
+    @Override
+    public void setBadGuyDroppedGold(int gold) {
+        if (gold <= 0) {
+            throw new IllegalArgumentException("Gold amount cannot be lower than 1");
+        }
+        goldDrop = gold;
+    }
+
+    @Override
+    public boolean isDead() {
+        return getBadGuyHealth() <= 0;
+    }
+
+    @Override
+    public String getName() {
+        return "Scorpion";
     }
 }

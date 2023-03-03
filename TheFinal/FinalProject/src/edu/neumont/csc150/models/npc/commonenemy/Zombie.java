@@ -8,74 +8,80 @@ package edu.neumont.csc150.models.npc.commonenemy;
 
 public class Zombie implements Lackie {
     private int badGuyHealth;
-    private int maxHealth;
+    public final int MAX_HEALTH = 10;
     private int attack;
     private int speed;
     private int goldDrop;
     public Zombie(){
         setBadGuyAttack(6);
         setBadGuyHealth(8);
-        setMaxHealth(10);
         setBadGuySpeed(3);
         setBadGuyDroppedGold(4);
     }
     @Override
     public int dropGold() {
-        return 0;
+        return goldDrop;
     }
 
     @Override
-    public int badGuyHealth() {
-        return 0;
-    }
-
-    @Override
-    public int badGuyMaxHealth() {
-        return 0;
+    public int getBadGuyHealth() {
+        return badGuyHealth;
     }
 
     @Override
     public int badGuyAttack() {
-        return 0;
+        return attack;
     }
 
     @Override
-    public int badGuySpeed() {
-        return 0;
+    public int getBadGuySpeed() {
+        return speed;
+    }
+
+    @Override
+    public void setBadGuyHealth(int health) {
+        if(health > MAX_HEALTH){
+            badGuyHealth = MAX_HEALTH;
+            return;
+        }
+        if(health <= 0){
+            badGuyHealth = 0;
+            return;
+        }
+        badGuyHealth = health;
+    }
+
+    @Override
+    public void setBadGuyAttack(int attack) {
+        if(attack >= 0){
+            throw new IllegalArgumentException("Attack cannot be lower than 1");
+        }
+        this.attack = attack;
+    }
+
+    @Override
+    public void setBadGuySpeed(int speed) {
+        if(speed <= 0){
+            throw new IllegalArgumentException("Speed cannot be lower than 1");
+        }
+        this.speed = speed;
+    }
+
+    @Override
+    public void setBadGuyDroppedGold(int gold) {
+        if(gold <= 0){
+            throw new IllegalArgumentException("Gold amount cannot be lower than 1");
+        }
+        goldDrop = gold;
+    }
+
+    @Override
+    public boolean isDead() {
+        return getBadGuyHealth() <= 0;
     }
 
     @Override
     public String getName() {
         return "Zombie";
-    }
-
-    @Override
-    public void setBadGuyHealth(int health) {
-
-    }
-
-    @Override
-    public void setMaxHealth(int maxHealth) {
-
-    }
-
-    @Override
-    public void setBadGuyAttack(int attack) {
-
-    }
-
-    @Override
-    public void setBadGuySpeed(int speed) {
-
-    }
-
-    @Override
-    public void setBadGuyDroppedGold(int gold) {
-
-    }
-
-    @Override
-    public boolean isDead() {
-        return false;
     }
 }

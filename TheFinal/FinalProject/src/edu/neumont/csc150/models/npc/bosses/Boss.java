@@ -6,7 +6,11 @@
  */
 package edu.neumont.csc150.models.npc.bosses;
 
+import edu.neumont.csc150.models.items.Item;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
+import edu.neumont.csc150.models.spells.Spell;
+
+import java.util.ArrayList;
 
 public interface Boss extends Lackie {
 
@@ -15,12 +19,14 @@ public interface Boss extends Lackie {
 
     int badGuyItem();
 
-    int speacialAttack();
+    int getSpecialAttackUses();
 
-    void setBadGuySpellUses(int spell);
+    void setBadGuySpells(ArrayList<Spell> spells);
 
-    void setBadGuyItemAmount(int item);
+    void setBadGuyItems(ArrayList<Item> items);
 
     void setBadGuySpecialAttackUses(int specialAttack);
+
+    int specialAttack();
 
 }

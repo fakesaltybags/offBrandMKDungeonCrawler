@@ -16,7 +16,7 @@ public class Heal implements Spell {
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.badGuyHealth() + HEAL_AMOUNT);
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() + HEAL_AMOUNT);
     }
 
     @Override
