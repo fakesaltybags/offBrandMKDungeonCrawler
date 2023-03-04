@@ -379,7 +379,7 @@ public class BattleController {
                                     return true;
                                 }
                                 selectedSpell.useOnEnemy(enemies.get(selectedEnemy - 1));
-                                //TODO: if you have time you can make a personalized message for each type of spell and the amount of damage it does in the UI
+                                //TODO: MAKE A MESSAGE FOR THE SPELLS BEING USED
                                 break;
                             } catch (EnemyIsDeadException e) {
                                 GameUI.deadEnemySelected();
@@ -391,7 +391,7 @@ public class BattleController {
                             return true;
                         }
                         selectedSpell.useOnPlayer(players.get(selectedPlayer - 1));
-                        //TODO: if you have time you can make a personalized message for each type of spell and the amount of damage it does in the UI
+                        //TODO: MAKE A MESSAGE FOR THE SPELLS BEING USED
                     }
                     player.setMagic(player.getMagic() - selectedSpell.magicPoint());
                     return false;
@@ -435,6 +435,7 @@ public class BattleController {
                             return true;
                         }
                         player.getItems().get(selection - 1).useOnEnemy(enemies.get(selectedEnemy - 1));
+                        //TODO: if you want display what happened in the UI with more detail
                         break;
                     } catch (EnemyIsDeadException e) {
                         GameUI.deadEnemySelected();
@@ -446,10 +447,10 @@ public class BattleController {
                     return true;
                 }
                 player.getItems().get(selection - 1).useOnPLayer(players.get(selectedPlayer - 1));
+                //TODO: same as above ^^^
             }
             player.getItems().remove(selection - 1);
             return false;
-            //TODO: if you want you can make it so that the UI shows that the player used the item and it's effect on the battle
         }
     }
 
