@@ -26,7 +26,7 @@ public class Player {
     private Weapon selectedWeapon;
     private ArrayList<Spell> spells;
     public final int MAX_SPECIAL_ATTACKS = 5;
-    public final int MIN_MAX_HP = 10;
+    public final int MIN_MAX_HP = 25;
     public final int MIN_MAX_MAGIC = 5;
 
     public Player() {
@@ -152,7 +152,7 @@ public class Player {
     }
 
     public void setHealth(int health) {
-        if (health < getMaxHP()) {
+        if (health > getMaxHP()) {
             this.health = getMaxHP();
             return;
         }

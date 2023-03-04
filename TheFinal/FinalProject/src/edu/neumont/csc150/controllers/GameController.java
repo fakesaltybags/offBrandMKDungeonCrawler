@@ -13,14 +13,12 @@ import edu.neumont.csc150.views.GameUI;
 import java.util.ArrayList;
 
 public class GameController {
-    private BattleController battleController = new BattleController();
+    private BattleController battleController;
     private ArrayList<Player> players;
-    private Player currentPLayer;
-    private int difficulty;
-    private int range;
 
     public void run() {
         do {
+            battleController = new BattleController();
             int selection = GameUI.displayMainMenu();
             switch (selection) {
                 case 1:
@@ -46,6 +44,10 @@ public class GameController {
     }
 
     private void startGame() {
+        floorOne();
+    }
+
+    private void floorOne() {
         boolean floorNotCompleted = true;
         Map currentMap = new Map(1);
         do {
@@ -53,7 +55,7 @@ public class GameController {
             currentMap.moveParty(movementOption);
             if (battleController.checkForBattle(currentMap.getCurrentFloor(), currentMap.getCurrentPos())) {
                 if (battleController.battle(currentMap.getCurrentFloor(), currentMap.getCurrentPos(), players)) {
-
+                    battleController.setBattleOneOneDone(true);
                 } else {
                     gameOver();
                     return;
@@ -72,7 +74,5 @@ public class GameController {
             players.add(new Player());
         }
         players.add(new Player());
-        currentPLayer = players.get(0);
-        difficulty = 1;
     }
 }

@@ -6,6 +6,7 @@
  */
 package edu.neumont.csc150.controllers;
 
+import edu.neumont.csc150.exceptions.EnemyIsDeadException;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.npc.commonenemy.Zombie;
 import edu.neumont.csc150.models.players.Player;
@@ -17,8 +18,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BattleController {
+    private boolean battleOneOneDone;
     private boolean isMultiplayer = true;
 
+    //region get/set
     public boolean isMultiplayer() {
         return isMultiplayer;
     }
@@ -26,6 +29,16 @@ public class BattleController {
     public void setMultiplayer(boolean multiplayer) {
         isMultiplayer = multiplayer;
     }
+
+    public boolean isBattleOneOneDone() {
+        return battleOneOneDone;
+    }
+
+    public void setBattleOneOneDone(boolean battleOneOneDone) {
+        this.battleOneOneDone = battleOneOneDone;
+    }
+
+    //endregion
 
     public boolean checkForBattle(int currentFloor, int currentPos) {
         switch (currentFloor) {
@@ -39,7 +52,7 @@ public class BattleController {
     private boolean checkForBattleFloorOne(int currentPos) {
         switch (currentPos) {
             case 1:
-                return true;
+                return !isBattleOneOneDone();
             default:
                 return false;
         }
@@ -67,8 +80,6 @@ public class BattleController {
         ArrayList<Lackie> enemies = new ArrayList<>();
         enemies.add(new Zombie());
         enemies.add(new Zombie());
-        enemies.add(new Zombie());
-        enemies.add(new Zombie());
         return commenceBattle(players, enemies);
     }
 
@@ -77,6 +88,7 @@ public class BattleController {
         boolean enemyGoFirst;
         Player player = players.get(0);
         enemyGoFirst = enemies.get(0).getBadGuySpeed() > player.getSpeed();
+        GameUI.displayFirstTurn(enemyGoFirst);
         if (!isMultiplayer) {
             if (enemyGoFirst) {
                 do {
@@ -84,7 +96,7 @@ public class BattleController {
                             enemies) {
                         int attackDMG = enemy.badGuyAttack();
                         player.setHealth(player.getHealth() - attackDMG);
-                        GameUI.displayPlayerHit(1, attackDMG);
+                        GameUI.displayPlayerHit(1, attackDMG, player);
                         if (player.isDead()) {
                             return false;
                         }
@@ -106,7 +118,7 @@ public class BattleController {
                             enemies) {
                         int attackDMG = enemy.badGuyAttack();
                         player.setHealth(player.getHealth() - attackDMG);
-                        GameUI.displayPlayerHit(1, attackDMG);
+                        GameUI.displayPlayerHit(1, attackDMG, player);
                         if (player.isDead()) {
                             return false;
                         }
@@ -208,18 +220,18 @@ public class BattleController {
                 return true;
             }
             players.get(playerNo).setHealth(players.get(playerNo).getHealth() - attackDMG);
-            GameUI.displayPlayerHit(playerNo + 1, attackDMG);
+            GameUI.displayPlayerHit(playerNo + 1, attackDMG, players.get(playerNo));
         }
         return false;
     }
 
     private void playerTurn(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
         int selection;
-        do {
-            selection = GameUI.getAttackOption(player);
-        } while (selection <= 0 || selection >= 6);
         boolean isPlayerTurn = true;
         do {
+            do {
+                selection = GameUI.getAttackOption(player);
+            } while (selection <= 0 || selection >= 6);
             switch (selection) {
                 case 1:
                     //attack
@@ -253,9 +265,17 @@ public class BattleController {
             return true;
         }
         int damage = player.getSelectedWeapon().specialAttack();
-        int selection = GameUI.getEnemyBeingAttacked(enemies);
-        Lackie enemy = enemies.get(selection - 1);
-        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - damage);
+        Lackie enemy;
+        do {
+            try {
+                int selection = GameUI.getEnemyBeingAttacked(enemies);
+                enemy = enemies.get(selection - 1);
+                enemy.setBadGuyHealth(enemy.getBadGuyHealth() - damage);
+                break;
+            } catch (EnemyIsDeadException e) {
+                GameUI.deadEnemySelected();
+            }
+        }while(true);
         player.setAvailableSpecialAttacks(player.getAvailableSpecialAttacks() - 1);
         GameUI.displaySpecialAttack(player, damage, enemy);
         return false;
@@ -264,6 +284,9 @@ public class BattleController {
     private boolean magicAttack(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
         do {
             int selection = GameUI.getSpellBeingUsed(player);
+            if(player.getSpells().size() == 0){
+                return true;
+            }
             Spell selectedSpell = player.getSpells().get(selection - 1);
             if (selection == player.getSpells().size()) {
                 return true;
@@ -273,8 +296,15 @@ public class BattleController {
                 try {
                     boolean targetEnemy = GameUI.isTargetEnemy();
                     if (targetEnemy) {
-                        int selectedEnemy = GameUI.getEnemyBeingAttacked(enemies);
-                        selectedSpell.useOnEnemy(enemies.get(selectedEnemy - 1));
+                        do {
+                            try {
+                                int selectedEnemy = GameUI.getEnemyBeingAttacked(enemies);
+                                selectedSpell.useOnEnemy(enemies.get(selectedEnemy - 1));
+                                break;
+                            }catch(EnemyIsDeadException e){
+                                GameUI.deadEnemySelected();
+                            }
+                        }while(true);
                         //TODO: if you have time you can make a personalized message for each type of spell and the amount of damage it does in the UI
                     } else {
                         int selectedPlayer = GameUI.getSelectedPlayer(players);
@@ -308,13 +338,23 @@ public class BattleController {
 
     private boolean useItem(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
         int selection = GameUI.getItemBeingUsed(player);
-        if (selection == player.getItems().size()) {
+        if(selection == 1 && player.getItems().size() == 0){
+            return true;
+        }
+        if (selection == player.getItems().size() + 1) {
             return true;
         } else {
             boolean targetEnemy = GameUI.isTargetEnemy();
             if (targetEnemy) {
-                int selectedEnemy = GameUI.getEnemyBeingAttacked(enemies);
-                player.getItems().get(selection - 1).useOnEnemy(enemies.get(selectedEnemy - 1));
+                do {
+                    try {
+                        int selectedEnemy = GameUI.getEnemyBeingAttacked(enemies);
+                        player.getItems().get(selection - 1).useOnEnemy(enemies.get(selectedEnemy - 1));
+                        break;
+                    }catch(EnemyIsDeadException e){
+                        GameUI.deadEnemySelected();
+                    }
+                }while(true);
             } else {
                 int selectedPlayer = GameUI.getSelectedPlayer(players);
                 player.getItems().get(selection - 1).useOnPLayer(players.get(selectedPlayer - 1));
@@ -327,7 +367,7 @@ public class BattleController {
 
     private boolean selectWeapon(Player player) {
         int selection = GameUI.getWeaponBeingSwitchedTo(player);
-        if (selection == player.getWeapons().size()) {
+        if (selection == player.getWeapons().size() + 1) {
             return true;
         } else {
             player.setSelectedWeapon(player.getWeapons().get(selection - 1));
@@ -338,10 +378,18 @@ public class BattleController {
 
     private void playerAttack(Player player, ArrayList<Lackie> enemies) {
         int attackDMG = player.attack();
+        Lackie currentEnemy;
         for (int i = 0; i < player.getAmountOfAttacks() - 1; i++) {
-            int response = GameUI.getEnemyBeingAttacked(enemies);
-            Lackie currentEnemy = enemies.get(response - 1);
-            currentEnemy.setBadGuyHealth(currentEnemy.getBadGuyHealth() - attackDMG);
+            do {
+                try {
+                    int response = GameUI.getEnemyBeingAttacked(enemies);
+                    currentEnemy = enemies.get(response - 1);
+                    currentEnemy.setBadGuyHealth(currentEnemy.getBadGuyHealth() - attackDMG);
+                    break;
+                }catch(EnemyIsDeadException e){
+                    GameUI.deadEnemySelected();
+                }
+            }while(true);
             GameUI.displayEnemyHit(currentEnemy, attackDMG);
             if(isAllEnemiesDead(enemies)){
                 return;

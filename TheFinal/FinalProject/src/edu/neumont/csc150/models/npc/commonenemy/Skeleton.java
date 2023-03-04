@@ -6,6 +6,8 @@
  */
 package edu.neumont.csc150.models.npc.commonenemy;
 
+import edu.neumont.csc150.exceptions.EnemyIsDeadException;
+
 public class Skeleton implements Lackie {
     private int badGuyHealth;
     public final int MAX_HEALTH = 14;
@@ -29,6 +31,11 @@ public class Skeleton implements Lackie {
     @Override
     public int getBadGuyHealth() {
         return badGuyHealth;
+    }
+
+    @Override
+    public int getMaxHealth() {
+        return MAX_HEALTH;
     }
 
     @Override
@@ -56,12 +63,15 @@ public class Skeleton implements Lackie {
     }
 
     @Override
-    public void setBadGuyHealth(int health) {
+    public void setBadGuyHealth(int health) throws EnemyIsDeadException {
         if (health > MAX_HEALTH) {
             badGuyHealth = MAX_HEALTH;
             return;
         }
         if (health <= 0) {
+            if(getBadGuyHealth() == 0){
+                throw new EnemyIsDeadException("The enemy you tried to hit is already dead");
+            }
             badGuyHealth = 0;
             return;
         }
@@ -70,7 +80,7 @@ public class Skeleton implements Lackie {
 
     @Override
     public void setBadGuyAttack(int attack) {
-        if (attack >= 0) {
+        if (attack <= 0) {
             throw new IllegalArgumentException("Attack cannot be lower than 1");
         }
         this.attack = attack;

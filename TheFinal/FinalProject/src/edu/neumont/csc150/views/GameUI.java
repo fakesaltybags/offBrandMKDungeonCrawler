@@ -117,7 +117,7 @@ public class GameUI {
         do {
             Console.writeLn("---- Which enemy are you targeting ----", Console.TextColor.YELLOW);
             int response = Console.getIntInput(listOfEnemies);
-            if (response > 0 && response < enemies.size()) {
+            if (response > 0 && response <= enemies.size()) {
                 return response;
             } else {
                 Console.writeLn("Please enter a valid enemy number!", Console.TextColor.RED);
@@ -127,9 +127,11 @@ public class GameUI {
 
     private static String getListOfEnemies(ArrayList<Lackie> enemies) {
         String listOfEnemies = "";
-        for (int i = 0; i < enemies.size() - 1; i++) {
+        for (int i = 0; i < enemies.size(); i++) {
             Lackie currentEnemy = enemies.get(i);
-            listOfEnemies += "\n" + (i + 1) + " " + currentEnemy.getName() + " HP: " + currentEnemy.getBadGuyHealth() + "/" + currentEnemy.badGuyMaxHealth();
+            if(!currentEnemy.isDead()) {
+                listOfEnemies += "\n" + (i + 1) + " " + currentEnemy.getName() + " HP: " + currentEnemy.getBadGuyHealth() + "/" + currentEnemy.getMaxHealth();
+            }
         }
         return listOfEnemies;
     }
@@ -138,8 +140,9 @@ public class GameUI {
         Console.writeLn(enemy.getName() + " was hit for " + amountOfDamage + "DMG!", Console.TextColor.BLUE);
     }
 
-    public static void displayPlayerHit(int playerNo, int amountOfDamage){
-        Console.writeLn("Player " + playerNo + " was hit for " + amountOfDamage + "DMG!");
+    public static void displayPlayerHit(int playerNo, int amountOfDamage, Player player){
+        Console.writeLn("Player " + playerNo + " was hit for " + amountOfDamage + "DMG!" +
+                "\nRemaining HP: " + player.getHealth() + "/" + player.getMaxHP());
     }
 
     public static int displayPlayerInventory(Player player) {
@@ -205,7 +208,7 @@ public class GameUI {
                 weaponString += "\n" + (i + 1) + ". " + weapon.getWeaponName();
             }
         }
-        weaponString += "\n" + amountOfWeapons + ". Back";
+        weaponString += "\n" + (amountOfWeapons + 1) + ". Back";
         return weaponString;
     }
 
@@ -213,6 +216,9 @@ public class GameUI {
         String itemString = getItemString(player);
         do{
             int response = Console.getIntInput(itemString);
+            if(response == 1 && player.getItems().size() == 0){
+                return response;
+            }
             if(response > 0 && response <= player.getItems().size()){
                 return response;
             } else {
@@ -224,6 +230,9 @@ public class GameUI {
     private static String getItemString(Player player) {
         String itemString = "";
         int amountOfItems = player.getItems().size();
+        if(amountOfItems == 0){
+            return "You currently have no items\n1. Back";
+        }
         for (int i = 0; i < amountOfItems; i++) {
             itemString += "\n" + (i + 1) + ". " + player.getItems().get(i);
         }
@@ -235,6 +244,9 @@ public class GameUI {
         String spellString = getSpellString(player);
         do{
             int response = Console.getIntInput(spellString);
+            if(player.getSpells().size() == 0 && response == 1){
+                return response;
+            }
             if(response > 0 && response <= player.getSpells().size()){
                 return response;
             } else{
@@ -246,6 +258,9 @@ public class GameUI {
     private static String getSpellString(Player player){
         String spellString = "";
         int amountOfSpells = player.getSpells().size();
+        if(amountOfSpells == 0){
+            return "You Currently have no spells\n1. Back";
+        }
         for (int i = 0; i < amountOfSpells; i++) {
             spellString += "\n" + (i + 1) + ". " + player.getSpells().get(i);
         }
@@ -313,5 +328,17 @@ public class GameUI {
         if(multiplayer){
             Console.writeLn("Player 2 now has " + players.get(1).getGold() + " GP!", Console.TextColor.YELLOW);
         }
+    }
+
+    public static void displayFirstTurn(boolean enemyGoFirst) {
+        if(enemyGoFirst){
+            Console.writeLn("Enemies are going first!", Console.TextColor.RED);
+        } else {
+            Console.writeLn("Player(s) are going first!", Console.TextColor.RED);
+        }
+    }
+
+    public static void deadEnemySelected() {
+        Console.writeLn("The enemy that you chose is already dead!", Console.TextColor.RED);
     }
 }

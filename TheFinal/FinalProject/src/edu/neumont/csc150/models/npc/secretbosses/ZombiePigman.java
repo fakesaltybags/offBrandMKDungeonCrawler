@@ -6,6 +6,7 @@
  */
 package edu.neumont.csc150.models.npc.secretbosses;
 
+import edu.neumont.csc150.exceptions.EnemyIsDeadException;
 import edu.neumont.csc150.models.items.Item;
 import edu.neumont.csc150.models.items.SmallHeal;
 import edu.neumont.csc150.models.items.Tomahawk;
@@ -100,6 +101,11 @@ public class ZombiePigman implements SecretBoss{
     }
 
     @Override
+    public int getMaxHealth() {
+        return MAX_HEALTH;
+    }
+
+    @Override
     public int badGuyAttack() {
         if(isStrengthUp()){
             setStrengthUp(false);
@@ -124,12 +130,15 @@ public class ZombiePigman implements SecretBoss{
     }
 
     @Override
-    public void setBadGuyHealth(int health) {
+    public void setBadGuyHealth(int health) throws EnemyIsDeadException {
         if (health > MAX_HEALTH) {
             badGuyHealth = MAX_HEALTH;
             return;
         }
         if (health <= 0) {
+            if(getBadGuyHealth() == 0){
+                throw new EnemyIsDeadException("The enemy you tried to hit is already dead");
+            }
             badGuyHealth = 0;
             return;
         }
@@ -138,7 +147,7 @@ public class ZombiePigman implements SecretBoss{
 
     @Override
     public void setBadGuyAttack(int attack) {
-        if (attack >= 0) {
+        if (attack <= 0) {
             throw new IllegalArgumentException("Attack cannot be lower than 1");
         }
         this.attack = attack;
