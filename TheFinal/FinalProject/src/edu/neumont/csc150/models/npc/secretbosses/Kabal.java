@@ -8,6 +8,7 @@ package edu.neumont.csc150.models.npc.secretbosses;
 
 import edu.neumont.csc150.exceptions.EnemyIsDeadException;
 import edu.neumont.csc150.models.items.*;
+import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.SpeedUp;
 import edu.neumont.csc150.models.spells.Spell;
 import edu.neumont.csc150.models.spells.TornadoSpin;
@@ -46,13 +47,14 @@ public class Kabal implements SecretBoss {
     }
 
     @Override
-    public int badGuySpell() {
-        return 0;
+    public void badGuySpell(ArrayList<Player> players, boolean isMultiplayer) {
+        //TODO: make this method use a random spell and update the UI with what happened
     }
 
     @Override
-    public int badGuyItem() {
-        return 0;
+    public boolean badGuyItem(ArrayList<Player> players, boolean isMultiplayer) {
+        return false;
+        //TODO: FIX THIS
     }
 
     @Override
@@ -86,8 +88,7 @@ public class Kabal implements SecretBoss {
     }
 
     @Override
-    public int specialAttack() {
-        return 0;
+    public void specialAttack(ArrayList<Player> players, boolean isMultiplayer) {
         //TODO: figure out how much the special attack will do + call GameUI.DoSpecialAttack() or something like that
     }
 

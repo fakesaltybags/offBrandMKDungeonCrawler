@@ -32,10 +32,13 @@ public class Player {
     public Player() {
         //TODO: DO THIS NEXT give the player spells, items, and other goodies to make sure the menus/items are working correctly
         items = new ArrayList<>();
+        items.add(new SmallHeal());
         weapons = new ArrayList<>();
         weapons.add(new Hand());
+        weapons.add(new SlingShot());
         selectedWeapon = weapons.get(0);
         spells = new ArrayList<>();
+        spells.add(new StrengthUp());
         setMaxHP(MIN_MAX_HP);
         setHealth(getMaxHP());
         setMaxMagic(MIN_MAX_MAGIC);

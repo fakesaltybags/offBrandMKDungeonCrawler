@@ -117,7 +117,7 @@ public class GameUI {
         do {
             Console.writeLn("---- Which enemy are you targeting ----", Console.TextColor.YELLOW);
             int response = Console.getIntInput(listOfEnemies);
-            if (response > 0 && response <= enemies.size()) {
+            if (response > 0 && response <= enemies.size() + 1) {
                 return response;
             } else {
                 Console.writeLn("Please enter a valid enemy number!", Console.TextColor.RED);
@@ -133,6 +133,7 @@ public class GameUI {
                 listOfEnemies += "\n" + (i + 1) + " " + currentEnemy.getName() + " HP: " + currentEnemy.getBadGuyHealth() + "/" + currentEnemy.getMaxHealth();
             }
         }
+        listOfEnemies += "\n" + (enemies.size() + 1) + ". Back";
         return listOfEnemies;
     }
 
@@ -188,8 +189,9 @@ public class GameUI {
     public static int getWeaponBeingSwitchedTo(Player player) {
         String weaponString = getWeaponString(player);
         do {
+            Console.writeLn("---- Choose wisely ----", Console.TextColor.YELLOW);
             int response = Console.getIntInput(weaponString);
-            if(response > 0 && response <= player.getWeapons().size()){
+            if(response > 0 && response <= player.getWeapons().size() + 1){
                 return response;
             } else {
                 Console.writeLn("Please enter a valid input!", Console.TextColor.RED);
@@ -215,11 +217,12 @@ public class GameUI {
     public static int getItemBeingUsed(Player player) {
         String itemString = getItemString(player);
         do{
+            Console.writeLn("---- Items ----", Console.TextColor.YELLOW);
             int response = Console.getIntInput(itemString);
             if(response == 1 && player.getItems().size() == 0){
                 return response;
             }
-            if(response > 0 && response <= player.getItems().size()){
+            if(response > 0 && response <= player.getItems().size() + 1){
                 return response;
             } else {
                 Console.writeLn("Please enter a valid input!", Console.TextColor.RED);
@@ -234,9 +237,9 @@ public class GameUI {
             return "You currently have no items\n1. Back";
         }
         for (int i = 0; i < amountOfItems; i++) {
-            itemString += "\n" + (i + 1) + ". " + player.getItems().get(i);
+            itemString += "\n" + (i + 1) + ". " + player.getItems().get(i).getItemName();
         }
-        itemString += "\n" + amountOfItems + ". Back";
+        itemString += "\n" + (amountOfItems + 1) + ". Back";
         return itemString;
     }
 
@@ -247,7 +250,7 @@ public class GameUI {
             if(player.getSpells().size() == 0 && response == 1){
                 return response;
             }
-            if(response > 0 && response <= player.getSpells().size()){
+            if(response > 0 && response <= player.getSpells().size() + 1){
                 return response;
             } else{
                 Console.writeLn("Please enter a valid input!", Console.TextColor.RED);
@@ -262,9 +265,9 @@ public class GameUI {
             return "You Currently have no spells\n1. Back";
         }
         for (int i = 0; i < amountOfSpells; i++) {
-            spellString += "\n" + (i + 1) + ". " + player.getSpells().get(i);
+            spellString += "\n" + (i + 1) + ". " + player.getSpells().get(i).getSpellName();
         }
-        spellString += "\n" + amountOfSpells + ". Back";
+        spellString += "\n" + (amountOfSpells + 1) + ". Back";
         return spellString;
     }
 
@@ -281,7 +284,7 @@ public class GameUI {
         do {
             Console.writeLn("---- Which player will you choose ----", Console.TextColor.YELLOW);
             int response = Console.getIntInput(playerString);
-            if(response > 0 && response <= players.size()){
+            if(response > 0 && response <= players.size() + 1){
                 return response;
             } else{
                 Console.writeLn("Please enter a valid input!", Console.TextColor.RED);
@@ -294,11 +297,11 @@ public class GameUI {
         for (int i = 0; i < players.size(); i++) {
             int playerNum = i + 1;
             Player currentPlayer = players.get(i);
-            playerString += "\n" + playerNum + "Player " + playerNum +
+            playerString += "\n" + playerNum + ". Player " + playerNum +
                     " HP: " + currentPlayer.getHealth() + "/" + currentPlayer.getMaxHP() +
                     " MP: " + currentPlayer.getMagic() + "/" + currentPlayer.getMaxMagic();
         }
-        playerString += "\n" + players.size() + ". Back";
+        playerString += "\n" + (players.size() + 1) + ". Back";
         return playerString;
     }
 
@@ -340,5 +343,18 @@ public class GameUI {
 
     public static void deadEnemySelected() {
         Console.writeLn("The enemy that you chose is already dead!", Console.TextColor.RED);
+    }
+
+    public static void displayPlayerHeal(int healAmount, Player player) {
+        Console.writeLn("You healed " + healAmount + " HP\nCurrent HP: " +
+                player.getHealth() + "/" + player.getMaxHP(), Console.TextColor.GREEN);
+    }
+
+    public static void weaponAlreadySelected() {
+        Console.writeLn("The weapon you chose is already selected!", Console.TextColor.RED);
+    }
+
+    public static void displayNewSelectedWeapon(Weapon newWeapon) {
+        Console.writeLn(newWeapon.getWeaponName() + " is now selected!!", Console.TextColor.YELLOW);
     }
 }

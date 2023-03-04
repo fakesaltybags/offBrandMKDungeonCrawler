@@ -8,6 +8,7 @@ package edu.neumont.csc150.models.items;
 
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.players.Player;
+import edu.neumont.csc150.views.GameUI;
 
 import java.util.Random;
 
@@ -18,7 +19,9 @@ public class SmallHeal implements Item{
 
     @Override
     public void useOnPLayer(Player player) {
-        player.setHealth(player.getHealth() + smallHeal());
+        int healAmount = smallHeal();
+        player.setHealth(player.getHealth() + healAmount);
+        GameUI.displayPlayerHeal(healAmount, player);
     }
 
     @Override

@@ -10,6 +10,7 @@ package edu.neumont.csc150.models.npc.bosses;
 import edu.neumont.csc150.exceptions.EnemyIsDeadException;
 import edu.neumont.csc150.models.items.Item;
 import edu.neumont.csc150.models.items.SmallHeal;
+import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.*;
 
 import java.util.ArrayList;
@@ -44,13 +45,14 @@ public class Ermac implements Boss {
     }
 
     @Override
-    public int badGuySpell() {
-        return 0;
+    public void badGuySpell(ArrayList<Player> players, boolean isMultiplayer) {
+        //TODO: make this method use a random spell and update the UI with what happened
     }
 
     @Override
-    public int badGuyItem() {
-        return 0;
+    public boolean badGuyItem(ArrayList<Player> players, boolean isMultiplayer) {
+        return false;
+        //TODO: FIX THIS
     }
 
     @Override
@@ -84,8 +86,7 @@ public class Ermac implements Boss {
     }
 
     @Override
-    public int specialAttack() {
-        return 0;
+    public void specialAttack(ArrayList<Player> players, boolean isMultiplayer) {
         //TODO: figure out how much the special attack will do + call GameUI.DoSpecialAttack() or something like that
     }
 
