@@ -7,7 +7,11 @@
 package edu.neumont.csc150.models.npc.secretbosses;
 
 import edu.neumont.csc150.models.items.Item;
+import edu.neumont.csc150.models.items.SmallHeal;
+import edu.neumont.csc150.models.items.Tomahawk;
+import edu.neumont.csc150.models.spells.SpeedUp;
 import edu.neumont.csc150.models.spells.Spell;
+import edu.neumont.csc150.models.spells.StrengthUp;
 
 import java.util.ArrayList;
 
@@ -19,18 +23,24 @@ public class ZombiePigman implements SecretBoss{
     private int speed;
     private int goldDrop;
     private int specialAttackUses;
+    private boolean strengthUp;
     private ArrayList<Item> items;
     private ArrayList<Spell> spells;
 
     public ZombiePigman(){
         setBadGuyAttack(12);
         setBadGuyHealth(20);
-        setMaxHealth(25);
         setBadGuyDroppedGold(6);
         setBadGuySpeed(12);
-        setBadGuyItems(4);
         setBadGuySpecialAttackUses(2);
-        setBadGuySpells(4);
+        items = new ArrayList<>();
+        items.add(new SmallHeal());
+        items.add(new Tomahawk());
+        setBadGuyItems(items);
+        spells = new ArrayList<>();
+        spells.add(new SpeedUp());
+        spells.add(new StrengthUp());
+        setBadGuySpells(spells);
     }
 
     @Override
@@ -91,12 +101,26 @@ public class ZombiePigman implements SecretBoss{
 
     @Override
     public int badGuyAttack() {
+        if(isStrengthUp()){
+            setStrengthUp(false);
+            return attack * 2;
+        }
         return attack;
     }
 
     @Override
     public int getBadGuySpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean isStrengthUp() {
+        return strengthUp;
+    }
+
+    @Override
+    public void setStrengthUp(boolean strengthUp) {
+        this.strengthUp = strengthUp;
     }
 
     @Override

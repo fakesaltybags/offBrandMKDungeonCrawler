@@ -8,7 +8,11 @@
 package edu.neumont.csc150.models.npc.bosses;
 
 import edu.neumont.csc150.models.items.Item;
+import edu.neumont.csc150.models.items.MediumHeal;
+import edu.neumont.csc150.models.spells.FireBall;
+import edu.neumont.csc150.models.spells.SpeedUp;
 import edu.neumont.csc150.models.spells.Spell;
+import edu.neumont.csc150.models.spells.StrengthUp;
 
 import java.util.ArrayList;
 
@@ -21,16 +25,23 @@ public class Scorpion implements Boss {
     private int attack;
     private int goldDrop;
     private int speed;
+    private boolean strengthUp;
     private ArrayList<Item> items;
 
     public Scorpion() {
         setBadGuyHealth(67);
-        setBadGuyItems(8);
-        setBadGuySpells(9);
         setBadGuySpecialAttackUses(4);
         setBadGuyAttack(39);
         setBadGuyDroppedGold(300);
         setBadGuySpeed(18);
+        items = new ArrayList<>();
+        items.add(new MediumHeal());
+        setBadGuyItems(items);
+        spells = new ArrayList<>();
+        spells.add(new FireBall());
+        spells.add(new SpeedUp());
+        spells.add(new StrengthUp());
+        setBadGuySpells(spells);
     }
 
     @Override
@@ -91,12 +102,26 @@ public class Scorpion implements Boss {
 
     @Override
     public int badGuyAttack() {
+        if(isStrengthUp()){
+            setStrengthUp(false);
+            return attack * 2;
+        }
         return attack;
     }
 
     @Override
     public int getBadGuySpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean isStrengthUp() {
+        return strengthUp;
+    }
+
+    @Override
+    public void setStrengthUp(boolean strengthUp) {
+        this.strengthUp = strengthUp;
     }
 
     @Override

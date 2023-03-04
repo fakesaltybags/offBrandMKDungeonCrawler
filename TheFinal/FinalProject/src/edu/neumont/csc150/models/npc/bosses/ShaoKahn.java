@@ -7,8 +7,9 @@
 
 package edu.neumont.csc150.models.npc.bosses;
 
+import edu.neumont.csc150.models.items.BigHeal;
 import edu.neumont.csc150.models.items.Item;
-import edu.neumont.csc150.models.spells.Spell;
+import edu.neumont.csc150.models.spells.*;
 
 import java.util.ArrayList;
 
@@ -21,16 +22,29 @@ public class ShaoKahn implements Boss {
     private int attack;
     private int goldDrop;
     private int speed;
+    private boolean strengthUp;
     private ArrayList<Item> items;
 
     public ShaoKahn(){
         setBadGuyHealth(500);
-        setBadGuyItems(12);
-        setBadGuySpells(19);
         setBadGuySpecialAttackUses(23);
         setBadGuyAttack(90);
         setBadGuyDroppedGold(1000000);
         setBadGuySpeed(10);
+        items = new ArrayList<>();
+        items.add(new BigHeal());
+        setBadGuyItems(items);
+        spells = new ArrayList<>();
+        spells.add(new FireBall());
+        spells.add(new Heal());
+        spells.add(new IceSpike());
+        spells.add(new Implosion());
+        spells.add(new LightningStrike());
+        spells.add(new SpeedUp());
+        spells.add(new StrengthUp());
+        spells.add(new TornadoSpin());
+        spells.add(new WaterStrike());
+        setBadGuySpells(spells);
     }
     @Override
     public int badGuySpell() {
@@ -90,12 +104,26 @@ public class ShaoKahn implements Boss {
 
     @Override
     public int badGuyAttack() {
+        if(isStrengthUp()){
+            setStrengthUp(false);
+            return attack * 2;
+        }
         return attack;
     }
 
     @Override
     public int getBadGuySpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean isStrengthUp() {
+        return strengthUp;
+    }
+
+    @Override
+    public void setStrengthUp(boolean strengthUp) {
+        this.strengthUp = strengthUp;
     }
 
     @Override

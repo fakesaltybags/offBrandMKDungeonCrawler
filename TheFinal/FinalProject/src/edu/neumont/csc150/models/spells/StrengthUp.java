@@ -14,7 +14,7 @@ public class StrengthUp implements Spell {
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-    throw new IllegalArgumentException("Strength up cannot be used on enemies :(");
+        enemy.setStrengthUp(true);
     }
 
     @Override

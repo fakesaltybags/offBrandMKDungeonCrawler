@@ -64,7 +64,7 @@ public class BattleController {
     }
 
     private boolean battleFloorOnePosOne(ArrayList<Player> players) {
-        ArrayList<Lackie> enemies = new ArrayList<Lackie>();
+        ArrayList<Lackie> enemies = new ArrayList<>();
         enemies.add(new Zombie());
         enemies.add(new Zombie());
         enemies.add(new Zombie());

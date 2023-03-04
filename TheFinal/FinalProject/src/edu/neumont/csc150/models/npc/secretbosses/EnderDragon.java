@@ -6,8 +6,11 @@
  */
 package edu.neumont.csc150.models.npc.secretbosses;
 
+import edu.neumont.csc150.models.items.BigHeal;
 import edu.neumont.csc150.models.items.Item;
-import edu.neumont.csc150.models.spells.Spell;
+import edu.neumont.csc150.models.items.MediumHeal;
+import edu.neumont.csc150.models.items.ShockStick;
+import edu.neumont.csc150.models.spells.*;
 
 import java.util.ArrayList;
 
@@ -19,6 +22,7 @@ public class EnderDragon implements SecretBoss {
     private int goldDrop;
     private int speed;
     private int specialAttackUses;
+    private boolean strengthUp;
     private ArrayList<Spell> spells;
     private ArrayList<Item> items;
 
@@ -28,8 +32,18 @@ public class EnderDragon implements SecretBoss {
         setBadGuyDroppedGold(200);
         setBadGuySpeed(17);
         setBadGuySpecialAttackUses(8);
-        setBadGuyItems(1);
-        setBadGuySpells(14);
+        items = new ArrayList<>();
+        items.add(new BigHeal());
+        items.add(new MediumHeal());
+        items.add(new ShockStick());
+        setBadGuyItems(items);
+        spells = new ArrayList<>();
+        spells.add(new FireBall());
+        spells.add(new LightningStrike());
+        spells.add(new SpeedUp());
+        spells.add(new StrengthUp());
+        spells.add(new TornadoSpin());
+        setBadGuySpells(spells);
     }
 
     @Override
@@ -90,12 +104,26 @@ public class EnderDragon implements SecretBoss {
 
     @Override
     public int badGuyAttack() {
+        if(isStrengthUp()){
+            setStrengthUp(false);
+            return attack * 2;
+        }
         return attack;
     }
 
     @Override
     public int getBadGuySpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean isStrengthUp() {
+        return strengthUp;
+    }
+
+    @Override
+    public void setStrengthUp(boolean strengthUp) {
+        this.strengthUp = strengthUp;
     }
 
     @Override

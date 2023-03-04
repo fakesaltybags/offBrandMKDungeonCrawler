@@ -19,6 +19,7 @@ public class HsuHao implements SecretBoss{
     private int speed;
     private int goldDrop;
     private int specialAttackUses;
+    private boolean strengthUp;
     private ArrayList<Item> items;
     private ArrayList<Spell> spells;
 
@@ -28,8 +29,10 @@ public class HsuHao implements SecretBoss{
         setBadGuyDroppedGold(10);
         setBadGuySpeed(9);
         setBadGuySpecialAttackUses(1);
-        setBadGuyItems(0);
-        setBadGuySpells(1);
+        items = new ArrayList<>();
+        setBadGuyItems(items);
+        spells = new ArrayList<>();
+        setBadGuySpells(spells);
     }
 
     @Override
@@ -49,17 +52,11 @@ public class HsuHao implements SecretBoss{
 
     @Override
     public void setBadGuySpells(ArrayList<Spell> spells) {
-        if(spells.get(0) == null){
-            throw new IllegalArgumentException("Spells cannot be null");
-        }
         this.spells = spells;
     }
 
     @Override
     public void setBadGuyItems(ArrayList<Item> items) {
-        if(items.get(0) == null){
-            throw new IllegalArgumentException("Items cannot be null");
-        }
         this.items = items;
     }
 
@@ -90,12 +87,26 @@ public class HsuHao implements SecretBoss{
 
     @Override
     public int badGuyAttack() {
+        if(isStrengthUp()){
+            setStrengthUp(false);
+            return attack * 2;
+        }
         return attack;
     }
 
     @Override
     public int getBadGuySpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean isStrengthUp() {
+        return strengthUp;
+    }
+
+    @Override
+    public void setStrengthUp(boolean strengthUp) {
+        this.strengthUp = strengthUp;
     }
 
     @Override

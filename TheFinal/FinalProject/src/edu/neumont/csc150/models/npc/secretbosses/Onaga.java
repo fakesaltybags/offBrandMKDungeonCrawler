@@ -7,8 +7,9 @@
 
 package edu.neumont.csc150.models.npc.secretbosses;
 
+import edu.neumont.csc150.models.items.BigHeal;
 import edu.neumont.csc150.models.items.Item;
-import edu.neumont.csc150.models.spells.Spell;
+import edu.neumont.csc150.models.spells.*;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,7 @@ public class Onaga implements SecretBoss {
     private int speed;
     private int goldDrop;
     private int specialAttackUses;
+    private boolean strengthUp;
     private ArrayList<Item> items;
     private ArrayList<Spell> spells;
 
@@ -29,8 +31,16 @@ public class Onaga implements SecretBoss {
         setBadGuyDroppedGold(900);
         setBadGuySpeed(10);
         setBadGuySpecialAttackUses(17);
-        setBadGuyItems(13);
-        setBadGuySpells(24);
+        items = new ArrayList<>();
+        items.add(new BigHeal());
+        setBadGuyItems(items);
+        spells = new ArrayList<>();
+        spells.add(new FireBall());
+        spells.add(new Heal());
+        spells.add(new StrengthUp());
+        spells.add(new TornadoSpin());
+        spells.add(new LightningStrike());
+        setBadGuySpells(spells);
     }
 
     @Override
@@ -91,12 +101,26 @@ public class Onaga implements SecretBoss {
 
     @Override
     public int badGuyAttack() {
+        if(isStrengthUp()){
+            setStrengthUp(false);
+            return attack * 2;
+        }
         return attack;
     }
 
     @Override
     public int getBadGuySpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean isStrengthUp() {
+        return strengthUp;
+    }
+
+    @Override
+    public void setStrengthUp(boolean strengthUp) {
+        this.strengthUp = strengthUp;
     }
 
     @Override

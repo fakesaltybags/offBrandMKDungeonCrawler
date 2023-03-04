@@ -7,7 +7,9 @@
 package edu.neumont.csc150.models.npc.secretbosses;
 
 import edu.neumont.csc150.models.items.Item;
-import edu.neumont.csc150.models.spells.Spell;
+import edu.neumont.csc150.models.items.ShockStick;
+import edu.neumont.csc150.models.items.SmallHeal;
+import edu.neumont.csc150.models.spells.*;
 
 import java.util.ArrayList;
 
@@ -19,6 +21,7 @@ public class QuanChi implements SecretBoss{
     private int speed;
     private int goldDrop;
     private int specialAttackUses;
+    private boolean strengthUp;
     private ArrayList<Item> items;
     private ArrayList<Spell> spells;
 
@@ -28,8 +31,17 @@ public class QuanChi implements SecretBoss{
         setBadGuyDroppedGold(23);
         setBadGuySpeed(14);
         setBadGuySpecialAttackUses(4);
-        setBadGuyItems(6);
-        setBadGuySpells(12);
+        items = new ArrayList<>();
+        items.add(new SmallHeal());
+        setBadGuyItems(items);
+        spells = new ArrayList<>();
+        spells.add(new FireBall());
+        spells.add(new Heal());
+        spells.add(new IceSpike());
+        spells.add(new LightningStrike());
+        spells.add(new TornadoSpin());
+        spells.add(new WaterStrike());
+        setBadGuySpells(spells);
     }
 
     @Override
@@ -90,12 +102,26 @@ public class QuanChi implements SecretBoss{
 
     @Override
     public int badGuyAttack() {
+        if(isStrengthUp()){
+            setStrengthUp(false);
+            return attack * 2;
+        }
         return attack;
     }
 
     @Override
     public int getBadGuySpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean isStrengthUp() {
+        return strengthUp;
+    }
+
+    @Override
+    public void setStrengthUp(boolean strengthUp) {
+        this.strengthUp = strengthUp;
     }
 
     @Override

@@ -12,6 +12,7 @@ public class BlackDragonsGoons implements Lackie {
     private int attack;
     private int speed;
     private int goldDrop;
+    private boolean strengthUp;
 
     public BlackDragonsGoons() {
         setBadGuyAttack(8);
@@ -32,12 +33,26 @@ public class BlackDragonsGoons implements Lackie {
 
     @Override
     public int badGuyAttack() {
+        if(isStrengthUp()){
+            setStrengthUp(false);
+            return attack * 2;
+        }
         return attack;
     }
 
     @Override
     public int getBadGuySpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean isStrengthUp() {
+        return strengthUp;
+    }
+
+    @Override
+    public void setStrengthUp(boolean strengthUp) {
+        this.strengthUp = strengthUp;
     }
 
     @Override

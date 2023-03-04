@@ -6,12 +6,14 @@
  */
 package edu.neumont.csc150.models.npc.secretbosses;
 
-import edu.neumont.csc150.models.items.Item;
+import edu.neumont.csc150.models.items.*;
+import edu.neumont.csc150.models.spells.SpeedUp;
 import edu.neumont.csc150.models.spells.Spell;
+import edu.neumont.csc150.models.spells.TornadoSpin;
 
 import java.util.ArrayList;
 
-public class Kabal implements SecretBoss{
+public class Kabal implements SecretBoss {
     //secret boss floor 3
     public final int MAX_HEALTH = 34;
     private int badGuyHealth;
@@ -19,16 +21,27 @@ public class Kabal implements SecretBoss{
     private int speed;
     private int goldDrop;
     private int specialAttackUses;
+    private boolean strengthUp;
     private ArrayList<Item> items;
     private ArrayList<Spell> spells;
-    public Kabal(){
+
+    public Kabal() {
         setBadGuyAttack(30);
         setBadGuyHealth(27);
         setBadGuyDroppedGold(50);
         setBadGuySpeed(20);
         setBadGuySpecialAttackUses(3);
-        setBadGuyItems(4);
-        setBadGuySpells(8);
+        items = new ArrayList<>();
+        items.add(new Grenade());
+        items.add(new SmallHeal());
+        items.add(new ShockStick());
+        items.add(new ThrowingKnife());
+        items.add(new Tomahawk());
+        setBadGuyItems(items);
+        spells = new ArrayList<>();
+        spells.add(new SpeedUp());
+        spells.add(new TornadoSpin());
+        setBadGuySpells(spells);
     }
 
     @Override
@@ -48,7 +61,7 @@ public class Kabal implements SecretBoss{
 
     @Override
     public void setBadGuySpells(ArrayList<Spell> spells) {
-        if(spells.get(0) == null){
+        if (spells.get(0) == null) {
             throw new IllegalArgumentException("Spells cannot be null");
         }
         this.spells = spells;
@@ -56,7 +69,7 @@ public class Kabal implements SecretBoss{
 
     @Override
     public void setBadGuyItems(ArrayList<Item> items) {
-        if(items.get(0) == null){
+        if (items.get(0) == null) {
             throw new IllegalArgumentException("Items cannot be null");
         }
         this.items = items;
@@ -64,7 +77,7 @@ public class Kabal implements SecretBoss{
 
     @Override
     public void setBadGuySpecialAttackUses(int specialAttack) {
-        if(specialAttack <= 0){
+        if (specialAttack <= 0) {
             specialAttackUses = 0;
             return;
         }
@@ -89,12 +102,26 @@ public class Kabal implements SecretBoss{
 
     @Override
     public int badGuyAttack() {
+        if (isStrengthUp()) {
+            setStrengthUp(false);
+            return attack * 2;
+        }
         return attack;
     }
 
     @Override
     public int getBadGuySpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean isStrengthUp() {
+        return strengthUp;
+    }
+
+    @Override
+    public void setStrengthUp(boolean strengthUp) {
+        this.strengthUp = strengthUp;
     }
 
     @Override

@@ -11,9 +11,9 @@ public interface Lackie {
     int getBadGuyHealth();
     int badGuyAttack();
     int getBadGuySpeed();
-
+    boolean isStrengthUp();
+    void setStrengthUp(boolean strengthUp);
     void setBadGuyHealth(int health);
-
     void setBadGuyAttack(int attack);
     void setBadGuySpeed(int speed);
     void setBadGuyDroppedGold(int gold);
