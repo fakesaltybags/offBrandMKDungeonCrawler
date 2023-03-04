@@ -84,6 +84,7 @@ public class BattleController {
     }
 
     private boolean commenceBattle(ArrayList<Player> players, ArrayList<Lackie> enemies) {
+        //TODO: DO THIS NEXT! make it so the enemy has AI if they are a boss/secretBoss
         GameUI.displayEnemies(enemies);
         boolean enemyGoFirst;
         Player player = players.get(0);

@@ -30,6 +30,7 @@ public class Player {
     public final int MIN_MAX_MAGIC = 5;
 
     public Player() {
+        //TODO: DO THIS NEXT give the player spells, items, and other goodies to make sure the menus/items are working correctly
         items = new ArrayList<>();
         weapons = new ArrayList<>();
         weapons.add(new Hand());
