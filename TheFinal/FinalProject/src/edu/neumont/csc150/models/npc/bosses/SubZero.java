@@ -8,8 +8,10 @@
 package edu.neumont.csc150.models.npc.bosses;
 
 import edu.neumont.csc150.exceptions.EnemyIsDeadException;
+import edu.neumont.csc150.exceptions.EnemyIsRevivedException;
 import edu.neumont.csc150.models.items.Item;
 import edu.neumont.csc150.models.items.MediumHeal;
+import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.IceSpike;
 import edu.neumont.csc150.models.spells.SpeedUp;
@@ -17,6 +19,7 @@ import edu.neumont.csc150.models.spells.Spell;
 import edu.neumont.csc150.models.spells.WaterStrike;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class SubZero implements Boss {
     //floor 5 boss
@@ -47,8 +50,18 @@ public class SubZero implements Boss {
     }
 
     @Override
-    public void badGuySpell(ArrayList<Player> players, boolean isMultiplayer) {
-        //TODO: make this method use a random spell and update the UI with what happened
+    public Spell badGuySpell(ArrayList<Player> players, int randomEnemyIndex, ArrayList<Lackie> enemies, int randomPlayerIndex) {
+        int spellIndex = new Random().nextInt(spells.size());
+        Spell currentSpell = spells.get(spellIndex);
+        switch(spellIndex){
+            case 0, 2:
+                currentSpell.useOnPlayer(players.get(randomPlayerIndex));
+                break;
+            case 1:
+                currentSpell.useOnEnemy(enemies.get(randomEnemyIndex));
+                break;
+        }
+        return currentSpell;
     }
 
     @Override
@@ -68,6 +81,11 @@ public class SubZero implements Boss {
             throw new IllegalArgumentException("Spells cannot be null");
         }
         this.spells = spells;
+    }
+
+    @Override
+    public ArrayList<Spell> getBadGuySpells() {
+        return spells;
     }
 
     @Override
@@ -143,6 +161,10 @@ public class SubZero implements Boss {
             }
             badGuyHealth = 0;
             return;
+        }
+        if(getBadGuyHealth() == 0){
+            badGuyHealth = health;
+            throw new EnemyIsRevivedException("---- A ENEMY HAS BEEN REVIVED ----");
         }
         badGuyHealth = health;
     }

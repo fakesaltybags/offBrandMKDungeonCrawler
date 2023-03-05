@@ -411,39 +411,33 @@ public class GameUI {
         String spellName = spell.getSpellName();
         if(spell instanceof FireBall fireBall){
             Console.writeLn(spellName + " has been used on a player and did " + fireBall.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }
-        if(spell instanceof Heal heal){
+        }else if(spell instanceof Heal heal){
             Console.writeLn(spellName + " has been used on a player and healed " + heal.HEAL_AMOUNT + " HP", Console.TextColor.BLUE);
             displayPlayerHeal(heal.HEAL_AMOUNT, player);
             return;
-        }
-        if(spell instanceof IceSpike iceSpike){
+        }else if(spell instanceof IceSpike iceSpike){
             Console.writeLn(spellName + " has been used on a player and did " + iceSpike.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }
-        if(spell instanceof Implosion implosion){
+        }else if(spell instanceof Implosion implosion){
             Console.writeLn(spellName + " has been used on a player and did " + implosion.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }
-        if(spell instanceof LightningStrike lightningStrike){
+        }else if(spell instanceof LightningStrike lightningStrike){
             Console.writeLn(spellName + " has been used on a player and did " + lightningStrike.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }
-        if(spell instanceof MPRecovery mpRecovery){
+        }else if(spell instanceof MPRecovery mpRecovery){
             Console.writeLn(spellName + " has been used on a player and they received " + mpRecovery.RECOVER_AMOUNT + " MP", Console.TextColor.BLUE);
             displayPlayerMP(player);
             return;
-        }
-        if(spell instanceof SpeedUp speedUp){
+        }else if(spell instanceof SpeedUp speedUp){
             Console.writeLn(spellName + " has been used on a player and they received " + speedUp.AMOUNT_UP + " SPD", Console.TextColor.BLUE);
             displayPlayerSpeed(player);
-        }
-        if(spell instanceof StrengthUp){
+        }else if(spell instanceof StrengthUp){
             Console.writeLn(spellName + " has been used on a player and their next attack will deal double damage!", Console.TextColor.BLUE);
             return;
-        }
-        if(spell instanceof TornadoSpin tornadoSpin){
+        }else if(spell instanceof TornadoSpin tornadoSpin){
             Console.writeLn(spellName + " has been used on a player and did " + tornadoSpin.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }
-        if(spell instanceof WaterStrike waterStrike){
+        }else if(spell instanceof WaterStrike waterStrike){
             Console.writeLn(spellName + " has been used on a player and did " + waterStrike.DAMAGE + " DMG", Console.TextColor.BLUE);
+        } else if(spell instanceof NoSpell noSpell){
+            Console.writeLn(spellName + " has been used on a player... but it did nothing!", Console.TextColor.BLUE);
+            return;
         }
         displayPlayerHealth(player);
     }
@@ -562,5 +556,9 @@ public class GameUI {
 
     public static void displayPlayerRevived() {
         Console.writeLn("---- PLAYER HAS BEEN REVIVED ----", Console.TextColor.CYAN);
+    }
+
+    public static void displayEnemyIsRevived(String message) {
+        Console.writeLn(message, Console.TextColor.CYAN);
     }
 }

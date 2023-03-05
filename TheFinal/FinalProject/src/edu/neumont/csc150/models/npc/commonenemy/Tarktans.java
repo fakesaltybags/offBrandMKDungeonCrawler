@@ -7,6 +7,7 @@
 package edu.neumont.csc150.models.npc.commonenemy;
 
 import edu.neumont.csc150.exceptions.EnemyIsDeadException;
+import edu.neumont.csc150.exceptions.EnemyIsRevivedException;
 
 public class Tarktans implements Lackie {
     private int badGuyHealth;
@@ -74,6 +75,10 @@ public class Tarktans implements Lackie {
             }
             badGuyHealth = 0;
             return;
+        }
+        if(getBadGuyHealth() == 0){
+            badGuyHealth = health;
+            throw new EnemyIsRevivedException("---- A ENEMY HAS BEEN REVIVED ----");
         }
         badGuyHealth = health;
     }

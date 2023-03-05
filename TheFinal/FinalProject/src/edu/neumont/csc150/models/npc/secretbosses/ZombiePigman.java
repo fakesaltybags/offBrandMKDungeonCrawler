@@ -7,15 +7,18 @@
 package edu.neumont.csc150.models.npc.secretbosses;
 
 import edu.neumont.csc150.exceptions.EnemyIsDeadException;
+import edu.neumont.csc150.exceptions.EnemyIsRevivedException;
 import edu.neumont.csc150.models.items.Item;
 import edu.neumont.csc150.models.items.SmallHeal;
 import edu.neumont.csc150.models.items.Tomahawk;
+import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.SpeedUp;
 import edu.neumont.csc150.models.spells.Spell;
 import edu.neumont.csc150.models.spells.StrengthUp;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ZombiePigman implements SecretBoss{
     //secret boss floor 2
@@ -46,8 +49,11 @@ public class ZombiePigman implements SecretBoss{
     }
 
     @Override
-    public void badGuySpell(ArrayList<Player> players, boolean isMultiplayer) {
-        //TODO: make this method use a random spell and update the UI with what happened
+    public Spell badGuySpell(ArrayList<Player> players, int randomEnemyIndex, ArrayList<Lackie> enemies, int randomPlayerIndex) {
+        int spellIndex = new Random().nextInt(spells.size());
+        Spell currentSpell = spells.get(spellIndex);
+        currentSpell.useOnEnemy(enemies.get(randomEnemyIndex));
+        return currentSpell;
     }
 
     @Override
@@ -67,6 +73,11 @@ public class ZombiePigman implements SecretBoss{
             throw new IllegalArgumentException("Spells cannot be null");
         }
         this.spells = spells;
+    }
+
+    @Override
+    public ArrayList<Spell> getBadGuySpells() {
+        return spells;
     }
 
     @Override
@@ -142,6 +153,10 @@ public class ZombiePigman implements SecretBoss{
             }
             badGuyHealth = 0;
             return;
+        }
+        if(getBadGuyHealth() == 0){
+            badGuyHealth = health;
+            throw new EnemyIsRevivedException("---- A ENEMY HAS BEEN REVIVED ----");
         }
         badGuyHealth = health;
     }

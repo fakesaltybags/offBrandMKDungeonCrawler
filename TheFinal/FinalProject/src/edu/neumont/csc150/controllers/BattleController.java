@@ -7,13 +7,16 @@
 package edu.neumont.csc150.controllers;
 
 import edu.neumont.csc150.exceptions.EnemyIsDeadException;
+import edu.neumont.csc150.exceptions.EnemyIsRevivedException;
 import edu.neumont.csc150.exceptions.WeaponAlreadySelectedException;
 import edu.neumont.csc150.models.items.Item;
-import edu.neumont.csc150.models.npc.bosses.Boss;
-import edu.neumont.csc150.models.npc.commonenemy.Lackie;
-import edu.neumont.csc150.models.npc.commonenemy.Zombie;
+import edu.neumont.csc150.models.npc.bosses.*;
+import edu.neumont.csc150.models.npc.commonenemy.*;
 import edu.neumont.csc150.models.players.Player;
+import edu.neumont.csc150.models.spells.Heal;
+import edu.neumont.csc150.models.spells.SpeedUp;
 import edu.neumont.csc150.models.spells.Spell;
+import edu.neumont.csc150.models.spells.StrengthUp;
 import edu.neumont.csc150.models.weapons.Weapon;
 import edu.neumont.csc150.views.Console;
 import edu.neumont.csc150.views.GameUI;
@@ -83,7 +86,7 @@ public class BattleController {
     private boolean battleFloorOnePosOne(ArrayList<Player> players) {
         ArrayList<Lackie> enemies = new ArrayList<>();
         enemies.add(new Zombie());
-        enemies.add(new Zombie());
+        enemies.add(new Baraka());
         return commenceBattle(players, enemies);
     }
 
@@ -104,7 +107,7 @@ public class BattleController {
                         if(!enemy.isDead()) {
                             int attackDMG = enemy.badGuyAttack();
                             if (enemy instanceof Boss) {
-                                bossTurn((Boss) enemy, players, false);
+                                bossTurn((Boss) enemy, players, false, enemies);
                             } else {
                                 player.setHealth(player.getHealth() - attackDMG);
                                 GameUI.displayPlayerHit(1, attackDMG, player);
@@ -133,7 +136,7 @@ public class BattleController {
                         if(!enemy.isDead()) {
                             int attackDMG = enemy.badGuyAttack();
                             if (enemy instanceof Boss) {
-                                bossTurn((Boss) enemy, players, false);
+                                bossTurn((Boss) enemy, players, false, enemies);
                             } else {
                                 player.setHealth(player.getHealth() - attackDMG);
                                 GameUI.displayPlayerHit(1, attackDMG, player);
@@ -204,7 +207,7 @@ public class BattleController {
         }
     }
 
-    private void bossTurn(Boss enemy, ArrayList<Player> players, boolean isMultiplayer) {
+    private void bossTurn(Boss enemy, ArrayList<Player> players, boolean isMultiplayer, ArrayList<Lackie> enemies) {
         do {
             int aiChoice = new Random().nextInt(4) + 1;
             switch (aiChoice) {
@@ -216,7 +219,7 @@ public class BattleController {
                     break;
                 case 2:
                     //spell
-                    if (bossSpell(enemy, players, isMultiplayer)) {
+                    if (bossSpell(enemy, players, isMultiplayer, enemies)) {
                         return;
                     }
                     break;
@@ -244,8 +247,38 @@ public class BattleController {
         return enemy.badGuyItem(players, isMultiplayer);
     }
 
-    private boolean bossSpell(Boss enemy, ArrayList<Player> players, boolean isMultiplayer) {
-        enemy.badGuySpell(players, isMultiplayer);
+    private boolean bossSpell(Boss enemy, ArrayList<Player> players, boolean isMultiplayer, ArrayList<Lackie> enemies) {
+        int randomEnemyIndex = new Random().nextInt(enemies.size());
+        boolean enemyHasHeal = false;
+        for (Spell spell :
+                enemy.getBadGuySpells()) {
+            if(spell instanceof Heal){
+                enemyHasHeal = true;
+                break;
+            }
+        }
+        if(!enemyHasHeal) {
+            do {
+                if (enemies.get(randomEnemyIndex).isDead()) {
+                    randomEnemyIndex = new Random().nextInt(enemies.size());
+                } else {
+                    break;
+                }
+            } while (true);
+        }
+        int randomPlayerIndex = 0;
+        int playersAlive = getPlayersAlive(players);
+        if(playersAlive == 3) {
+            randomPlayerIndex = (isMultiplayer) ? new Random().nextInt(players.size()) : 0;
+        } else if(playersAlive == 2){
+            randomPlayerIndex = 1;
+        }
+        Spell spell = enemy.badGuySpell(players, randomEnemyIndex, enemies, randomPlayerIndex);
+        if(spell instanceof Heal || spell instanceof SpeedUp || spell instanceof StrengthUp){
+            GameUI.displaySpellOnEnemy(spell, enemies.get(randomEnemyIndex));
+        } else {
+            GameUI.displaySpellOnPlayer(spell, players.get(randomPlayerIndex));
+        }
         return true;
     }
 
@@ -253,6 +286,7 @@ public class BattleController {
         if (enemy.getSpecialAttackUses() > 0) {
             enemy.specialAttack(players, isMultiplayer);
             enemy.setBadGuySpecialAttackUses(enemy.getSpecialAttackUses() - 1);
+            //TODO: update UI with what happens
             return true;
         }
         return false;
@@ -300,7 +334,7 @@ public class BattleController {
                     return true;
                 }
                 if (enemy instanceof Boss) {
-                    bossTurn((Boss) enemy, players, true);
+                    bossTurn((Boss) enemy, players, true, enemies);
                 } else {
                     players.get(playerNo).setHealth(players.get(playerNo).getHealth() - attackDMG);
                     GameUI.displayPlayerHit(playerNo + 1, attackDMG, players.get(playerNo));
@@ -394,7 +428,11 @@ public class BattleController {
                                     return true;
                                 }
                                 Lackie enemy = enemies.get(selectedEnemy - 1);
-                                selectedSpell.useOnEnemy(enemy);
+                                try {
+                                    selectedSpell.useOnEnemy(enemy);
+                                }catch (EnemyIsRevivedException e){
+                                    GameUI.displayEnemyIsRevived(e.getMessage());
+                                }
                                 GameUI.displaySpellOnEnemy(selectedSpell, enemy);
                                 break;
                             } catch (EnemyIsDeadException e) {
@@ -456,7 +494,11 @@ public class BattleController {
                             }
                             Item selectedItem = player.getItems().get(selection - 1);
                             Lackie selectedEnemy = enemies.get(selectedEnemyNo - 1);
-                            selectedItem.useOnEnemy(selectedEnemy);
+                            try {
+                                selectedItem.useOnEnemy(selectedEnemy);
+                            }catch (EnemyIsRevivedException e){
+                                GameUI.displayEnemyIsRevived(e.getMessage());
+                            }
                             GameUI.displayItemUsedOnEnemy(selectedItem, selectedEnemy);
                             //TODO: if you want display what happened in the UI with more detail
                             break;

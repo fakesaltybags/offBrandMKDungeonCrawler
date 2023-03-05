@@ -7,6 +7,7 @@
 package edu.neumont.csc150.models.npc.commonenemy;
 
 import edu.neumont.csc150.exceptions.EnemyIsDeadException;
+import edu.neumont.csc150.exceptions.EnemyIsRevivedException;
 
 public class Zombie implements Lackie {
     private int badGuyHealth;
@@ -63,16 +64,20 @@ public class Zombie implements Lackie {
 
     @Override
     public void setBadGuyHealth(int health) throws EnemyIsDeadException {
-        if(health > MAX_HEALTH){
+        if (health > MAX_HEALTH) {
             badGuyHealth = MAX_HEALTH;
             return;
         }
-        if(health <= 0){
+        if (health <= 0) {
             if(getBadGuyHealth() == 0){
                 throw new EnemyIsDeadException("The enemy you tried to hit is already dead");
             }
             badGuyHealth = 0;
             return;
+        }
+        if(getBadGuyHealth() == 0){
+            badGuyHealth = health;
+            throw new EnemyIsRevivedException("---- A ENEMY HAS BEEN REVIVED ----");
         }
         badGuyHealth = health;
     }

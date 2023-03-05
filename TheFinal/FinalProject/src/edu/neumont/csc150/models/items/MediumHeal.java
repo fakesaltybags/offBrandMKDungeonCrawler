@@ -6,6 +6,7 @@
  */
 package edu.neumont.csc150.models.items;
 
+import edu.neumont.csc150.exceptions.EnemyIsRevivedException;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.players.Player;
 
@@ -20,7 +21,7 @@ public class MediumHeal implements Item{
     }
 
     @Override
-    public void useOnEnemy(Lackie enemy) {
+    public void useOnEnemy(Lackie enemy) throws EnemyIsRevivedException {
         enemy.setBadGuyHealth(enemy.getBadGuyHealth() + HEAL_AMOUNT);
     }
 

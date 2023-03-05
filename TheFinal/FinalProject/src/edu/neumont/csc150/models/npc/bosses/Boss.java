@@ -18,10 +18,13 @@ public interface Boss extends Lackie {
     /**
      * Makes a boss use a spell, then update the UI accordingly
      *
-     * @param players       Players in the game
-     * @param isMultiplayer The current game mode
+     * @param players           Players in the game
+     * @param randomEnemyIndex  A random index used to choose a random enemy target
+     * @param enemies           Enemies in the battle
+     * @param randomPlayerIndex A random index used to choose a random player target
+     * @return Spell that was chosen to pass to the UI
      */
-    void badGuySpell(ArrayList<Player> players, boolean isMultiplayer);
+    Spell badGuySpell(ArrayList<Player> players, int randomEnemyIndex, ArrayList<Lackie> enemies, int randomPlayerIndex);
 
     /**
      * Makes a boss use an item, take it away from their inventory, and update the UI if an item was used
@@ -35,6 +38,8 @@ public interface Boss extends Lackie {
     int getSpecialAttackUses();
 
     void setBadGuySpells(ArrayList<Spell> spells);
+
+    ArrayList<Spell> getBadGuySpells();
 
     void setBadGuyItems(ArrayList<Item> items);
 

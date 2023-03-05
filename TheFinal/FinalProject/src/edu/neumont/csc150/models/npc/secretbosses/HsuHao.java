@@ -7,8 +7,11 @@
 package edu.neumont.csc150.models.npc.secretbosses;
 
 import edu.neumont.csc150.exceptions.EnemyIsDeadException;
+import edu.neumont.csc150.exceptions.EnemyIsRevivedException;
 import edu.neumont.csc150.models.items.Item;
+import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.players.Player;
+import edu.neumont.csc150.models.spells.NoSpell;
 import edu.neumont.csc150.models.spells.Spell;
 
 import java.util.ArrayList;
@@ -34,12 +37,15 @@ public class HsuHao implements SecretBoss{
         items = new ArrayList<>();
         setBadGuyItems(items);
         spells = new ArrayList<>();
+        spells.add(new NoSpell());
         setBadGuySpells(spells);
     }
 
     @Override
-    public void badGuySpell(ArrayList<Player> players, boolean isMultiplayer) {
-        //TODO: make this method use a random spell and update the UI with what happened
+    public Spell badGuySpell(ArrayList<Player> players, int randomEnemyIndex, ArrayList<Lackie> enemies, int randomPlayerIndex) {
+        Spell currentSpell = spells.get(0);
+        currentSpell.useOnPlayer(players.get(randomPlayerIndex));
+        return currentSpell;
     }
 
     @Override
@@ -56,6 +62,11 @@ public class HsuHao implements SecretBoss{
     @Override
     public void setBadGuySpells(ArrayList<Spell> spells) {
         this.spells = spells;
+    }
+
+    @Override
+    public ArrayList<Spell> getBadGuySpells() {
+        return spells;
     }
 
     @Override
@@ -128,6 +139,10 @@ public class HsuHao implements SecretBoss{
             }
             badGuyHealth = 0;
             return;
+        }
+        if(getBadGuyHealth() == 0){
+            badGuyHealth = health;
+            throw new EnemyIsRevivedException("---- A ENEMY HAS BEEN REVIVED ----");
         }
         badGuyHealth = health;
     }

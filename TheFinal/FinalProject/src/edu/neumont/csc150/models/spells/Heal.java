@@ -7,15 +7,15 @@
 
 package edu.neumont.csc150.models.spells;
 
+import edu.neumont.csc150.exceptions.EnemyIsRevivedException;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.players.Player;
 
-//ask pachi later
 public class Heal implements Spell {
     public final int HEAL_AMOUNT = 50;
 
     @Override
-    public void useOnEnemy(Lackie enemy) {
+    public void useOnEnemy(Lackie enemy) throws EnemyIsRevivedException {
         enemy.setBadGuyHealth(enemy.getBadGuyHealth() + HEAL_AMOUNT);
     }
 
