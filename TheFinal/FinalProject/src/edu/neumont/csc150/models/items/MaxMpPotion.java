@@ -24,7 +24,7 @@ public class MaxMpPotion implements Item{
 
     @Override
     public String getItemName() {
-        return "Spell Book(Max MP Recover)";
+        return "Spell Book (Max MP Recover)";
     }
 
     @Override

@@ -12,23 +12,21 @@ import edu.neumont.csc150.models.players.Player;
 import java.util.Random;
 
 public class Grenade implements Item{
-    public int exsplosin(){
-        return new Random().nextInt(101)+ 1;
-    }
+    public final int DAMAGE = 100;
 
     @Override
     public void useOnPLayer(Player player) {
-        player.setHealth(player.getHealth() - exsplosin());
+        player.setHealth(player.getHealth() - DAMAGE);
     }
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - exsplosin());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - DAMAGE);
     }
 
     @Override
     public String getItemName() {
-        return "Impact Gernade";
+        return "Impact Grenade";
     }
 
     @Override

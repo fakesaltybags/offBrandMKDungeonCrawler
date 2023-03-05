@@ -13,25 +13,21 @@ import edu.neumont.csc150.views.GameUI;
 import java.util.Random;
 
 public class SmallHeal implements Item{
-    public int smallHeal(){
-        return new Random().nextInt(21) + 1;
-    }
+    public final int HEAL_AMOUNT = 20;
 
     @Override
     public void useOnPLayer(Player player) {
-        int healAmount = smallHeal();
-        player.setHealth(player.getHealth() + healAmount);
-        GameUI.displayPlayerHeal(healAmount, player);
+        player.setHealth(player.getHealth() + HEAL_AMOUNT);
     }
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.getBadGuyHealth() + smallHeal());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() + HEAL_AMOUNT);
     }
 
     @Override
     public String getItemName() {
-        return "Porkchop(Small Heal)";
+        return "Pork-chop (Small Heal)";
     }
 
     @Override

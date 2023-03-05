@@ -8,7 +8,6 @@
 package edu.neumont.csc150.models.weapons;
 
 public class Mallot implements Weapon{
-    int rank = 3;
     @Override
     public int attack() {
         return 30;

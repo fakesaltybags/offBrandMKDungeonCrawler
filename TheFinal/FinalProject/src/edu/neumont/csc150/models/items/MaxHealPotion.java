@@ -22,7 +22,7 @@ public class MaxHealPotion implements Item{
 
     @Override
     public String getItemName() {
-        return "Chug Jug(Max Heal";
+        return "Chug Jug (Max Heal)";
     }
 
     @Override

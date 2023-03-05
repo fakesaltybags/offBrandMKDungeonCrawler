@@ -8,7 +8,6 @@
 package edu.neumont.csc150.models.weapons;
 
 public class Stick implements Weapon{
-    int rank = 2;
     @Override
     public int attack() {
         return 20;

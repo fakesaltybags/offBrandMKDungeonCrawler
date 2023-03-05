@@ -12,18 +12,16 @@ import edu.neumont.csc150.models.players.Player;
 import java.util.Random;
 
 public class ShockStick implements Item{
-    public int shock(){
-        return new Random().nextInt(51)+ 1;
-    }
+    public final int DAMAGE = 50;
 
     @Override
     public void useOnPLayer(Player player) {
-        player.setHealth(player.getHealth() - shock());
+        player.setHealth(player.getHealth() - DAMAGE);
     }
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - shock());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - DAMAGE);
     }
 
     @Override

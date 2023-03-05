@@ -12,18 +12,15 @@ import edu.neumont.csc150.models.players.Player;
 import java.util.Random;
 
 public class ThrowingKnife implements Item{
-    public int knifeThrown(){
-        return new Random().nextInt(26)+ 1;
-    }
-
+    public final int DAMAGE = 25;
     @Override
     public void useOnPLayer(Player player) {
-        player.setHealth(player.getHealth() - knifeThrown());
+        player.setHealth(player.getHealth() - DAMAGE);
     }
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - knifeThrown());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - DAMAGE);
     }
 
     @Override

@@ -12,23 +12,21 @@ import edu.neumont.csc150.models.players.Player;
 import java.util.Random;
 
 public class BigHeal implements Item{
-    public int bigHeal(){
-        return new Random().nextInt(501)+ 1;
-    }
+    public final int HEAL_AMOUNT = 500;
 
     @Override
     public void useOnPLayer(Player player) {
-        player.setHealth(player.getHealth() + bigHeal());
+        player.setHealth(player.getHealth() + HEAL_AMOUNT);
     }
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.getBadGuyHealth()+ bigHeal());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth()+ HEAL_AMOUNT);
     }
 
     @Override
     public String getItemName() {
-        return "Taco Bell Box(Big Heal)";
+        return "Taco Bell Box (Big Heal)";
     }
 
     @Override

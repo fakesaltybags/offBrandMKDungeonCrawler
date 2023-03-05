@@ -7,7 +7,6 @@
 package edu.neumont.csc150.models.weapons;
 
 public class Hand implements Weapon{
-    int rank = 1;
     @Override
     public int attack() {
         return 5;

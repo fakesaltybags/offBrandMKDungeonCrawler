@@ -7,18 +7,20 @@
 package edu.neumont.csc150.views;
 
 import edu.neumont.csc150.models.Map;
+import edu.neumont.csc150.models.items.*;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.npc.secretbosses.SecretBoss;
 import edu.neumont.csc150.models.players.Player;
-import edu.neumont.csc150.models.weapons.Weapon;
+import edu.neumont.csc150.models.spells.*;
+import edu.neumont.csc150.models.weapons.*;
 
 import java.util.ArrayList;
 
 public class GameUI {
 
     public static int displayMainMenu() {
+        Console.writeLn("---- Off Brand Mortal Kombat Dungeon Crawler ----", Console.TextColor.RED);
         return Console.getIntInput("""
-                ---- Off Brand Mortal Kombat Dungeon Crawler ----
                 1. Single Player
                 2. Multiplayer (2P)
                 3. Exit
@@ -27,7 +29,7 @@ public class GameUI {
 
     public static int getMovementOptions(Map currentMap) {
         boolean[] partyMoveability = currentMap.getMoveability();
-        System.out.println("---- Where do you want to move ----");
+        Console.writeLn("---- Where do you want to move ----", Console.TextColor.CYAN);
         int response;
         do {
             if (partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
@@ -81,6 +83,9 @@ public class GameUI {
             if (partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
                 //only able to move left
                 response = Console.getIntInput("1. Turn left");
+                if(response == 1){
+                    return response;
+                }
             }
             if (!partyMoveability[0] && partyMoveability[1] && !partyMoveability[2]) {
                 //only able to move right
@@ -100,14 +105,14 @@ public class GameUI {
     }
 
     public static void displayGameOver() {
-        Console.writeLn("You lost!", Console.TextColor.RED);
+        Console.writeLn("\n****---- You lost! ----****\n", Console.TextColor.RED);
     }
 
     public static int getAttackOption(Player player) {
+        Console.writeLn("---- What do you want to do? ----", Console.TextColor.YELLOW);
         return Console.getIntInput("""
-                ---- What do you want to do? ----
                 1. Attack
-                2. Magic Attack
+                2. Magic
                 3. Special Attack (""" + player.getAvailableSpecialAttacks() + ")" +
                 "\n4. Items" + "\n5. Open Inventory");
     }
@@ -139,6 +144,7 @@ public class GameUI {
 
     public static void displayEnemyHit(Lackie enemy, int amountOfDamage) {
         Console.writeLn(enemy.getName() + " was hit for " + amountOfDamage + "DMG!", Console.TextColor.BLUE);
+        displayEnemyHealth(enemy);
     }
 
     public static void displayPlayerHit(int playerNo, int amountOfDamage, Player player){
@@ -165,7 +171,7 @@ public class GameUI {
     }
 
     public static void displayWin(int amountOfGold, boolean isMultiPlayer) {
-        Console.writeLn("YOU WIN!", Console.TextColor.YELLOW);
+        Console.writeLn("\n****---- YOU WIN! ----****", Console.TextColor.YELLOW);
         if(isMultiPlayer){
             Console.writeLn("Each player got " + (amountOfGold / 2) + " GP");
         } else {
@@ -183,7 +189,11 @@ public class GameUI {
                 foundEnemies += " and a " + enemy.getName();
             }
         }
-        System.out.println("You have found " + foundEnemies);
+        Console.writeLn("You have found " + foundEnemies, Console.TextColor.RED);
+        for (Lackie enemy :
+                enemies) {
+            displayEnemyHealth(enemy);
+        }
     }
 
     public static int getWeaponBeingSwitchedTo(Player player) {
@@ -265,15 +275,16 @@ public class GameUI {
             return "You Currently have no spells\n1. Back";
         }
         for (int i = 0; i < amountOfSpells; i++) {
-            spellString += "\n" + (i + 1) + ". " + player.getSpells().get(i).getSpellName();
+            Spell currentSpell = player.getSpells().get(i);
+            spellString += "\n" + (i + 1) + ". " + currentSpell.getSpellName() + "\nMP Cost: " + currentSpell.magicPoint();
         }
         spellString += "\n" + (amountOfSpells + 1) + ". Back";
         return spellString;
     }
 
     public static boolean isTargetEnemy() {
+        Console.writeLn("---- Are you targeting a enemy? ----", Console.TextColor.YELLOW);
         return Console.getBooleanInput("""
-                ---- Are you targeting a enemy? ----
                 1. Yes
                 2. No
                 """, "1", "2");
@@ -309,6 +320,10 @@ public class GameUI {
         Console.writeLn("This spell cannot be used in this way", Console.TextColor.RED);
     }
 
+    public static void itemCantBeUsed() {
+        Console.writeLn("This item cannot be used in this way", Console.TextColor.RED);
+    }
+
     public static boolean getSpecialConfirmation() {
         return Console.getBooleanInput("""
                 ---- Are you sure you want to do this? ----
@@ -318,8 +333,10 @@ public class GameUI {
     }
 
     public static void displaySpecialAttack(Player player, int damage, Lackie enemy) {
-        Console.writeLn("!!!!SPECIAL ATTACK!!!!\n" + player.getSelectedWeapon().getWeaponName() +
+        Console.writeLn("!!!!SPECIAL ATTACK!!!!", Console.TextColor.CYAN);
+        Console.writeLn(player.getSelectedWeapon().getWeaponName() +
                 " did " + damage + " DMG to " + enemy.getName() + "\nRemaining uses: " + player.getAvailableSpecialAttacks());
+        displayEnemyHealth(enemy);
     }
 
     public static void displayTurnOver() {
@@ -356,5 +373,194 @@ public class GameUI {
 
     public static void displayNewSelectedWeapon(Weapon newWeapon) {
         Console.writeLn(newWeapon.getWeaponName() + " is now selected!!", Console.TextColor.YELLOW);
+    }
+
+    public static void displaySpellOnEnemy(Spell spell, Lackie enemy) {
+        String spellName = spell.getSpellName();
+        if(spell instanceof FireBall fireBall){
+            Console.writeLn(spellName + " has been thrown at " + enemy.getName() + " and did " + fireBall.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }else if(spell instanceof Heal heal){
+            Console.writeLn(spellName + " has been used on " + enemy.getName() + " and healed " + heal.HEAL_AMOUNT + " HP", Console.TextColor.BLUE);
+        }else if(spell instanceof IceSpike iceSpike){
+            Console.writeLn(spellName + " has been used on " + enemy.getName() + " and did " + iceSpike.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }else if(spell instanceof Implosion implosion){
+            Console.writeLn(spellName + " has been used on " + enemy.getName() + " and did " + implosion.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }else if(spell instanceof LightningStrike lightningStrike){
+            Console.writeLn(spellName + " has been used on " + enemy.getName() + " and did " + lightningStrike.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }else if(spell instanceof SpeedUp speedUp){
+            Console.writeLn(spellName + " has been used on " + enemy.getName() + " and brought their speed up by " +
+                    speedUp.AMOUNT_UP + " points", Console.TextColor.BLUE);
+            displayEnemySpeed(enemy);
+            return;
+        }else if(spell instanceof StrengthUp){
+            Console.writeLn(spellName + " has been used on " + enemy.getName() + " their next attack will deal double damage!", Console.TextColor.BLUE);
+            return;
+        }else if(spell instanceof TornadoSpin tornadoSpin){
+            Console.writeLn(spellName + " has been used on " + enemy.getName() + " and did " + tornadoSpin.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }else if(spell instanceof WaterStrike waterStrike){
+            Console.writeLn(spellName + " has been used on " + enemy.getName() + " and did " + waterStrike.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }
+        displayEnemyHealth(enemy);
+    }
+
+    private static void displayEnemyHealth(Lackie enemy) {
+        Console.writeLn(enemy.getName() + " HP: " + enemy.getBadGuyHealth() + "/" + enemy.getMaxHealth());
+    }
+
+    public static void displaySpellOnPlayer(Spell spell, Player player) {
+        String spellName = spell.getSpellName();
+        if(spell instanceof FireBall fireBall){
+            Console.writeLn(spellName + " has been used on a player and did " + fireBall.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }
+        if(spell instanceof Heal heal){
+            Console.writeLn(spellName + " has been used on a player and healed " + heal.HEAL_AMOUNT + " HP", Console.TextColor.BLUE);
+            displayPlayerHeal(heal.HEAL_AMOUNT, player);
+            return;
+        }
+        if(spell instanceof IceSpike iceSpike){
+            Console.writeLn(spellName + " has been used on a player and did " + iceSpike.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }
+        if(spell instanceof Implosion implosion){
+            Console.writeLn(spellName + " has been used on a player and did " + implosion.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }
+        if(spell instanceof LightningStrike lightningStrike){
+            Console.writeLn(spellName + " has been used on a player and did " + lightningStrike.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }
+        if(spell instanceof MPRecovery mpRecovery){
+            Console.writeLn(spellName + " has been used on a player and they received " + mpRecovery.RECOVER_AMOUNT + " MP", Console.TextColor.BLUE);
+            displayPlayerMP(player);
+            return;
+        }
+        if(spell instanceof SpeedUp speedUp){
+            Console.writeLn(spellName + " has been used on a player and they received " + speedUp.AMOUNT_UP + " SPD", Console.TextColor.BLUE);
+            displayPlayerSpeed(player);
+        }
+        if(spell instanceof StrengthUp){
+            Console.writeLn(spellName + " has been used on a player and their next attack will deal double damage!", Console.TextColor.BLUE);
+            return;
+        }
+        if(spell instanceof TornadoSpin tornadoSpin){
+            Console.writeLn(spellName + " has been used on a player and did " + tornadoSpin.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }
+        if(spell instanceof WaterStrike waterStrike){
+            Console.writeLn(spellName + " has been used on a player and did " + waterStrike.DAMAGE + " DMG", Console.TextColor.BLUE);
+        }
+        displayPlayerHealth(player);
+    }
+
+    public static void displayItemUsedOnEnemy(Item item, Lackie enemy) {
+        String itemName = item.getItemName();
+        if(item instanceof BigHeal bigHeal){
+            Console.writeLn(itemName + " has been used on " + enemy.getName() + " and healed " + bigHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
+        }
+        if(item instanceof Grenade grenade){
+            Console.writeLn(itemName + " has been used on " + enemy.getName() + " and did " + grenade.DAMAGE + " DMG", Console.TextColor.YELLOW);
+        }
+        if(item instanceof MaxHealPotion){
+            Console.writeLn(itemName + " has been used on " + enemy.getName() + " and fully healed them", Console.TextColor.YELLOW);
+        }
+        if(item instanceof MediumHeal mediumHeal){
+            Console.writeLn(itemName + " has been used on " + enemy.getName() + " and healed " + mediumHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
+        }
+        if(item instanceof ShockStick shockStick){
+            Console.writeLn(itemName + " has been used on " + enemy.getName() + " and did " + shockStick.DAMAGE + " DMG", Console.TextColor.YELLOW);
+        }
+        if(item instanceof SmallHeal smallHeal){
+            Console.writeLn(itemName + " has been used on " + enemy.getName() + " and healed " + smallHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
+        }
+        if(item instanceof ThrowingKnife throwingKnife){
+            Console.writeLn(itemName + " has been used on " + enemy.getName() + " and did " + throwingKnife.DAMAGE + " DMG", Console.TextColor.YELLOW);
+        }
+        if(item instanceof Tomahawk tomahawk){
+            Console.writeLn(itemName + " has been used on " + enemy.getName() + " and did " + tomahawk.DAMAGE + " DMG", Console.TextColor.YELLOW);
+        }
+        displayEnemyHealth(enemy);
+    }
+
+    public static void displayItemUsedOnPlayer(Item item, Player player) {
+        String itemName = item.getItemName();
+        if(item instanceof BigHeal bigHeal){
+            Console.writeLn(itemName + " has been used on a player and healed " + bigHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
+        }
+        if(item instanceof Grenade grenade){
+            Console.writeLn(itemName + " has been used on a player and did " + grenade.DAMAGE + " DMG", Console.TextColor.YELLOW);
+        }
+        if(item instanceof MaxHealPotion){
+            Console.writeLn(itemName + " has been used on a player and fully healed them", Console.TextColor.YELLOW);
+        }
+        if(item instanceof MediumHeal mediumHeal){
+            Console.writeLn(itemName + " has been used on a player and healed " + mediumHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
+        }
+        if(item instanceof MaxMpPotion){
+            Console.writeLn(itemName + " has been used on a player and fully restored their MP");
+            displayPlayerMP(player);
+            return;
+        }
+        if(item instanceof MpPotion mpPotion){
+            Console.writeLn(itemName + " has been used on a player and restored " + mpPotion.RECOVER_AMOUNT + " MP", Console.TextColor.YELLOW);
+            displayPlayerMP(player);
+            return;
+        }
+        if(item instanceof ShockStick shockStick){
+            Console.writeLn(itemName + " has been used on a player and did " + shockStick.DAMAGE + " DMG", Console.TextColor.YELLOW);
+        }
+        if(item instanceof SmallHeal smallHeal){
+            Console.writeLn(itemName + " has been used on a player and healed " + smallHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
+        }
+        if(item instanceof ThrowingKnife throwingKnife){
+            Console.writeLn(itemName + " has been used on a player and did " + throwingKnife.DAMAGE + " DMG", Console.TextColor.YELLOW);
+        }
+        if(item instanceof Tomahawk tomahawk){
+            Console.writeLn(itemName + " has been used on a player and did " + tomahawk.DAMAGE + " DMG", Console.TextColor.YELLOW);
+        }
+        displayPlayerHealth(player);
+    }
+
+    private static void displayPlayerSpeed(Player player) {
+        Console.writeLn("Player Speed: " + player.getSpeed(), Console.TextColor.YELLOW);
+    }
+
+    private static void displayEnemySpeed(Lackie enemy) {
+        Console.writeLn(enemy.getName() + " Speed: " + enemy.getBadGuySpeed(), Console.TextColor.YELLOW);
+    }
+
+    private static void displayPlayerHealth(Player player) {
+        Console.writeLn("Player Health: " + player.getHealth() + "/" + player.getMaxHP(), Console.TextColor.RED);
+    }
+
+    public static void displayPlayerTurn(Player player) {
+        Console.writeLn("---- Player Turn ----", Console.TextColor.YELLOW);
+        Console.writeLn("HP: " + player.getHealth() + "/" + player.getMaxHP(), Console.TextColor.RED);
+        displayPlayerMP(player);
+        Console.writeLn("Selected Weapon: " + player.getSelectedWeapon().getWeaponName() +
+                "\nAmount of attacks per turn " + player.getAmountOfAttacks(), Console.TextColor.PURPLE);
+    }
+
+    public static void displayPlayerMP(Player player) {
+        Console.writeLn("MP: " + player.getMagic() + "/" + player.getMaxMagic(), Console.TextColor.BLUE);
+    }
+
+    public static void displayStartBattle() {
+        Console.writeLn("---- BATTLE HAS STARTED ----", Console.TextColor.RED);
+    }
+
+    public static void displayAttacksLeft(int attacksRemaining) {
+        Console.writeLn("You have " + attacksRemaining + " attacks remaining!", Console.TextColor.CYAN);
+    }
+
+    public static void displayAttackScreen() {
+        Console.writeLn("---- Attacking ----", Console.TextColor.RED);
+    }
+
+    public static void displayEnemyTurn() {
+        Console.writeLn("---- Enemy Turn ----", Console.TextColor.RED);
+    }
+
+    public static void displayMagicMenu() {
+        Console.writeLn("---- Magic ----", Console.TextColor.BLUE);
+    }
+
+    public static void displayPlayerRevived() {
+        Console.writeLn("---- PLAYER HAS BEEN REVIVED ----", Console.TextColor.CYAN);
     }
 }

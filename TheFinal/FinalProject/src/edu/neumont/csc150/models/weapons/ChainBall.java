@@ -8,8 +8,6 @@
 package edu.neumont.csc150.models.weapons;
 
 public class ChainBall implements Weapon{
-    int rank = 5;
-
     @Override
     public int attack() {
         return 45;

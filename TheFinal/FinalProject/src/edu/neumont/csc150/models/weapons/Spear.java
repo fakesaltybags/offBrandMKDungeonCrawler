@@ -8,8 +8,6 @@
 package edu.neumont.csc150.models.weapons;
 
 public class Spear implements Weapon{
-    int rank = 6;
-
     @Override
     public int attack() {
         return 80;

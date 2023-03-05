@@ -12,13 +12,11 @@ import edu.neumont.csc150.models.players.Player;
 import java.util.Random;
 
 public class MpPotion implements Item{
-    public int mpRecover(){
-        return new Random().nextInt(14)+ 1;
-    }
+    public final int RECOVER_AMOUNT = 15;
 
     @Override
     public void useOnPLayer(Player player) {
-
+        player.setMagic(player.getMagic() + RECOVER_AMOUNT);
     }
 
     @Override
@@ -28,7 +26,7 @@ public class MpPotion implements Item{
 
     @Override
     public String getItemName() {
-        return "Dr. Mario pill(MP Potion)";
+        return "Dr. Mario Pill (MP Potion)";
     }
 
     @Override

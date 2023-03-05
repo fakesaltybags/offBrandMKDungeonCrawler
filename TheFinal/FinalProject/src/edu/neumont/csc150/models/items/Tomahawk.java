@@ -12,18 +12,16 @@ import edu.neumont.csc150.models.players.Player;
 import java.util.Random;
 
 public class Tomahawk implements Item{
-    public int axeThrown(){
-        return new Random().nextInt(71)+ 1;
-    }
+    public final int DAMAGE = 70;
 
     @Override
     public void useOnPLayer(Player player) {
-        player.setHealth(player.getHealth() - axeThrown());
+        player.setHealth(player.getHealth() - DAMAGE);
     }
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - axeThrown());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() - DAMAGE);
     }
 
     @Override

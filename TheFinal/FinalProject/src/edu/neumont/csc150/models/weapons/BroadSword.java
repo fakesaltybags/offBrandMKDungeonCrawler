@@ -8,8 +8,6 @@
 package edu.neumont.csc150.models.weapons;
 
 public class BroadSword implements Weapon{
-    int rank = 7;
-
     @Override
     public int attack() {
         return 90;

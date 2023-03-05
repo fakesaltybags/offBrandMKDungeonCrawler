@@ -8,8 +8,6 @@
 package edu.neumont.csc150.models.weapons;
 
 public class Bow implements Weapon{
-    int rank = 8;
-
     @Override
     public int attack() {
         return 80;

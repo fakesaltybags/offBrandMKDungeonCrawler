@@ -8,8 +8,6 @@
 package edu.neumont.csc150.models.weapons;
 
 public class Glock implements Weapon{
-    int rank = 10;
-
     @Override
     public int attack() {
         return 1000;

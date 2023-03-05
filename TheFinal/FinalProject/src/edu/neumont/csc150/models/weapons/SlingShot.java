@@ -8,8 +8,6 @@
 package edu.neumont.csc150.models.weapons;
 
 public class SlingShot implements Weapon{
-    int rank = 4;
-
     @Override
     public int attack() {
         return 45;

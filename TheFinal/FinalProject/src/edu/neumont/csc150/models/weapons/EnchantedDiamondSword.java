@@ -8,8 +8,6 @@
 package edu.neumont.csc150.models.weapons;
 
 public class EnchantedDiamondSword implements Weapon{
-    int rank = 9;
-
     @Override
     public int attack() {
         return 500;

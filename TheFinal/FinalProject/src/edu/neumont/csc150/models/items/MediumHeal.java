@@ -12,23 +12,21 @@ import edu.neumont.csc150.models.players.Player;
 import java.util.Random;
 
 public class MediumHeal implements Item{
-    public int mediumHeal(){
-        return new Random().nextInt(101)+ 1;
-    }
+    public final int HEAL_AMOUNT = 100;
 
     @Override
     public void useOnPLayer(Player player) {
-        player.setHealth(player.getHealth() + mediumHeal());
+        player.setHealth(player.getHealth() + HEAL_AMOUNT);
     }
 
     @Override
     public void useOnEnemy(Lackie enemy) {
-        enemy.setBadGuyHealth(enemy.getBadGuyHealth() + mediumHeal());
+        enemy.setBadGuyHealth(enemy.getBadGuyHealth() + HEAL_AMOUNT);
     }
 
     @Override
     public String getItemName() {
-        return "Pheniox Tear(Medium Heal)";
+        return "Phoenix Tear (Medium Heal)";
     }
 
     @Override

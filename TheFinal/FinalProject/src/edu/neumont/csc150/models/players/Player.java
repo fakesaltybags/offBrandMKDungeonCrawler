@@ -9,12 +9,13 @@ package edu.neumont.csc150.models.players;
 import edu.neumont.csc150.models.items.*;
 import edu.neumont.csc150.models.spells.*;
 import edu.neumont.csc150.models.weapons.*;
+import edu.neumont.csc150.views.GameUI;
 
 import java.util.ArrayList;
 
 public class Player {
     private int maxHP;
-    private int health;
+    private int health = 1;
     private int magic;
     private int maxMagic;
     private int speed;
@@ -30,15 +31,12 @@ public class Player {
     public final int MIN_MAX_MAGIC = 5;
 
     public Player() {
-        //TODO: DO THIS NEXT give the player spells, items, and other goodies to make sure the menus/items are working correctly
         items = new ArrayList<>();
         items.add(new SmallHeal());
         weapons = new ArrayList<>();
         weapons.add(new Hand());
-        weapons.add(new SlingShot());
         selectedWeapon = weapons.get(0);
         spells = new ArrayList<>();
-        spells.add(new StrengthUp());
         setMaxHP(MIN_MAX_HP);
         setHealth(getMaxHP());
         setMaxMagic(MIN_MAX_MAGIC);
@@ -137,6 +135,10 @@ public class Player {
     }
 
     public void setMagic(int magic) {
+        if(magic > getMaxMagic()){
+            this.magic = getMaxMagic();
+            return;
+        }
         this.magic = magic;
     }
 
@@ -163,6 +165,9 @@ public class Player {
         if(health <= 0){
             this.health = 0;
             return;
+        }
+        if(getHealth() == 0){
+            GameUI.displayPlayerRevived();
         }
         this.health = health;
     }
@@ -205,14 +210,17 @@ public class Player {
 
     public String getInventory() {
         String returnString = "";
+        returnString += "*WEAPONS*\n";
         for (Weapon weapon :
                 weapons) {
             returnString += weapon.getWeaponName() + "\n";
         }
+        returnString += "\n*ITEMS*\n";
         for (Item item :
                 items) {
             returnString += item.getItemName() + "\n";
         }
+        returnString += "\n*SPELLS*\n";
         for (Spell spell :
                 spells) {
             returnString += spell.getSpellName() + "\n";
