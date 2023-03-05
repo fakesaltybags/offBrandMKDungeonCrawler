@@ -24,7 +24,7 @@ import java.util.Random;
 public class Reptile implements Boss {
     //floor 2 boss
     public final int MAX_HEALTH = 29;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private ArrayList<Spell> spells;
     private int specialAttackUses;
     private int attack;

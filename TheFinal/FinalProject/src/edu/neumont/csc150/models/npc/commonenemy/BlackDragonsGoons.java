@@ -11,7 +11,7 @@ import edu.neumont.csc150.exceptions.EnemyIsRevivedException;
 
 public class BlackDragonsGoons implements Lackie {
     public final int MAX_HEALTH = 27;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private int attack;
     private int speed;
     private int goldDrop;

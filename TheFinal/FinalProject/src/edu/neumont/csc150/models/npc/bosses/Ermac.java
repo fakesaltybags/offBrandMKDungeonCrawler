@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class Ermac implements Boss {
     //floor 3 boss
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     public final int MAX_HEALTH = 28;
     private ArrayList<Spell> spells;
     private int specialAttackUses;

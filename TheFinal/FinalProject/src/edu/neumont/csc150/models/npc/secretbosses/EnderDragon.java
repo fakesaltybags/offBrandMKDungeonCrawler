@@ -22,7 +22,7 @@ import java.util.Random;
 public class EnderDragon implements SecretBoss {
     //secret boss floor 9
     public final int MAX_HEALTH = 170;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private int attack;
     private int goldDrop;
     private int speed;

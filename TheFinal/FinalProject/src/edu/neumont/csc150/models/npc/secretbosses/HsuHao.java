@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class HsuHao implements SecretBoss{
     //secret boss floor 1
     public final int MAX_HEALTH = 1;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private int attack;
     private int speed;
     private int goldDrop;

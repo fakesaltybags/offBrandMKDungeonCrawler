@@ -28,7 +28,7 @@ public class Illager implements SecretBoss {
 
     //secret boss floor 4
     public final int MAX_HEALTH = 38;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private int attack;
     private int speed;
     private int goldDrop;

@@ -23,7 +23,7 @@ import java.util.Random;
 public class Ghast implements SecretBoss{
     //secret boss floor 6
     public final int MAX_HEALTH = 45;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private int attack;
     private int speed;
     private int goldDrop;

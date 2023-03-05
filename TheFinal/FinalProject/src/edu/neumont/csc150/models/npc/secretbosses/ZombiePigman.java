@@ -23,7 +23,7 @@ import java.util.Random;
 public class ZombiePigman implements SecretBoss{
     //secret boss floor 2
     public final int MAX_HEALTH = 25;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private int attack;
     private int speed;
     private int goldDrop;

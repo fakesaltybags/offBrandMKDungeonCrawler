@@ -21,7 +21,7 @@ import java.util.Random;
 public class QuanChi implements SecretBoss{
     // secret boss floor 5
     public final int MAX_HEALTH = 85;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private int attack;
     private int speed;
     private int goldDrop;

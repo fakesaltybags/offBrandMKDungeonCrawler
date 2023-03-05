@@ -22,7 +22,7 @@ import java.util.Random;
 public class Kintaro implements SecretBoss{
     //secret boss floor 7
     public final int MAX_HEALTH = 200;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private int attack;
     private int speed;
     private int goldDrop;

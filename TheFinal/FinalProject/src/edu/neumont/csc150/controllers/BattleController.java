@@ -210,6 +210,9 @@ public class BattleController {
     private void bossTurn(Boss enemy, ArrayList<Player> players, boolean isMultiplayer, ArrayList<Lackie> enemies) {
         do {
             int aiChoice = new Random().nextInt(4) + 1;
+            if(enemy.isStrengthUp()){
+                aiChoice = 4;
+            }
             switch (aiChoice) {
                 case 1:
                     //special attack

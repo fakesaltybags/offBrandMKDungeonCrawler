@@ -22,7 +22,7 @@ import java.util.Random;
 public class Onaga implements SecretBoss {
     //secret boss floor 10
     public final int MAX_HEALTH = 500;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private int attack;
     private int speed;
     private int goldDrop;

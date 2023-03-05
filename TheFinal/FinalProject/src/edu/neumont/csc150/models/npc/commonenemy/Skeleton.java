@@ -10,7 +10,7 @@ import edu.neumont.csc150.exceptions.EnemyIsDeadException;
 import edu.neumont.csc150.exceptions.EnemyIsRevivedException;
 
 public class Skeleton implements Lackie {
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     public final int MAX_HEALTH = 14;
     private int attack;
     private int speed;

@@ -22,7 +22,7 @@ import java.util.Random;
 public class ShaoKahn implements Boss {
     //floor 10 boss
     public final int MAX_HEALTH = 500;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private ArrayList<Spell> spells;
     private int specialAttackUses;
     private int attack;

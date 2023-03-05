@@ -23,7 +23,7 @@ import java.util.Random;
 public class NoobSaibot implements Boss {
     //floor 4 boss
     public final int MAX_HEALTH = 53;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private ArrayList<Spell> spells;
     private int specialAttackUses;
     private int attack;

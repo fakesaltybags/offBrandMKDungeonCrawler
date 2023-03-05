@@ -22,7 +22,7 @@ import java.util.Random;
 public class ShangTsung implements Boss {
     //floor 7 boss
     public final int MAX_HEALTH = 145;
-    private int badGuyHealth;
+    private int badGuyHealth = 1;
     private ArrayList<Spell> spells;
     private int specialAttackUses;
     private int attack;
