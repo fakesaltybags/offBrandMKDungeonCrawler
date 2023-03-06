@@ -15,6 +15,7 @@ import edu.neumont.csc150.models.items.ThrowingKnife;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.*;
+import edu.neumont.csc150.views.GameUI;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -65,9 +66,20 @@ public class Motoro implements Boss {
     }
 
     @Override
-    public boolean badGuyItem(ArrayList<Player> players, boolean isMultiplayer) {
-        return false;
-        //TODO: FIX THIS
+    public Item badGuyItem(ArrayList<Player> players, int randomEnemyIndex, ArrayList<Lackie> enemies, int randomPlayerIndex) {
+        int itemIndex = new Random().nextInt(items.size());
+        Item currentItem = items.get(itemIndex);
+        if(itemIndex == 0){
+            try {
+                currentItem.useOnEnemy(enemies.get(randomEnemyIndex));
+            }catch(EnemyIsRevivedException e){
+                GameUI.displayEnemyIsRevived(e.getMessage());
+                return currentItem;
+            }
+        } else {
+            currentItem.useOnPLayer(players.get(randomPlayerIndex));
+        }
+        return currentItem;
     }
 
     @Override
@@ -97,6 +109,11 @@ public class Motoro implements Boss {
     }
 
     @Override
+    public ArrayList<Item> getBadGuyItems() {
+        return items;
+    }
+
+    @Override
     public void setBadGuySpecialAttackUses(int specialAttack) {
         if(specialAttack <= 0){
             specialAttackUses = 0;
@@ -106,8 +123,9 @@ public class Motoro implements Boss {
     }
 
     @Override
-    public void specialAttack(ArrayList<Player> players, boolean isMultiplayer) {
+    public int specialAttack(ArrayList<Player> players, int randomPlayerIndex) {
         //TODO: figure out how much the special attack will do + call GameUI.DoSpecialAttack() or something like that
+        return randomPlayerIndex;
     }
 
     @Override

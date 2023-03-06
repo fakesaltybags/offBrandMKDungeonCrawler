@@ -70,9 +70,15 @@ public class Onaga implements SecretBoss {
     }
 
     @Override
-    public boolean badGuyItem(ArrayList<Player> players, boolean isMultiplayer) {
-        return false;
-        //TODO: FIX THIS
+    public Item badGuyItem(ArrayList<Player> players, int randomEnemyIndex, ArrayList<Lackie> enemies, int randomPlayerIndex) {
+        Item currentItem = items.get(0);
+        try {
+            currentItem.useOnEnemy(enemies.get(randomEnemyIndex));
+        } catch (EnemyIsRevivedException e){
+            GameUI.displayEnemyIsRevived(e.getMessage());
+            return currentItem;
+        }
+        return currentItem;
     }
 
     @Override
@@ -102,6 +108,11 @@ public class Onaga implements SecretBoss {
     }
 
     @Override
+    public ArrayList<Item> getBadGuyItems() {
+        return items;
+    }
+
+    @Override
     public void setBadGuySpecialAttackUses(int specialAttack) {
         if(specialAttack <= 0){
             specialAttackUses = 0;
@@ -111,8 +122,9 @@ public class Onaga implements SecretBoss {
     }
 
     @Override
-    public void specialAttack(ArrayList<Player> players, boolean isMultiplayer) {
+    public int specialAttack(ArrayList<Player> players, int randomPlayerIndex) {
         //TODO: figure out how much the special attack will do + call GameUI.DoSpecialAttack() or something like that
+        return randomPlayerIndex;
     }
 
     @Override

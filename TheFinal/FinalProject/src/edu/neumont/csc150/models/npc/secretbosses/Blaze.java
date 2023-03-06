@@ -16,11 +16,12 @@ import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.FireBall;
 import edu.neumont.csc150.models.spells.Spell;
 import edu.neumont.csc150.models.spells.StrengthUp;
+import edu.neumont.csc150.views.GameUI;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Blaze implements SecretBoss{
+public class Blaze implements SecretBoss {
     //secret boss floor 8
     public final int MAX_HEALTH = 100;
     private int badGuyHealth = 1;
@@ -32,7 +33,7 @@ public class Blaze implements SecretBoss{
     private boolean strengthUp;
     private ArrayList<Item> items;
 
-    public Blaze(){
+    public Blaze() {
         setBadGuyAttack(60);
         setBadGuyHealth(80);
         setBadGuyDroppedGold(120);
@@ -52,18 +53,25 @@ public class Blaze implements SecretBoss{
     public Spell badGuySpell(ArrayList<Player> players, int randomEnemyIndex, ArrayList<Lackie> enemies, int randomPlayerIndex) {
         int spellIndex = new Random().nextInt(spells.size());
         Spell currentSpell = spells.get(spellIndex);
-        if(spellIndex == 0){
+        if (spellIndex == 0) {
             currentSpell.useOnPlayer(players.get(randomPlayerIndex));
-        }else {
+        } else {
             currentSpell.useOnEnemy(enemies.get(randomEnemyIndex));
         }
         return currentSpell;
     }
 
     @Override
-    public boolean badGuyItem(ArrayList<Player> players, boolean isMultiplayer) {
-        return false;
-        //TODO: FIX THIS
+    public Item badGuyItem(ArrayList<Player> players, int randomEnemyIndex, ArrayList<Lackie> enemies, int randomPlayerIndex) {
+        int itemIndex = new Random().nextInt(items.size());
+        Item currentItem = items.get(itemIndex);
+        try {
+            currentItem.useOnEnemy(enemies.get(randomEnemyIndex));
+        } catch (EnemyIsRevivedException e) {
+            GameUI.displayEnemyIsRevived(e.getMessage());
+            return currentItem;
+        }
+        return currentItem;
     }
 
     @Override
@@ -73,7 +81,7 @@ public class Blaze implements SecretBoss{
 
     @Override
     public void setBadGuySpells(ArrayList<Spell> spells) {
-        if(spells.get(0) == null){
+        if (spells.get(0) == null) {
             throw new IllegalArgumentException("Spells cannot be null");
         }
         this.spells = spells;
@@ -86,15 +94,20 @@ public class Blaze implements SecretBoss{
 
     @Override
     public void setBadGuyItems(ArrayList<Item> items) {
-        if(items.get(0) == null){
+        if (items.get(0) == null) {
             throw new IllegalArgumentException("Items cannot be null");
         }
         this.items = items;
     }
 
     @Override
+    public ArrayList<Item> getBadGuyItems() {
+        return items;
+    }
+
+    @Override
     public void setBadGuySpecialAttackUses(int specialAttack) {
-        if(specialAttack <= 0){
+        if (specialAttack <= 0) {
             specialAttackUses = 0;
             return;
         }
@@ -102,8 +115,9 @@ public class Blaze implements SecretBoss{
     }
 
     @Override
-    public void specialAttack(ArrayList<Player> players, boolean isMultiplayer) {
+    public int specialAttack(ArrayList<Player> players, int randomPlayerIndex) {
         //TODO: figure out how much the special attack will do + call GameUI.DoSpecialAttack() or something like that
+        return randomPlayerIndex;
     }
 
     @Override
@@ -123,7 +137,7 @@ public class Blaze implements SecretBoss{
 
     @Override
     public int badGuyAttack() {
-        if(isStrengthUp()){
+        if (isStrengthUp()) {
             setStrengthUp(false);
             return attack * 2;
         }
@@ -152,13 +166,13 @@ public class Blaze implements SecretBoss{
             return;
         }
         if (health <= 0) {
-            if(getBadGuyHealth() == 0){
+            if (getBadGuyHealth() == 0) {
                 throw new EnemyIsDeadException("The enemy you tried to hit is already dead");
             }
             badGuyHealth = 0;
             return;
         }
-        if(getBadGuyHealth() == 0){
+        if (getBadGuyHealth() == 0) {
             badGuyHealth = health;
             throw new EnemyIsRevivedException("---- A ENEMY HAS BEEN REVIVED ----");
         }

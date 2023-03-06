@@ -48,11 +48,20 @@ public class GameController {
     }
 
     private void floorOne() {
-        boolean floorNotCompleted = true;
         Map currentMap = new Map(1);
+        int currentFloor = currentMap.getCurrentFloor();
         do {
-            int movementOption = GameUI.getMovementOptions(currentMap);
-            currentMap.moveParty(movementOption);
+            boolean validOption;
+            do {
+                int movementOption = GameUI.getMovementOptions(currentMap);
+                validOption = currentMap.moveParty(movementOption);
+                if(!validOption){
+                    GameUI.displayInvalidMovement();
+                }
+            }while(!validOption);
+            if(currentFloor < currentMap.getCurrentFloor()){
+                break;
+            }
             if (battleController.checkForBattle(currentMap.getCurrentFloor(), currentMap.getCurrentPos())) {
                 if (battleController.battle(currentMap.getCurrentFloor(), currentMap.getCurrentPos(), players)) {
                     battleController.setBattleOneOneDone(true);
@@ -61,7 +70,10 @@ public class GameController {
                     return;
                 }
             }
-        } while (floorNotCompleted);
+            battleController.checkForChest(currentMap.getCurrentFloor(), currentMap.getCurrentPos(), players);
+        } while (true);
+        //open shop
+        //level up players
     }
 
     private void gameOver() {
@@ -71,8 +83,8 @@ public class GameController {
     private void setupGame(boolean isMultiplayer) {
         players = new ArrayList<>();
         if (isMultiplayer) {
-            players.add(new Player());
+            players.add(new Player(true));
         }
-        players.add(new Player());
+        players.add(new Player(isMultiplayer));
     }
 }

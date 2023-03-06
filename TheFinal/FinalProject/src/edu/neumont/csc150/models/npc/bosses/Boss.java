@@ -29,11 +29,13 @@ public interface Boss extends Lackie {
     /**
      * Makes a boss use an item, take it away from their inventory, and update the UI if an item was used
      *
-     * @param players       the players in the game
-     * @param isMultiplayer The current game mode
+     * @param players           the players in the game
+     * @param randomEnemyIndex
+     * @param enemies
+     * @param randomPlayerIndex
      * @return true if an item was used false if not
      */
-    boolean badGuyItem(ArrayList<Player> players, boolean isMultiplayer);
+    Item badGuyItem(ArrayList<Player> players, int randomEnemyIndex, ArrayList<Lackie> enemies, int randomPlayerIndex);
 
     int getSpecialAttackUses();
 
@@ -43,15 +45,18 @@ public interface Boss extends Lackie {
 
     void setBadGuyItems(ArrayList<Item> items);
 
+    ArrayList<Item> getBadGuyItems();
+
     void setBadGuySpecialAttackUses(int specialAttack);
 
     /**
      * Makes the boss do a special attack and update the UI with what happened.
      *
-     * @param players       Current players in the game
-     * @param isMultiplayer The current game mode
+     * @param players           Current players in the game
+     * @param randomPlayerIndex The current game mode
+     * @return
      */
-    void specialAttack(ArrayList<Player> players, boolean isMultiplayer);
+    int specialAttack(ArrayList<Player> players, int randomPlayerIndex);
     //TODO: make the special attack method for all the bosses
 
 }

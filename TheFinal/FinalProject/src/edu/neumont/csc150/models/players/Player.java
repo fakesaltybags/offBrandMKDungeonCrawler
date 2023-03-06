@@ -6,6 +6,7 @@
  */
 package edu.neumont.csc150.models.players;
 
+import edu.neumont.csc150.models.Map;
 import edu.neumont.csc150.models.items.*;
 import edu.neumont.csc150.models.spells.*;
 import edu.neumont.csc150.models.weapons.*;
@@ -29,10 +30,15 @@ public class Player {
     public final int MAX_SPECIAL_ATTACKS = 5;
     public final int MIN_MAX_HP = 25;
     public final int MIN_MAX_MAGIC = 5;
+    public final int MIN_SPEED = 5;
 
-    public Player() {
+    public Player(boolean isMultiplayer) {
         items = new ArrayList<>();
         items.add(new SmallHeal());
+        if(!isMultiplayer){
+            items.add(new SmallHeal());
+            items.add(new SmallHeal());
+        }
         weapons = new ArrayList<>();
         weapons.add(new Hand());
         selectedWeapon = weapons.get(0);
@@ -42,6 +48,7 @@ public class Player {
         setMaxMagic(MIN_MAX_MAGIC);
         setMagic(getMaxMagic());
         setAvailableSpecialAttacks(MAX_SPECIAL_ATTACKS);
+        setSpeed(MIN_SPEED);
     }
 
     //region get/set
@@ -58,13 +65,6 @@ public class Player {
 
     public ArrayList<Item> getItems() {
         return items;
-    }
-
-    public void setItems(ArrayList<Item> items) {
-        if (items == null) {
-            throw new IllegalArgumentException("Items has to be initialized");
-        }
-        this.items = items;
     }
 
     public boolean isStrengthUp() {
@@ -179,8 +179,8 @@ public class Player {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-    //endregion
 
+    //endregion
     public boolean isDead(){
         return getHealth() <= 0;
     }
@@ -208,6 +208,14 @@ public class Player {
         setMagic(getMagic() + mpAmount);
     }
 
+    public void giveItems(ArrayList<Item> newItems) {
+        items.addAll(newItems);
+    }
+
+    public void giveItem(Item item) {
+        items.add(item);
+    }
+
     public String getInventory() {
         String returnString = "";
         returnString += "*WEAPONS*\n";
@@ -230,7 +238,7 @@ public class Player {
 
     public int getAmountOfAttacks() {
         if (selectedWeapon instanceof Hand) {
-            return 20;
+            return 2;
         }
         if (selectedWeapon instanceof Stick) {
             return 7;

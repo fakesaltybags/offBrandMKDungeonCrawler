@@ -8,21 +8,12 @@ package edu.neumont.csc150.models;
 
 public class Map {
     private int currentPos;
-    private int branchingPaths;
     private int currentFloor;
+    private static boolean canGoToNextFloor = false;
     private final int MAX_FLOORS = 1;
 
     public Map(int currentFloor){
         setCurrentFloor(currentFloor);
-        switch(currentFloor){
-            case 1:
-                setBranchingPaths(3);
-                break;
-            case 2:
-                setBranchingPaths(5);
-                break;
-            //TODO: add some stuff for the next floors
-        }
         setCurrentPos(0);
     }
 
@@ -49,12 +40,12 @@ public class Map {
         this.currentPos = currentPos;
     }
 
-    public int getBranchingPaths() {
-        return branchingPaths;
+    public static boolean canGoToNextFloor() {
+        return canGoToNextFloor;
     }
 
-    public void setBranchingPaths(int branchingPaths) {
-        this.branchingPaths = branchingPaths;
+    public static void setCanGoToNextFloor(boolean nextFloor) {
+        canGoToNextFloor = nextFloor;
     }
 
     /**
@@ -69,27 +60,249 @@ public class Map {
     public boolean[] getMoveability(){
         boolean[] currentMoveability = new boolean[3];
         if(currentFloor == 1){
-            if(currentPos == 0){
+            switch (currentPos){
+                case 0, 4:
                 currentMoveability[2] = true;
-                return currentMoveability;
+                break;
+                case 1, 2, 9:
+                currentMoveability[0] = true;
+                currentMoveability[1] = true;
+                break;
+                case 3:
+                    currentMoveability[2] = true;
+                    currentMoveability[0] = true;
+                    break;
+                case 5, 6, 7:
+                    currentMoveability[0] = true;
+                    break;
+                case 8:
+                    currentMoveability[1] = true;
+                    currentMoveability[2] = true;
+                    break;
+                case 10, 11:
+                    break;
+                default:
+                    throw new IllegalStateException("Player is in a position that isn't on the map");
             }
         }
         return currentMoveability;
     }
 
-    public void moveParty(int movementOption) {
+    public boolean moveParty(int movementOption) {
+        //1. left
+        //2. right
+        //3. straight
+        //4. turn back
+        //5. next floor
         switch (getCurrentFloor()){
             case 1:
-                movePartyFloorOne(movementOption);
-                break;
+                return movePartyFloorOne(movementOption);
+            default:
+                return false;
         }
     }
 
-    private void movePartyFloorOne(int movementOption) {
-        switch(getCurrentPos()){
-            case 0:
-                setCurrentPos(1);
-                break;
+    private boolean movePartyFloorOne(int movementOption) {
+        //1. left
+        //2. right
+        //3. straight
+        //4. turn back
+        //5. next floor
+        switch (getCurrentPos()) {
+            case 0 -> {
+                if (movementOption == 3) {
+                    setCurrentPos(1);
+                    return true;
+                } else if (movementOption == 5 && canGoToNextFloor()) {
+                    setCurrentFloor(getCurrentFloor() + 1);
+                    return true;
+                }
+                return false;
+            }
+            case 1 -> {
+                switch (movementOption) {
+                    case 1 -> {
+                        setCurrentPos(2);
+                        return true;
+                    }
+                    case 2 -> {
+                        setCurrentPos(3);
+                        return true;
+                    }
+                    case 5 -> {
+                        return leaveFloor();
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+            case 2 -> {
+                switch (movementOption) {
+                    case 1 -> {
+                        setCurrentPos(4);
+                        return true;
+                    }
+                    case 2 -> {
+                        setCurrentPos(5);
+                        return true;
+                    }
+                    case 5 -> {
+                        return leaveFloor();
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+            case 3 -> {
+                switch (movementOption) {
+                    case 3 -> {
+                        setCurrentPos(10);
+                        return true;
+                    }
+                    case 1 -> {
+                        setCurrentPos(7);
+                        return true;
+                    }
+                    case 5 -> {
+                        return leaveFloor();
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+            case 4 -> {
+                switch (movementOption) {
+                    case 3 -> {
+                        setCurrentPos(5);
+                        return true;
+                    }
+                    case 5 -> {
+                        return leaveFloor();
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+            case 5 -> {
+                switch (movementOption) {
+                    case 1 -> {
+                        setCurrentPos(6);
+                        return true;
+                    }
+                    case 5 -> {
+                        return leaveFloor();
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+            case 6 -> {
+                switch (movementOption) {
+                    case 1 -> {
+                        setCurrentPos(0);
+                        return true;
+                    }
+                    case 5 -> {
+                        return leaveFloor();
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+            case 7 -> {
+                switch (movementOption) {
+                    case 1 -> {
+                        setCurrentPos(9);
+                        return true;
+                    }
+                    case 5 -> {
+                        return leaveFloor();
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+            case 8 -> {
+                switch (movementOption) {
+                    case 2 -> {
+                        setCurrentPos(9);
+                        return true;
+                    }
+                    case 3 -> {
+                        setCurrentPos(11);
+                        return true;
+                    }
+                    case 5 -> {
+                        return leaveFloor();
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+            case 9 -> {
+                switch (movementOption) {
+                    case 1 -> {
+                        setCurrentPos(8);
+                        return true;
+                    }
+                    case 2 -> {
+                        setCurrentPos(7);
+                        return true;
+                    }
+                    case 5 -> {
+                        return leaveFloor();
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+            case 10 -> {
+                switch (movementOption) {
+                    case 4 -> {
+                        setCurrentPos(3);
+                        return true;
+                    }
+                    case 5 -> {
+                        return leaveFloor();
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+            case 11 -> {
+                switch (movementOption) {
+                    case 4 -> {
+                        setCurrentPos(8);
+                        return true;
+                    }
+                    case 5 -> {
+                        return leaveFloor();
+                    }
+                    default -> {
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean leaveFloor() {
+        if(canGoToNextFloor()){
+            setCurrentFloor(getCurrentFloor() + 1);
+            return true;
+        } else {
+            return false;
         }
     }
 }

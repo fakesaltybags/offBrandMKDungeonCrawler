@@ -6,8 +6,10 @@
  */
 package edu.neumont.csc150.views;
 
+import edu.neumont.csc150.models.Chest;
 import edu.neumont.csc150.models.Map;
 import edu.neumont.csc150.models.items.*;
+import edu.neumont.csc150.models.npc.bosses.Boss;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.npc.secretbosses.SecretBoss;
 import edu.neumont.csc150.models.players.Player;
@@ -27,78 +29,167 @@ public class GameUI {
                 """);
     }
 
+    /**
+     * 1. left
+     * 2. right
+     * 3. straight
+     * 4. turn back
+     * 5. next floor
+     * @param currentMap the current map
+     * @return 1. left
+     * 2. right
+     * 3. straight
+     * 4. turn back
+     * 5. next floor
+     */
     public static int getMovementOptions(Map currentMap) {
         boolean[] partyMoveability = currentMap.getMoveability();
         Console.writeLn("---- Where do you want to move ----", Console.TextColor.CYAN);
         int response;
         do {
-            if (partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
-                //able to move in all directions
-                response = Console.getIntInput("""
-                        1. Turn left
-                        2. Turn right
-                        3. Keep straight
-                        """);
-                if (response >= 1 && response <= 3) {
-                    return response;
+            if(!currentMap.canGoToNextFloor()) {
+                if (partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
+                    //able to move in all directions
+                    response = Console.getIntInput("""
+                            1. Turn left
+                            2. Turn right
+                            3. Keep straight
+                            """);
+                    if (response >= 1 && response <= 3) {
+                        return response;
+                    }
                 }
-            }
-            if (partyMoveability[0] && partyMoveability[1] && !partyMoveability[2]) {
-                //only able to move left and right
-                response = Console.getIntInput("""
-                        1. Turn left
-                        2. Turn right
-                        """);
-                if (response >= 1 && response <= 2) {
-                    return response;
+                if (partyMoveability[0] && partyMoveability[1] && !partyMoveability[2]) {
+                    //only able to move left and right
+                    response = Console.getIntInput("""
+                            1. Turn left
+                            2. Turn right
+                            """);
+                    if (response >= 1 && response <= 2) {
+                        return response;
+                    }
                 }
-            }
-            if (partyMoveability[0] && !partyMoveability[1] && partyMoveability[2]) {
-                //only able to move left and straight
-                response = Console.getIntInput("""
-                        1. Turn left
-                        3. Keep straight
-                        """);
-                if (response >= 1 && response <= 3 && response != 2) {
-                    return response;
+                if (partyMoveability[0] && !partyMoveability[1] && partyMoveability[2]) {
+                    //only able to move left and straight
+                    response = Console.getIntInput("""
+                            1. Turn left
+                            3. Keep straight
+                            """);
+                    if (response >= 1 && response <= 3 && response != 2) {
+                        return response;
+                    }
                 }
-            }
-            if (!partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
-                //only able to move right and straight
-                response = Console.getIntInput("""
-                        2. Turn right
-                        3. Keep straight
-                        """);
-                if (response >= 2 && response <= 3) {
-                    return response;
+                if (!partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
+                    //only able to move right and straight
+                    response = Console.getIntInput("""
+                            2. Turn right
+                            3. Keep straight
+                            """);
+                    if (response >= 2 && response <= 3) {
+                        return response;
+                    }
                 }
-            }
-            if (!partyMoveability[0] && !partyMoveability[1] && partyMoveability[2]) {
-                //only able to move forward
-                response = Console.getIntInput("3. Keep straight");
-                if (response == 3) {
-                    return response;
+                if (!partyMoveability[0] && !partyMoveability[1] && partyMoveability[2]) {
+                    //only able to move forward
+                    response = Console.getIntInput("3. Keep straight");
+                    if (response == 3) {
+                        return response;
+                    }
                 }
-            }
-            if (partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
-                //only able to move left
-                response = Console.getIntInput("1. Turn left");
-                if(response == 1){
-                    return response;
+                if (partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
+                    //only able to move left
+                    response = Console.getIntInput("1. Turn left");
+                    if (response == 1) {
+                        return response;
+                    }
                 }
-            }
-            if (!partyMoveability[0] && partyMoveability[1] && !partyMoveability[2]) {
-                //only able to move right
-                response = Console.getIntInput("2. Turn right");
-                if (response == 2) {
-                    return response;
+                if (!partyMoveability[0] && partyMoveability[1] && !partyMoveability[2]) {
+                    //only able to move right
+                    response = Console.getIntInput("2. Turn right");
+                    if (response == 2) {
+                        return response;
+                    }
                 }
-            }
-            if (!partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
-                //dead end TURN AROUND!!
-                response = Console.getIntInput("4. Turn back");
-                if (response == 4) {
-                    return response;
+                if (!partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
+                    //dead end TURN AROUND!!
+                    response = Console.getIntInput("4. Turn back");
+                    if (response == 4) {
+                        return response;
+                    }
+                }
+            } else {
+                if (partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
+                    //able to move in all directions
+                    response = Console.getIntInput("""
+                            1. Turn left
+                            2. Turn right
+                            3. Keep straight
+                            5. Go to next floor
+                            """);
+                    if (response >= 1 && response <= 3) {
+                        return response;
+                    }
+                }
+                if (partyMoveability[0] && partyMoveability[1] && !partyMoveability[2]) {
+                    //only able to move left and right
+                    response = Console.getIntInput("""
+                            1. Turn left
+                            2. Turn right
+                            5. Go to next floor
+                            """);
+                    if (response >= 1 && response <= 2) {
+                        return response;
+                    }
+                }
+                if (partyMoveability[0] && !partyMoveability[1] && partyMoveability[2]) {
+                    //only able to move left and straight
+                    response = Console.getIntInput("""
+                            1. Turn left
+                            3. Keep straight
+                            5. Go to next floor
+                            """);
+                    if (response >= 1 && response <= 3 && response != 2) {
+                        return response;
+                    }
+                }
+                if (!partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
+                    //only able to move right and straight
+                    response = Console.getIntInput("""
+                            2. Turn right
+                            3. Keep straight
+                            5. Go to next floor
+                            """);
+                    if (response >= 2 && response <= 3) {
+                        return response;
+                    }
+                }
+                if (!partyMoveability[0] && !partyMoveability[1] && partyMoveability[2]) {
+                    //only able to move forward
+                    response = Console.getIntInput("3. Keep straight\n5. Go to next floor" );
+                    if (response == 3) {
+                        return response;
+                    }
+                }
+                if (partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
+                    //only able to move left
+                    response = Console.getIntInput("1. Turn left\n5. Go to next floor");
+                    if (response == 1) {
+                        return response;
+                    }
+                }
+                if (!partyMoveability[0] && partyMoveability[1] && !partyMoveability[2]) {
+                    //only able to move right
+                    response = Console.getIntInput("2. Turn right\n5. Go to next floor");
+                    if (response == 2) {
+                        return response;
+                    }
+                }
+                if (!partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
+                    //dead end TURN AROUND!!
+                    response = Console.getIntInput("4. Turn back\n5. Go to next floor");
+                    if (response == 4) {
+                        return response;
+                    }
                 }
             }
         } while (true);
@@ -332,7 +423,7 @@ public class GameUI {
                 """, "1", "2", Console.TextColor.YELLOW);
     }
 
-    public static void displaySpecialAttack(Player player, int damage, Lackie enemy) {
+    public static void displayPlayerSpecialAttack(Player player, int damage, Lackie enemy) {
         Console.writeLn("!!!!SPECIAL ATTACK!!!!", Console.TextColor.CYAN);
         Console.writeLn(player.getSelectedWeapon().getWeaponName() +
                 " did " + damage + " DMG to " + enemy.getName() + "\nRemaining uses: " + player.getAvailableSpecialAttacks());
@@ -354,7 +445,7 @@ public class GameUI {
         if(enemyGoFirst){
             Console.writeLn("Enemies are going first!", Console.TextColor.RED);
         } else {
-            Console.writeLn("Player(s) are going first!", Console.TextColor.RED);
+            Console.writeLn("Player(s) are going first!", Console.TextColor.GREEN);
         }
     }
 
@@ -560,5 +651,47 @@ public class GameUI {
 
     public static void displayEnemyIsRevived(String message) {
         Console.writeLn(message, Console.TextColor.CYAN);
+    }
+
+    public static void displayEnemySpecialAttack(Boss enemy) {
+        Console.writeLn(enemy.getName() + " used a special attack!!");
+        //TODO: if you want you can make these personalized by doing instanceof and each boss
+    }
+
+    public static void displayInvalidMovement() {
+        Console.writeLn("Please enter a valid movement option", Console.TextColor.RED);
+    }
+
+    public static void displayChest(Chest chest) {
+        ArrayList<Item> items = chest.getItems();
+        String itemString = "";
+        for (int i = 0; i < items.size(); i++) {
+            itemString += "\n" + items.get(i).getItemName();
+        }
+        Console.writeLn("**-- You found a chest! --**", Console.TextColor.PURPLE);
+        Console.writeLn("Inside the chest you found" + itemString);
+    }
+
+    public static boolean isPlayerOneGettingItem(Item item, ArrayList<Player> players) {
+        Console.writeLn("---- Who is getting " + item.getItemName() + "? ----", Console.TextColor.YELLOW);
+        return Console.getBooleanInput("1. Player 1\n" + players.get(0).getInventory() +
+                "\n2. Player 2\n" + players.get(1).getInventory(), "1", "2");
+    }
+
+    public static void displayItemAdded(Item item, Player selectedPlayer) {
+        Console.writeLn("You stuff your new " + item.getItemName() + " into your fanny pack", Console.TextColor.YELLOW);
+        Console.writeLn("---- Your new inventory ----", Console.TextColor.GREEN);
+        Console.writeLn(selectedPlayer.getInventory());
+    }
+
+    public static void displayItemsAdded(ArrayList<Item> items, Player player) {
+        Console.writeLn("You grasp the items out of the chest as fast as you can and shove them into your fanny pack", Console.TextColor.YELLOW);
+        Console.writeLn("---- Items added ----", Console.TextColor.GREEN);
+        for (Item item :
+                items) {
+            Console.writeLn(item.getItemName());
+        }
+        Console.writeLn("---- Your new inventory ----", Console.TextColor.GREEN);
+        Console.writeLn(player.getInventory());
     }
 }
