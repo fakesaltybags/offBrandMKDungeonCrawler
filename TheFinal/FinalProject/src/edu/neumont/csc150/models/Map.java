@@ -6,13 +6,19 @@
  */
 package edu.neumont.csc150.models;
 
+import edu.neumont.csc150.controllers.BattleController;
+import edu.neumont.csc150.models.players.Player;
+import edu.neumont.csc150.views.GameUI;
+
+import java.util.ArrayList;
+
 public class Map {
     private int currentPos;
     private int currentFloor;
     private static boolean canGoToNextFloor = false;
     private final int MAX_FLOORS = 1;
 
-    public Map(int currentFloor){
+    public Map(int currentFloor) {
         setCurrentFloor(currentFloor);
         setCurrentPos(0);
     }
@@ -22,19 +28,19 @@ public class Map {
     }
 
     public void setCurrentFloor(int currentFloor) {
-        if(currentFloor < 1 || currentFloor > MAX_FLOORS){
+        if (currentFloor < 1 || currentFloor > MAX_FLOORS) {
             throw new IllegalArgumentException("Current floor cant be lower than 1 or higher than MAX_FLOORS");
         }
         this.currentFloor = currentFloor;
     }
 
-    public int getCurrentPos(){
+    public int getCurrentPos() {
         return currentPos;
     }
 
     public void setCurrentPos(int currentPos) {
         //TODO: use branching paths to create a current pos int using binary :bigBrain:
-        if(currentPos < - 1 || currentPos > 100){
+        if (currentPos < -1 || currentPos > 100) {
             throw new IllegalArgumentException("Current position needs to be between -1 and 100");
         }
         this.currentPos = currentPos;
@@ -53,21 +59,22 @@ public class Map {
      * index 0 represents the ability to move left
      * index 1 represents the ability to move right
      * index 2 represents the ability to move forward
+     *
      * @return index 0 is the ability to move left
      * index 1 is the ability to move right
      * index 2 is the ability to move forward
      */
-    public boolean[] getMoveability(){
+    public boolean[] getMoveability() {
         boolean[] currentMoveability = new boolean[3];
-        if(currentFloor == 1){
-            switch (currentPos){
+        if (currentFloor == 1) {
+            switch (currentPos) {
                 case 0, 4:
-                currentMoveability[2] = true;
-                break;
+                    currentMoveability[2] = true;
+                    break;
                 case 1, 2, 9:
-                currentMoveability[0] = true;
-                currentMoveability[1] = true;
-                break;
+                    currentMoveability[0] = true;
+                    currentMoveability[1] = true;
+                    break;
                 case 3:
                     currentMoveability[2] = true;
                     currentMoveability[0] = true;
@@ -88,13 +95,22 @@ public class Map {
         return currentMoveability;
     }
 
-    public boolean moveParty(int movementOption) {
+    public boolean moveParty(int movementOption, ArrayList<Player> players) {
         //1. left
         //2. right
         //3. straight
         //4. turn back
         //5. next floor
-        switch (getCurrentFloor()){
+        //6. Open Inventory
+        if (movementOption == 6) {
+            int selectedPlayer = GameUI.getSelectedPlayer(players);
+            if(selectedPlayer == players.size() + 1){
+                return true;
+            }
+            BattleController.openInventory(players.get(selectedPlayer - 1), null, players);
+            return true;
+        }
+        switch (getCurrentFloor()) {
             case 1:
                 return movePartyFloorOne(movementOption);
             default:
@@ -298,7 +314,7 @@ public class Map {
     }
 
     private boolean leaveFloor() {
-        if(canGoToNextFloor()){
+        if (canGoToNextFloor()) {
             setCurrentFloor(getCurrentFloor() + 1);
             return true;
         } else {

@@ -140,11 +140,11 @@ public class BattleController {
     private void openChestOneOne(ArrayList<Player> players) {
         Chest chest = new Chest(1);
         GameUI.displayChest(chest);
-        if(isMultiplayer()){
+        if (isMultiplayer()) {
             for (Item item :
                     chest.getItems()) {
                 Player selectedPlayer;
-                if(GameUI.isPlayerOneGettingItem(item, players)){
+                if (GameUI.isPlayerOneGettingItem(item, players)) {
                     selectedPlayer = players.get(0);
                     selectedPlayer.giveItem(item);
                 } else {
@@ -252,6 +252,13 @@ public class BattleController {
         boolean win = commenceBattle(players, enemies);
         if (win) {
             Map.setCanGoToNextFloor(true);
+            //extract this code and make it a method for the secret bosses to drop items/spells/mp/hp upgrades
+            if(players.size() == 2){
+                int selectedPlayer = GameUI.getSelectedPlayer(players);
+                if(selectedPlayer == 1){
+                    players.get(0).giveItem
+                }
+            }
         }
         setBattleFourOneDone(win);
         return win;
@@ -511,16 +518,15 @@ public class BattleController {
     }
 
     private boolean bossSpecialAttack(Boss enemy, ArrayList<Player> players, boolean isMultiplayer) {
+        if (enemy.getSpecialAttackUses() > 0) {
+            int randomPlayerIndex = getRandomPlayerIndex(players, isMultiplayer);
+            int damage = enemy.specialAttack(players, randomPlayerIndex);
+            enemy.setBadGuySpecialAttackUses(enemy.getSpecialAttackUses() - 1);
+            GameUI.displayEnemySpecialAttack(enemy);
+            GameUI.displayPlayerHit(randomPlayerIndex + 1, damage, players.get(randomPlayerIndex));
+            return true;
+        }
         return false;
-//        if (enemy.getSpecialAttackUses() > 0) {
-//            int randomPlayerIndex = getRandomPlayerIndex(players, isMultiplayer);
-//            int damage = enemy.specialAttack(players, randomPlayerIndex);
-//            enemy.setBadGuySpecialAttackUses(enemy.getSpecialAttackUses() - 1);
-//            GameUI.displayEnemySpecialAttack(enemy);
-//            GameUI.displayPlayerHit(randomPlayerIndex + 1, damage, players.get(randomPlayerIndex));
-//            return true;
-//        }
-        //TODO: when bread comes over uncomment this and fix the special attack methods
     }
 
     /**
@@ -685,7 +691,7 @@ public class BattleController {
         } while (true);
     }
 
-    private boolean openInventory(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
+    public static boolean openInventory(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
         int response = GameUI.displayPlayerInventory(player);
         switch (response) {
             case 1:
@@ -701,7 +707,7 @@ public class BattleController {
         return true;
     }
 
-    private boolean useItem(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
+    private static boolean useItem(Player player, ArrayList<Lackie> enemies, ArrayList<Player> players) {
         int selection = GameUI.getItemBeingUsed(player);
         if (selection == 1 && player.getItems().size() == 0) {
             return true;
@@ -709,50 +715,50 @@ public class BattleController {
         if (selection == player.getItems().size() + 1) {
             return true;
         } else {
-            boolean targetEnemy = GameUI.isTargetEnemy();
-            if (targetEnemy) {
-                try {
-                    do {
-                        try {
-                            int selectedEnemyNo = GameUI.getEnemyBeingAttacked(enemies);
-                            if (selectedEnemyNo == enemies.size() + 1) {
-                                return true;
-                            }
-                            Item selectedItem = player.getItems().get(selection - 1);
-                            Lackie selectedEnemy = enemies.get(selectedEnemyNo - 1);
+            if (enemies != null) {
+                boolean targetEnemy = GameUI.isTargetEnemy();
+                if (targetEnemy) {
+                    try {
+                        do {
                             try {
-                                selectedItem.useOnEnemy(selectedEnemy);
-                            } catch (EnemyIsRevivedException e) {
-                                GameUI.displayEnemyIsRevived(e.getMessage());
+                                int selectedEnemyNo = GameUI.getEnemyBeingAttacked(enemies);
+                                if (selectedEnemyNo == enemies.size() + 1) {
+                                    return true;
+                                }
+                                Item selectedItem = player.getItems().get(selection - 1);
+                                Lackie selectedEnemy = enemies.get(selectedEnemyNo - 1);
+                                try {
+                                    selectedItem.useOnEnemy(selectedEnemy);
+                                } catch (EnemyIsRevivedException e) {
+                                    GameUI.displayEnemyIsRevived(e.getMessage());
+                                }
+                                GameUI.displayItemUsedOnEnemy(selectedItem, selectedEnemy);
+                                player.getItems().remove(selection - 1);
+                                return false;
+                            } catch (EnemyIsDeadException e) {
+                                GameUI.deadEnemySelected();
                             }
-                            GameUI.displayItemUsedOnEnemy(selectedItem, selectedEnemy);
-                            //TODO: if you want display what happened in the UI with more detail
-                            break;
-                        } catch (EnemyIsDeadException e) {
-                            GameUI.deadEnemySelected();
-                        }
-                    } while (true);
-                } catch (IllegalArgumentException e) {
-                    GameUI.itemCantBeUsed();
-                    return true;
+                        } while (true);
+                    } catch (IllegalArgumentException e) {
+                        GameUI.itemCantBeUsed();
+                        return true;
+                    }
                 }
-            } else {
-                int selectedPlayerNo = GameUI.getSelectedPlayer(players);
-                if (selectedPlayerNo == players.size() + 1) {
-                    return true;
-                }
-                Item selectedItem = player.getItems().get(selection - 1);
-                Player selectedPlayer = players.get(selectedPlayerNo - 1);
-                selectedItem.useOnPLayer(selectedPlayer);
-                GameUI.displayItemUsedOnPlayer(selectedItem, selectedPlayer);
-                //TODO: same as above ^^^
             }
+            int selectedPlayerNo = GameUI.getSelectedPlayer(players);
+            if (selectedPlayerNo == players.size() + 1) {
+                return true;
+            }
+            Item selectedItem = player.getItems().get(selection - 1);
+            Player selectedPlayer = players.get(selectedPlayerNo - 1);
+            selectedItem.useOnPLayer(selectedPlayer);
+            GameUI.displayItemUsedOnPlayer(selectedItem, selectedPlayer);
             player.getItems().remove(selection - 1);
             return false;
         }
     }
 
-    private boolean selectWeapon(Player player) {
+    private static boolean selectWeapon(Player player) {
         do {
             try {
                 int selection = GameUI.getWeaponBeingSwitchedTo(player);

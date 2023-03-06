@@ -121,8 +121,10 @@ public class Reptile implements Boss {
 
     @Override
     public int specialAttack(ArrayList<Player> players, int randomPlayerIndex) {
-        //TODO: figure out how much the special attack will do + call GameUI.DoSpecialAttack() or something like that
-        return randomPlayerIndex;
+        int damage = 25;
+        Player selectedPlayer = players.get(randomPlayerIndex);
+        selectedPlayer.setHealth(selectedPlayer.getHealth() - damage);
+        return damage;
     }
 
     @Override

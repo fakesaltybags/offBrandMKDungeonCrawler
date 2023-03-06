@@ -54,7 +54,7 @@ public class GameController {
             boolean validOption;
             do {
                 int movementOption = GameUI.getMovementOptions(currentMap);
-                validOption = currentMap.moveParty(movementOption);
+                validOption = currentMap.moveParty(movementOption, players);
                 if(!validOption){
                     GameUI.displayInvalidMovement();
                 }

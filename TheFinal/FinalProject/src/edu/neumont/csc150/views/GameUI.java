@@ -9,6 +9,7 @@ package edu.neumont.csc150.views;
 import edu.neumont.csc150.models.Chest;
 import edu.neumont.csc150.models.Map;
 import edu.neumont.csc150.models.items.*;
+import edu.neumont.csc150.models.npc.bosses.Baraka;
 import edu.neumont.csc150.models.npc.bosses.Boss;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.npc.secretbosses.SecretBoss;
@@ -47,75 +48,63 @@ public class GameUI {
         Console.writeLn("---- Where do you want to move ----", Console.TextColor.CYAN);
         int response;
         do {
-            if(!currentMap.canGoToNextFloor()) {
+            if(!Map.canGoToNextFloor()) {
                 if (partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
                     //able to move in all directions
                     response = Console.getIntInput("""
                             1. Turn left
                             2. Turn right
                             3. Keep straight
+                            6. Open Inventory
                             """);
-                    if (response >= 1 && response <= 3) {
-                        return response;
-                    }
+                    return response;
                 }
                 if (partyMoveability[0] && partyMoveability[1] && !partyMoveability[2]) {
                     //only able to move left and right
                     response = Console.getIntInput("""
                             1. Turn left
                             2. Turn right
+                            6. Open Inventory
                             """);
-                    if (response >= 1 && response <= 2) {
-                        return response;
-                    }
+                    return response;
                 }
                 if (partyMoveability[0] && !partyMoveability[1] && partyMoveability[2]) {
                     //only able to move left and straight
                     response = Console.getIntInput("""
                             1. Turn left
                             3. Keep straight
+                            6. Open Inventory
                             """);
-                    if (response >= 1 && response <= 3 && response != 2) {
-                        return response;
-                    }
+                    return response;
                 }
                 if (!partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
                     //only able to move right and straight
                     response = Console.getIntInput("""
                             2. Turn right
                             3. Keep straight
+                            6. Open Inventory
                             """);
-                    if (response >= 2 && response <= 3) {
-                        return response;
-                    }
+                    return response;
                 }
                 if (!partyMoveability[0] && !partyMoveability[1] && partyMoveability[2]) {
                     //only able to move forward
-                    response = Console.getIntInput("3. Keep straight");
-                    if (response == 3) {
-                        return response;
-                    }
+                    response = Console.getIntInput("3. Keep straight\n6. Open Inventory");
+                    return response;
                 }
                 if (partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
                     //only able to move left
-                    response = Console.getIntInput("1. Turn left");
-                    if (response == 1) {
-                        return response;
-                    }
+                    response = Console.getIntInput("1. Turn left\n6. Open Inventory");
+                    return response;
                 }
                 if (!partyMoveability[0] && partyMoveability[1] && !partyMoveability[2]) {
                     //only able to move right
-                    response = Console.getIntInput("2. Turn right");
-                    if (response == 2) {
-                        return response;
-                    }
+                    response = Console.getIntInput("2. Turn right\n6. Open Inventory");
+                    return response;
                 }
                 if (!partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
                     //dead end TURN AROUND!!
-                    response = Console.getIntInput("4. Turn back");
-                    if (response == 4) {
-                        return response;
-                    }
+                    response = Console.getIntInput("4. Turn back\n6. Open Inventory");
+                    return response;
                 }
             } else {
                 if (partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
@@ -125,10 +114,9 @@ public class GameUI {
                             2. Turn right
                             3. Keep straight
                             5. Go to next floor
+                            6. Open Inventory
                             """);
-                    if (response >= 1 && response <= 3) {
-                        return response;
-                    }
+                    return response;
                 }
                 if (partyMoveability[0] && partyMoveability[1] && !partyMoveability[2]) {
                     //only able to move left and right
@@ -136,10 +124,9 @@ public class GameUI {
                             1. Turn left
                             2. Turn right
                             5. Go to next floor
+                            6. Open Inventory
                             """);
-                    if (response >= 1 && response <= 2) {
-                        return response;
-                    }
+                    return response;
                 }
                 if (partyMoveability[0] && !partyMoveability[1] && partyMoveability[2]) {
                     //only able to move left and straight
@@ -147,10 +134,9 @@ public class GameUI {
                             1. Turn left
                             3. Keep straight
                             5. Go to next floor
+                            6. Open Inventory
                             """);
-                    if (response >= 1 && response <= 3 && response != 2) {
-                        return response;
-                    }
+                    return response;
                 }
                 if (!partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
                     //only able to move right and straight
@@ -158,38 +144,29 @@ public class GameUI {
                             2. Turn right
                             3. Keep straight
                             5. Go to next floor
+                            6. Open Inventory
                             """);
-                    if (response >= 2 && response <= 3) {
-                        return response;
-                    }
+                    return response;
                 }
                 if (!partyMoveability[0] && !partyMoveability[1] && partyMoveability[2]) {
                     //only able to move forward
-                    response = Console.getIntInput("3. Keep straight\n5. Go to next floor" );
-                    if (response == 3) {
-                        return response;
-                    }
+                    response = Console.getIntInput("3. Keep straight\n5. Go to next floor\n6. Open Inventory" );
+                    return response;
                 }
                 if (partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
                     //only able to move left
-                    response = Console.getIntInput("1. Turn left\n5. Go to next floor");
-                    if (response == 1) {
-                        return response;
-                    }
+                    response = Console.getIntInput("1. Turn left\n5. Go to next floor\n6. Open Inventory");
+                    return response;
                 }
                 if (!partyMoveability[0] && partyMoveability[1] && !partyMoveability[2]) {
                     //only able to move right
-                    response = Console.getIntInput("2. Turn right\n5. Go to next floor");
-                    if (response == 2) {
-                        return response;
-                    }
+                    response = Console.getIntInput("2. Turn right\n5. Go to next floor\n6. Open Inventory");
+                    return response;
                 }
                 if (!partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
                     //dead end TURN AROUND!!
-                    response = Console.getIntInput("4. Turn back\n5. Go to next floor");
-                    if (response == 4) {
-                        return response;
-                    }
+                    response = Console.getIntInput("4. Turn back\n5. Go to next floor\n6. Open Inventory");
+                    return response;
                 }
             }
         } while (true);
@@ -654,6 +631,9 @@ public class GameUI {
     }
 
     public static void displayEnemySpecialAttack(Boss enemy) {
+        if(enemy instanceof Baraka baraka){
+            Console.writeLn(baraka.getName() + " used ");
+        }
         Console.writeLn(enemy.getName() + " used a special attack!!");
         //TODO: if you want you can make these personalized by doing instanceof and each boss
     }

@@ -124,7 +124,10 @@ public class Baraka implements Boss {
 
     @Override
     public int specialAttack(ArrayList<Player> players, int randomPlayerIndex) {
-        return 0;
+        int damage = 20;
+        Player selectedPlayer = players.get(randomPlayerIndex);
+        selectedPlayer.setHealth(selectedPlayer.getHealth() - damage);
+        return damage;
     }
 
     @Override
