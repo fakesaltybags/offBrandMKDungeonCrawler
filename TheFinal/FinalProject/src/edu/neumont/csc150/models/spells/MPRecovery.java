@@ -32,4 +32,9 @@ public class MPRecovery implements Spell{
     public String getSpellName() {
         return "MP Recover";
     }
+
+    @Override
+    public int spellCost() {
+        return 5;
+    }
 }

@@ -31,4 +31,9 @@ public class FireBall implements Spell{
     public String getSpellName() {
         return "FireBall";
     }
+
+    @Override
+    public int spellCost() {
+        return 20;
+    }
 }

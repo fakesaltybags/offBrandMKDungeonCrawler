@@ -8,6 +8,7 @@ package edu.neumont.csc150.views;
 
 import edu.neumont.csc150.models.Chest;
 import edu.neumont.csc150.models.Map;
+import edu.neumont.csc150.models.Shop;
 import edu.neumont.csc150.models.items.*;
 import edu.neumont.csc150.models.npc.bosses.Baraka;
 import edu.neumont.csc150.models.npc.bosses.Boss;
@@ -673,5 +674,87 @@ public class GameUI {
         }
         Console.writeLn("---- Your new inventory ----", Console.TextColor.GREEN);
         Console.writeLn(player.getInventory());
+    }
+
+    public static void displayShop(Shop shop) {
+        Console.writeLn(shop.toString(true));
+        Console.writeLn(shop.toString(false));
+    }
+
+    public static int displayShopSpells(Shop shop) {
+        do {
+            int response = Console.getIntInput(shop.toString(true));
+            if(response >= 1 && response <= 11){
+                return response;
+            } else {
+                Console.writeLn("Enter a valid input", Console.TextColor.RED);
+            }
+        }while(true);
+    }
+
+    public static int displayShopItems(Shop shop) {
+        do {
+            int response = Console.getIntInput(shop.toString(false));
+            if(response >= 1 && response <= 10){
+                return response;
+            } else {
+                Console.writeLn("Enter a valid input", Console.TextColor.RED);
+            }
+        }while(true);
+    }
+
+    public static void displaySpellAdded(Player player, Spell selectedSpell) {
+        Console.writeLn("You grab the scroll of " + selectedSpell.getSpellName() + " and it burns away in your hand.", Console.TextColor.YELLOW);
+        Console.writeLn("You are now able to cast " + selectedSpell.getSpellName(), Console.TextColor.BLUE);
+        Console.writeLn(player.getInventory());
+    }
+
+    public static int getShopSelection() {
+        Console.writeLn("---- What do you want to do ----", Console.TextColor.YELLOW);
+        do{
+            int response = Console.getIntInput("""
+                    1. Buy a spell
+                    2. Buy an item
+                    3. Don't spend your money >:(
+                    """);
+            if(response >= 1 && response <= 3){
+                return response;
+            } else {
+                Console.writeLn("Enter a valid input", Console.TextColor.RED);
+            }
+        }while(true);
+    }
+
+    public static void displayNotEnoughMoney() {
+        Console.writeLn("You don't have enough money", Console.TextColor.RED);
+    }
+
+    public static void displaySpellException() {
+        Console.writeLn("You already have that spell", Console.TextColor.RED);
+    }
+
+    public static boolean getLevelMagicMore(Player player, boolean isPlayer1) {
+        if(isPlayer1){
+            Console.writeLn("Player 1", Console.TextColor.YELLOW);
+        } else {
+            Console.writeLn("Player 2", Console.TextColor.YELLOW);
+        }
+        return Console.getBooleanInput("""
+                Do you want to level your MP or HP more?
+                1. MP
+                2. HP
+                """, "1", "2");
+    }
+
+    public static void displayLevelUp(Player player, boolean isPlayer1) {
+        if(isPlayer1){
+            Console.writeLn("Player 1 ", Console.TextColor.YELLOW);
+        } else {
+            Console.writeLn("Player 2 ", Console.TextColor.YELLOW);
+        }
+        Console.write("Leveled UP!", Console.TextColor.YELLOW);
+        Console.writeLn("** NEW STATS **", Console.TextColor.CYAN);
+        Console.writeLn("MAX HP: " + player.getMaxHP(), Console.TextColor.RED);
+        Console.writeLn("MAX MP: " + player.getMaxMagic(), Console.TextColor.BLUE);
     }
 }

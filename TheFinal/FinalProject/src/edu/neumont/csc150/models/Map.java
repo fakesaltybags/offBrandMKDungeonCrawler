@@ -39,7 +39,6 @@ public class Map {
     }
 
     public void setCurrentPos(int currentPos) {
-        //TODO: use branching paths to create a current pos int using binary :bigBrain:
         if (currentPos < -1 || currentPos > 100) {
             throw new IllegalArgumentException("Current position needs to be between -1 and 100");
         }
@@ -130,8 +129,7 @@ public class Map {
                     setCurrentPos(1);
                     return true;
                 } else if (movementOption == 5 && canGoToNextFloor()) {
-                    setCurrentFloor(getCurrentFloor() + 1);
-                    return true;
+                    return leaveFloor();
                 }
                 return false;
             }

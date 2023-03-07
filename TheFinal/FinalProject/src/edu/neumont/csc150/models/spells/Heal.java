@@ -33,4 +33,9 @@ public class Heal implements Spell {
     public String getSpellName() {
         return "Heal";
     }
+
+    @Override
+    public int spellCost() {
+        return 15;
+    }
 }

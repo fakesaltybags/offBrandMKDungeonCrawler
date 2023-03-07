@@ -252,11 +252,12 @@ public class BattleController {
         boolean win = commenceBattle(players, enemies);
         if (win) {
             Map.setCanGoToNextFloor(true);
-            //extract this code and make it a method for the secret bosses to drop items/spells/mp/hp upgrades
+            //TODO: extract this code and make it a method for the secret bosses to drop items/spells/mp/hp upgrades
             if(players.size() == 2){
                 int selectedPlayer = GameUI.getSelectedPlayer(players);
                 if(selectedPlayer == 1){
-                    players.get(0).giveItem
+                    players.get(0).giveItem();
+                    //TODO: make it so that the boss drops the item/spell/weapon, updates the ui, and gives the item/spell/weapon to a specific player
                 }
             }
         }
@@ -290,7 +291,6 @@ public class BattleController {
 
     //region battleMethods
     private boolean commenceBattle(ArrayList<Player> players, ArrayList<Lackie> enemies) {
-        //TODO: DO THIS NEXT! make it so the enemy has AI if they are a boss/secretBoss
         GameUI.displayStartBattle();
         GameUI.displayEnemies(enemies);
         boolean enemyGoFirst;
@@ -771,7 +771,6 @@ public class BattleController {
                     }
                     player.setSelectedWeapon(newWeapon);
                     GameUI.displayNewSelectedWeapon(newWeapon);
-                    //TODO: you can make it so the UI shows the new selected weapon
                     return false;
                 }
             } catch (WeaponAlreadySelectedException e) {

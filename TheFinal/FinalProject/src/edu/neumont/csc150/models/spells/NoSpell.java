@@ -28,4 +28,9 @@ public class NoSpell implements Spell{
     public String getSpellName() {
         return "Splash";
     }
+
+    @Override
+    public int spellCost() {
+        return 0;
+    }
 }

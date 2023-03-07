@@ -32,4 +32,9 @@ public class SpeedUp implements Spell{
     public String getSpellName() {
         return "Speed Up";
     }
+
+    @Override
+    public int spellCost() {
+        return 28;
+    }
 }

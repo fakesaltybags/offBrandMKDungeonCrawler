@@ -33,4 +33,9 @@ public class LightningStrike implements Spell{
     public String getSpellName() {
         return "Lightning Strike";
     }
+
+    @Override
+    public int spellCost() {
+        return 10;
+    }
 }

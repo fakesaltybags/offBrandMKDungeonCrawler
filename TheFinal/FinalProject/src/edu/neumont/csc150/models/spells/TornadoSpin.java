@@ -32,4 +32,9 @@ public class TornadoSpin implements Spell{
     public String getSpellName() {
         return "Tornado Spin";
     }
+
+    @Override
+    public int spellCost() {
+        return 17;
+    }
 }

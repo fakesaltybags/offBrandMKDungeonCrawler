@@ -57,6 +57,5 @@ public interface Boss extends Lackie {
      * @return
      */
     int specialAttack(ArrayList<Player> players, int randomPlayerIndex);
-    //TODO: make the special attack method for all the bosses
 
 }

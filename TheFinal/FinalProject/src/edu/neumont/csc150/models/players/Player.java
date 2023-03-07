@@ -127,7 +127,11 @@ public class Player {
         if (maxMagic < 5) {
             throw new IllegalArgumentException("Max magic cannot be lower than " + MIN_MAX_MAGIC);
         }
+        if(maxMagic <= getMaxMagic()){
+            throw new IllegalArgumentException("Max MP can only go up");
+        }
         this.maxMagic = maxMagic;
+        setMagic(getMaxMagic());
     }
 
     public int getMagic() {
@@ -150,7 +154,11 @@ public class Player {
         if (maxHP < MIN_MAX_HP) {
             throw new IllegalArgumentException("Max HP cannot be lower than " + MIN_MAX_HP);
         }
+        if(maxHP <= getMaxHP()){
+            throw new IllegalArgumentException("Max HP can only go up");
+        }
         this.maxHP = maxHP;
+        setHealth(getMaxHP());
     }
 
     public int getHealth() {
@@ -214,6 +222,10 @@ public class Player {
 
     public void giveItem(Item item) {
         items.add(item);
+    }
+
+    public void giveSpell(Spell selectedSpell) {
+        spells.add(selectedSpell);
     }
 
     public String getInventory() {

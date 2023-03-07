@@ -33,4 +33,9 @@ public class Implosion implements Spell{
     public String getSpellName() {
         return "Implosion";
     }
+
+    @Override
+    public int spellCost() {
+        return 500;
+    }
 }

@@ -32,4 +32,9 @@ public class IceSpike implements Spell{
     public String getSpellName() {
         return "Ice Spike";
     }
+
+    @Override
+    public int spellCost() {
+        return 30;
+    }
 }

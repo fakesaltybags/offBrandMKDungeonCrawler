@@ -31,4 +31,9 @@ public class StrengthUp implements Spell {
     public String getSpellName() {
         return "Strength Up";
     }
+
+    @Override
+    public int spellCost() {
+        return 40;
+    }
 }

@@ -32,4 +32,9 @@ public class WaterStrike implements Spell{
     public String getSpellName() {
         return "Water Strike";
     }
+
+    @Override
+    public int spellCost() {
+        return 50;
+    }
 }
