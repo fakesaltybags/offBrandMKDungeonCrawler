@@ -10,6 +10,7 @@ import edu.neumont.csc150.models.items.Item;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.Spell;
+import edu.neumont.csc150.models.weapons.Weapon;
 
 import java.util.ArrayList;
 
@@ -58,4 +59,5 @@ public interface Boss extends Lackie {
      */
     int specialAttack(ArrayList<Player> players, int randomPlayerIndex);
 
+    Weapon dropWeapon();
 }

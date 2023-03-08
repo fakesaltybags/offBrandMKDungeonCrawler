@@ -15,6 +15,8 @@ import edu.neumont.csc150.models.items.*;
 import edu.neumont.csc150.models.npc.bosses.*;
 import edu.neumont.csc150.models.npc.commonenemy.*;
 import edu.neumont.csc150.models.npc.secretbosses.HsuHao;
+import edu.neumont.csc150.models.npc.secretbosses.SecretBoss;
+import edu.neumont.csc150.models.npc.secretbosses.ZombiePigman;
 import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.*;
 import edu.neumont.csc150.models.weapons.Weapon;
@@ -28,15 +30,22 @@ public class BattleController {
 
     //region variables
     private boolean isMultiplayer = true;
-    private boolean battleOneOneDone;
-    private boolean battleTwoOneDone;
-    private boolean battleThreeOneDone;
-    private boolean battleFourOneDone;
-    private boolean battleFiveOneDone;
-    private boolean battleSixOneDone;
-    //Chests are false if not opened
-    private boolean chestOneOne;
-    private boolean chestTwoTwo;
+    private boolean battle11Done;
+    private boolean battle21Done;
+    private boolean battle31Done;
+    private boolean battle41Done;
+    private boolean battle51Done;
+    private boolean battle61Done;
+    private boolean battle12Done;
+    private boolean battle22Done;
+    private boolean battle32Done;
+    private boolean battle42Done;
+    private boolean battle52Done;
+    private boolean battle62Done;
+    private boolean chest11;
+    private boolean chest21;
+    private boolean chest12;
+    private boolean chest22;
     //endregion
 
     //region get/set
@@ -48,68 +57,132 @@ public class BattleController {
         isMultiplayer = multiplayer;
     }
 
-    public boolean isBattleOneOneDone() {
-        return battleOneOneDone;
+    public boolean isBattle11Done() {
+        return battle11Done;
     }
 
-    public void setBattleOneOneDone(boolean battleOneOneDone) {
-        this.battleOneOneDone = battleOneOneDone;
+    public void setBattle11Done(boolean battle11Done) {
+        this.battle11Done = battle11Done;
     }
 
-    public boolean isChestOneOne() {
-        return chestOneOne;
+    public boolean isBattle21Done() {
+        return battle21Done;
     }
 
-    public void setChestOneOne(boolean chestOneOne) {
-        this.chestOneOne = chestOneOne;
+    public void setBattle21Done(boolean battle21Done) {
+        this.battle21Done = battle21Done;
     }
 
-    public boolean isChestTwoTwo() {
-        return chestTwoTwo;
+    public boolean isBattle31Done() {
+        return battle31Done;
     }
 
-    public void setChestTwoTwo(boolean chestTwoTwo) {
-        this.chestTwoTwo = chestTwoTwo;
+    public void setBattle31Done(boolean battle31Done) {
+        this.battle31Done = battle31Done;
     }
 
-    public boolean isBattleTwoOneDone() {
-        return battleTwoOneDone;
+    public boolean isBattle41Done() {
+        return battle41Done;
     }
 
-    public void setBattleTwoOneDone(boolean battleTwoOneDone) {
-        this.battleTwoOneDone = battleTwoOneDone;
+    public void setBattle41Done(boolean battle41Done) {
+        this.battle41Done = battle41Done;
     }
 
-    public boolean isBattleThreeOneDone() {
-        return battleThreeOneDone;
+    public boolean isBattle51Done() {
+        return battle51Done;
     }
 
-    public void setBattleThreeOneDone(boolean battleThreeOneDone) {
-        this.battleThreeOneDone = battleThreeOneDone;
+    public void setBattle51Done(boolean battle51Done) {
+        this.battle51Done = battle51Done;
     }
 
-    public boolean isBattleFourOneDone() {
-        return battleFourOneDone;
+    public boolean isBattle61Done() {
+        return battle61Done;
     }
 
-    public void setBattleFourOneDone(boolean battleFourOneDone) {
-        this.battleFourOneDone = battleFourOneDone;
+    public void setBattle61Done(boolean battle61Done) {
+        this.battle61Done = battle61Done;
     }
 
-    public boolean isBattleFiveOneDone() {
-        return battleFiveOneDone;
+    public boolean isChest11() {
+        return chest11;
     }
 
-    public void setBattleFiveOneDone(boolean battleFiveOneDone) {
-        this.battleFiveOneDone = battleFiveOneDone;
+    public void setChest11(boolean chest11) {
+        this.chest11 = chest11;
     }
 
-    public boolean isBattleSixOneDone() {
-        return battleSixOneDone;
+    public boolean isChest21() {
+        return chest21;
     }
 
-    public void setBattleSixOneDone(boolean battleSixOneDone) {
-        this.battleSixOneDone = battleSixOneDone;
+    public void setChest21(boolean chest21) {
+        this.chest21 = chest21;
+    }
+
+    public boolean isBattle12Done() {
+        return battle12Done;
+    }
+
+    public void setBattle12Done(boolean battle12Done) {
+        this.battle12Done = battle12Done;
+    }
+
+    public boolean isBattle22Done() {
+        return battle22Done;
+    }
+
+    public void setBattle22Done(boolean battle22Done) {
+        this.battle22Done = battle22Done;
+    }
+
+    public boolean isBattle32Done() {
+        return battle32Done;
+    }
+
+    public void setBattle32Done(boolean battle32Done) {
+        this.battle32Done = battle32Done;
+    }
+
+    public boolean isBattle42Done() {
+        return battle42Done;
+    }
+
+    public void setBattle42Done(boolean battle42Done) {
+        this.battle42Done = battle42Done;
+    }
+
+    public boolean isBattle52Done() {
+        return battle52Done;
+    }
+
+    public void setBattle52Done(boolean battle52Done) {
+        this.battle52Done = battle52Done;
+    }
+
+    public boolean isBattle62Done() {
+        return battle62Done;
+    }
+
+    public void setBattle62Done(boolean battle62Done) {
+        this.battle62Done = battle62Done;
+    }
+
+    public boolean isChest12() {
+        return chest12;
+    }
+
+    public void setChest12(boolean chest12) {
+        this.chest12 = chest12;
+    }
+
+    public boolean isChest22() {
+        return chest22;
+    }
+
+    public void setChest22(boolean chest22) {
+        this.chest22 = chest22;
     }
     //endregion
 
@@ -119,26 +192,70 @@ public class BattleController {
             case 1:
                 checkForChestFloorOne(currentPos, players);
                 break;
+            case 2:
+                checkForChestFloorTwo(currentPos, players);
             default:
                 break;
+        }
+    }
+
+    private void checkForChestFloorTwo(int currentPos, ArrayList<Player> players) {
+        switch (currentPos) {
+            case 4 -> {
+                if (!isChest12()) {
+                    openChest12(players);
+                }
+            }
+            case 8 -> {
+                if (!isChest22()) {
+                    openChest22(players);
+                }
+            }
         }
     }
 
     private void checkForChestFloorOne(int currentPos, ArrayList<Player> players) {
         switch (currentPos) {
-            case 10:
-                openChestOneOne(players);
-                break;
-            case 11:
-                openChestTwoOne(players);
-                break;
-            default:
-                break;
+            case 10 -> {
+                if (!isChest11()) {
+                    openChest11(players);
+                }
+            }
+            case 11 -> {
+                if (!isChest21()) {
+                    openChest21(players);
+                }
+            }
+            default -> {
+            }
         }
     }
 
-    private void openChestOneOne(ArrayList<Player> players) {
+    private void openChest12(ArrayList<Player> players) {
+        Chest chest = new Chest(3);
+        openChest(players, chest);
+        setChest12(true);
+    }
+
+    private void openChest22(ArrayList<Player> players) {
+        Chest chest = new Chest(4);
+        openChest(players, chest);
+        setChest22(true);
+    }
+
+    private void openChest11(ArrayList<Player> players) {
         Chest chest = new Chest(1);
+        openChest(players, chest);
+        setChest11(true);
+    }
+
+    private void openChest21(ArrayList<Player> players) {
+        Chest chest = new Chest(2);
+        openChest(players, chest);
+        setChest21(true);
+    }
+
+    private void openChest(ArrayList<Player> players, Chest chest) {
         GameUI.displayChest(chest);
         if (isMultiplayer()) {
             for (Item item :
@@ -159,43 +276,62 @@ public class BattleController {
             currentPlayer.giveItems(chestItems);
             GameUI.displayItemsAdded(chestItems, currentPlayer);
         }
-        setChestOneOne(true);
-    }
-
-    private void openChestTwoOne(ArrayList<Player> players) {
-
     }
     //endregion
 
     //region battleChecks
     public boolean checkForBattle(int currentFloor, int currentPos) {
-        switch (currentFloor) {
-            case 1:
-                return checkForBattleFloorOne(currentPos);
-            default:
-                return false;
-        }
+        return switch (currentFloor) {
+            case 1 -> checkForBattleFloorOne(currentPos);
+            case 2 -> checkForBattleFloorTwo(currentPos);
+            default -> false;
+        };
+    }
+
+    private boolean checkForBattleFloorTwo(int currentPos) {
+        return switch (currentPos){
+            case 1 -> !isBattle12Done();
+            case 2 -> !isBattle22Done();
+            case 3 -> !isBattle32Done();
+            case 5 -> !isBattle42Done();
+            case 6 -> !isBattle52Done();
+            case 7 -> !isBattle62Done();
+            default -> false;
+        };
     }
 
     private boolean checkForBattleFloorOne(int currentPos) {
         return switch (currentPos) {
-            case 1 -> !isBattleOneOneDone();
-            case 3 -> !isBattleTwoOneDone();
-            case 4 -> !isBattleThreeOneDone();
-            case 6 -> !isBattleFourOneDone();
-            case 8 -> !isBattleFiveOneDone();
-            case 9 -> !isBattleSixOneDone();
+            case 1 -> !isBattle11Done();
+            case 3 -> !isBattle21Done();
+            case 4 -> !isBattle31Done();
+            case 6 -> !isBattle41Done();
+            case 8 -> !isBattle51Done();
+            case 9 -> !isBattle61Done();
             default -> false;
         };
     }
 
     public boolean battle(int currentFloor, int currentPos, ArrayList<Player> players) {
-        switch (currentFloor) {
-            case 1:
-                return battleFloorOne(currentPos, players);
-            default:
-                return false;
-        }
+        return switch (currentFloor) {
+            case 1 -> battleFloorOne(currentPos, players);
+            case 2 -> battleFloorTwo(currentPos, players);
+            default -> false;
+        };
+    }
+
+    private boolean battleFloorTwo(int currentPos, ArrayList<Player> players) {
+        return switch (currentPos) {
+            case 1 -> battleOneTwo(players);
+            case 2 -> battleTwoTwo(players);
+            case 3 -> battleThreeTwo(players);
+            case 5 -> battleFourTwo(players);
+            case 6 -> battleFiveTwo(players);
+            //secret boss
+            case 7 -> battleSixTwo(players);
+            //boss
+            default -> false;
+        };
     }
 
     private boolean battleFloorOne(int currentPos, ArrayList<Player> players) {
@@ -219,12 +355,74 @@ public class BattleController {
     //endregion
 
     //region battle setup
+    //region floor 2
+    private boolean battleSixTwo(ArrayList<Player> players) {
+        //boss
+        ArrayList<Lackie> enemies = new ArrayList<>();
+        enemies.add(new Reptile());
+        boolean win = commenceBattle(players, enemies);
+        bossDied(players, enemies, win);
+        setBattle62Done(win);
+        return win;
+    }
+
+    private boolean battleFiveTwo(ArrayList<Player> players) {
+        //secretBoss
+        ArrayList<Lackie> enemies = new ArrayList<>();
+        enemies.add(new ZombiePigman());
+        enemies.add(new Skeleton());
+        boolean win = commenceBattle(players, enemies);
+        bossDied(players, enemies, win);
+        setBattle52Done(win);
+        return win;
+    }
+
+    private boolean battleFourTwo(ArrayList<Player> players) {
+        ArrayList<Lackie> enemies = new ArrayList<>();
+        enemies.add(new Tarktans());
+        enemies.add(new Zombie());
+        enemies.add(new Zombie());
+        boolean win = commenceBattle(players, enemies);
+        setBattle42Done(win);
+        return win;
+    }
+
+    private boolean battleThreeTwo(ArrayList<Player> players) {
+        ArrayList<Lackie> enemies = new ArrayList<>();
+        enemies.add(new BlackDragonsGoons());
+        enemies.add(new Spider());
+        boolean win = commenceBattle(players, enemies);
+        setBattle32Done(win);
+        return win;
+    }
+
+    private boolean battleTwoTwo(ArrayList<Player> players) {
+        ArrayList<Lackie> enemies = new ArrayList<>();
+        enemies.add(new Skeleton());
+        enemies.add(new Skeleton());
+        enemies.add(new Skeleton());
+        boolean win = commenceBattle(players, enemies);
+        setBattle22Done(win);
+        return win;
+    }
+
+    private boolean battleOneTwo(ArrayList<Player> players) {
+        ArrayList<Lackie> enemies = new ArrayList<>();
+        enemies.add(new Tarktans());
+        enemies.add(new Tarktans());
+        boolean win = commenceBattle(players, enemies);
+        setBattle12Done(win);
+        return win;
+    }
+    //endregion
+
+    //region floor 1
     private boolean battleOneOne(ArrayList<Player> players) {
         ArrayList<Lackie> enemies = new ArrayList<>();
         enemies.add(new Zombie());
         enemies.add(new Zombie());
         boolean win = commenceBattle(players, enemies);
-        setBattleOneOneDone(win);
+        setBattle11Done(win);
         return win;
     }
 
@@ -233,7 +431,7 @@ public class BattleController {
         enemies.add(new Skeleton());
         enemies.add(new Spider());
         boolean win = commenceBattle(players, enemies);
-        setBattleTwoOneDone(win);
+        setBattle21Done(win);
         return win;
     }
 
@@ -241,7 +439,7 @@ public class BattleController {
         ArrayList<Lackie> enemies = new ArrayList<>();
         enemies.add(new BlackDragonsGoons());
         boolean win = commenceBattle(players, enemies);
-        setBattleThreeOneDone(win);
+        setBattle31Done(win);
         return win;
     }
 
@@ -250,18 +448,8 @@ public class BattleController {
         ArrayList<Lackie> enemies = new ArrayList<>();
         enemies.add(new HsuHao());
         boolean win = commenceBattle(players, enemies);
-        if (win) {
-            Map.setCanGoToNextFloor(true);
-            //TODO: extract this code and make it a method for the secret bosses to drop items/spells/mp/hp upgrades
-            if(players.size() == 2){
-                int selectedPlayer = GameUI.getSelectedPlayer(players);
-                if(selectedPlayer == 1){
-                    players.get(0).giveItem();
-                    //TODO: make it so that the boss drops the item/spell/weapon, updates the ui, and gives the item/spell/weapon to a specific player
-                }
-            }
-        }
-        setBattleFourOneDone(win);
+        bossDied(players, enemies, win);
+        setBattle41Done(win);
         return win;
     }
 
@@ -270,7 +458,7 @@ public class BattleController {
         enemies.add(new BlackDragonsGoons());
         enemies.add(new BlackDragonsGoons());
         boolean win = commenceBattle(players, enemies);
-        setBattleFiveOneDone(win);
+        setBattle51Done(win);
         return win;
     }
 
@@ -281,12 +469,11 @@ public class BattleController {
         enemies.add(new Tarktans());
         enemies.add(new Tarktans());
         boolean win = commenceBattle(players, enemies);
-        if (win) {
-            Map.setCanGoToNextFloor(true);
-        }
-        setBattleSixOneDone(win);
+        bossDied(players, enemies, win);
+        setBattle61Done(win);
         return win;
     }
+    //endregion
     //endregion
 
     //region battleMethods
@@ -534,7 +721,7 @@ public class BattleController {
      *
      * @return 0 if both are dead 1 if player one is alive 2 if player 2 is alive and 3 if both are alive
      */
-    private int getPlayersAlive(ArrayList<Player> players) {
+    public int getPlayersAlive(ArrayList<Player> players) {
         if (!isMultiplayer) {
             if (!players.get(0).isDead()) {
                 return 1;
@@ -829,6 +1016,54 @@ public class BattleController {
             }
         }
         return true;
+    }
+    //endregion
+
+    //region boss/upgrades
+    private static void bossDied(ArrayList<Player> players, ArrayList<Lackie> enemies, boolean win) {
+        if (win) {
+            Map.setCanGoToNextFloor(true);
+            for (Lackie enemy :
+                    enemies) {
+                if (enemy instanceof Boss boss) {
+                    if (boss.dropWeapon() != null) {
+                        GameUI.displayBossBeaten(boss);
+                        GameUI.displayBossDropWeapon(boss);
+                        if (players.size() == 2) {
+                            GameUI.displayWhoWillGetWeapon();
+                            int selectedPlayer = GameUI.getSelectedPlayer(players);
+                            if (selectedPlayer == 1) {
+                                givePlayerDroppedWeapon(players.get(0), boss);
+                            } else {
+                                givePlayerDroppedWeapon(players.get(1), boss);
+                            }
+                        } else {
+                            givePlayerDroppedWeapon(players.get(0), boss);
+                        }
+                    }
+                    if (enemy instanceof SecretBoss secret) {
+                        givePlayersDroppedUpgrades(players, secret);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void givePlayerDroppedWeapon(Player player, Boss boss) {
+        Weapon droppedWeapon = boss.dropWeapon();
+        player.giveWeapon(droppedWeapon);
+        GameUI.displayPlayerGotWeapon(player, droppedWeapon);
+    }
+
+    private static void givePlayersDroppedUpgrades(ArrayList<Player> players, SecretBoss secret) {
+        int healthUpgradeAmount = secret.dropHealthUpgrade();
+        int magicUpgradeAmount = secret.dropMpUpgrade();
+        for (Player player :
+                players) {
+            player.setMaxHP(player.getMaxHP() + healthUpgradeAmount);
+            player.setMaxMagic(player.getMaxMagic() + magicUpgradeAmount);
+        }
+        GameUI.displayEnemyDroppedUpgrades(healthUpgradeAmount, magicUpgradeAmount, secret, players);
     }
     //endregion
 }

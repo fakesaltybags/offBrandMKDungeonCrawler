@@ -6,7 +6,6 @@
  */
 package edu.neumont.csc150.models.players;
 
-import edu.neumont.csc150.models.Map;
 import edu.neumont.csc150.models.items.*;
 import edu.neumont.csc150.models.spells.*;
 import edu.neumont.csc150.models.weapons.*;
@@ -209,13 +208,6 @@ public class Player {
         setHealth(getHealth() + healAmount);
     }
 
-    public void mpRecover(int mpAmount) {
-        if (mpAmount < 1) {
-            throw new IllegalArgumentException("Mp recover amount cannot be lower than 1");
-        }
-        setMagic(getMagic() + mpAmount);
-    }
-
     public void giveItems(ArrayList<Item> newItems) {
         items.addAll(newItems);
     }
@@ -226,6 +218,10 @@ public class Player {
 
     public void giveSpell(Spell selectedSpell) {
         spells.add(selectedSpell);
+    }
+
+    public void giveWeapon(Weapon droppedWeapon) {
+        weapons.add(droppedWeapon);
     }
 
     public String getInventory() {

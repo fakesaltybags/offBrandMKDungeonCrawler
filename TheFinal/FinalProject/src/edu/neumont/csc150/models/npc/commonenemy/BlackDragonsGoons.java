@@ -114,6 +114,6 @@ public class BlackDragonsGoons implements Lackie {
 
     @Override
     public String getName() {
-        return "Black Dragon Goons";
+        return "Black Dragon Goon";
     }
 }

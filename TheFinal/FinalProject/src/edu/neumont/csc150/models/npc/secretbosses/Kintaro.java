@@ -15,6 +15,7 @@ import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.FireBall;
 import edu.neumont.csc150.models.spells.Spell;
 import edu.neumont.csc150.models.spells.StrengthUp;
+import edu.neumont.csc150.models.weapons.Weapon;
 import edu.neumont.csc150.views.GameUI;
 
 import java.util.ArrayList;
@@ -120,6 +121,11 @@ public class Kintaro implements SecretBoss{
     }
 
     @Override
+    public Weapon dropWeapon() {
+        return null;
+    }
+
+    @Override
     public int dropGold() {
         return goldDrop;
     }
@@ -210,19 +216,16 @@ public class Kintaro implements SecretBoss{
     @Override
     public Item dropRareItem() {
         return null;
-        //TODO: FIX THIS
     }
 
     @Override
     public int dropHealthUpgrade() {
-        return 0;
-        //TODO: FIX THIS
+        return 55;
     }
 
     @Override
     public int dropMpUpgrade() {
-        return 0;
-        //TODO: FIX THIS
+        return 24;
     }
 
     @Override

@@ -16,6 +16,8 @@ import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.SpeedUp;
 import edu.neumont.csc150.models.spells.Spell;
 import edu.neumont.csc150.models.spells.StrengthUp;
+import edu.neumont.csc150.models.weapons.Mallot;
+import edu.neumont.csc150.models.weapons.Weapon;
 import edu.neumont.csc150.views.GameUI;
 
 import java.util.ArrayList;
@@ -123,6 +125,11 @@ public class ZombiePigman implements SecretBoss{
     }
 
     @Override
+    public Weapon dropWeapon() {
+        return new Mallot();
+    }
+
+    @Override
     public int dropGold() {
         return goldDrop;
     }
@@ -213,19 +220,16 @@ public class ZombiePigman implements SecretBoss{
     @Override
     public Item dropRareItem() {
         return null;
-        //TODO: FIX THIS
     }
 
     @Override
     public int dropHealthUpgrade() {
-        return 0;
-        //TODO: FIX THIS
+        return 30;
     }
 
     @Override
     public int dropMpUpgrade() {
-        return 0;
-        //TODO: FIX THIS
+        return 6;
     }
 
     @Override

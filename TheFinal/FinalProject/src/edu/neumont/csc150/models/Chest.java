@@ -14,33 +14,45 @@ import java.util.ArrayList;
 
 public class Chest {
     private ArrayList<Item> items;
-    private ArrayList<Weapon> weapons;
-    private ArrayList<Spell> spells;
 
     /**
      * Creates a new chest with items inside it
-     * @param chestNo
+     * @param chestNo the number of chest
      */
     public Chest(int chestNo){
         items = new ArrayList<>();
-        weapons = new ArrayList<>();
-        spells = new ArrayList<>();
         switch(chestNo){
             case 1:
-                setupChestOneOne();
+                setupChest11();
                 break;
             case 2:
-                setupChestTwoOne();
+                setupChest21();
+                break;
+            case 3:
+                setupChest12();
+                break;
+            case 4:
+                setupChest22();
                 break;
         }
     }
 
-    private void setupChestTwoOne() {
+    private void setupChest22() {
+        items.add(new SmallHeal());
+        items.add(new ShockStick());
+    }
+
+    private void setupChest12() {
+        items.add(new MpPotion());
+        items.add(new ThrowingKnife());
+    }
+
+    private void setupChest21() {
         items.add(new ThrowingKnife());
         items.add(new ShockStick());
     }
 
-    private void setupChestOneOne() {
+    private void setupChest11() {
         items.add(new SmallHeal());
         items.add(new SmallHeal());
         items.add(new Grenade());

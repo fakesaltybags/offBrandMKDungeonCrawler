@@ -37,6 +37,7 @@ public class GameUI {
      * 3. straight
      * 4. turn back
      * 5. next floor
+     *
      * @param currentMap the current map
      * @return 1. left
      * 2. right
@@ -49,7 +50,7 @@ public class GameUI {
         Console.writeLn("---- Where do you want to move ----", Console.TextColor.CYAN);
         int response;
         do {
-            if(!Map.canGoToNextFloor()) {
+            if (!Map.canGoToNextFloor()) {
                 if (partyMoveability[0] && partyMoveability[1] && partyMoveability[2]) {
                     //able to move in all directions
                     response = Console.getIntInput("""
@@ -151,7 +152,7 @@ public class GameUI {
                 }
                 if (!partyMoveability[0] && !partyMoveability[1] && partyMoveability[2]) {
                     //only able to move forward
-                    response = Console.getIntInput("3. Keep straight\n5. Go to next floor\n6. Open Inventory" );
+                    response = Console.getIntInput("3. Keep straight\n5. Go to next floor\n6. Open Inventory");
                     return response;
                 }
                 if (partyMoveability[0] && !partyMoveability[1] && !partyMoveability[2]) {
@@ -203,7 +204,7 @@ public class GameUI {
         String listOfEnemies = "";
         for (int i = 0; i < enemies.size(); i++) {
             Lackie currentEnemy = enemies.get(i);
-            if(!currentEnemy.isDead()) {
+            if (!currentEnemy.isDead()) {
                 listOfEnemies += "\n" + (i + 1) + " " + currentEnemy.getName() + " HP: " + currentEnemy.getBadGuyHealth() + "/" + currentEnemy.getMaxHealth();
             }
         }
@@ -216,7 +217,7 @@ public class GameUI {
         displayEnemyHealth(enemy);
     }
 
-    public static void displayPlayerHit(int playerNo, int amountOfDamage, Player player){
+    public static void displayPlayerHit(int playerNo, int amountOfDamage, Player player) {
         Console.writeLn("Player " + playerNo + " was hit for " + amountOfDamage + "DMG!" +
                 "\nRemaining HP: " + player.getHealth() + "/" + player.getMaxHP());
     }
@@ -241,7 +242,7 @@ public class GameUI {
 
     public static void displayWin(int amountOfGold, boolean isMultiPlayer) {
         Console.writeLn("\n****---- YOU WIN! ----****", Console.TextColor.YELLOW);
-        if(isMultiPlayer){
+        if (isMultiPlayer) {
             Console.writeLn("Each player got " + (amountOfGold / 2) + " GP");
         } else {
             Console.writeLn("Player got " + amountOfGold + " GP");
@@ -254,8 +255,10 @@ public class GameUI {
                 enemies) {
             if (enemy instanceof SecretBoss) {
                 foundEnemies += enemy.getName() + " now prove yourself!!";
-            } else {
+            } else if(enemy != enemies.get(0)){
                 foundEnemies += " and a " + enemy.getName();
+            } else {
+                foundEnemies += "a " + enemy.getName();
             }
         }
         Console.writeLn("You have found " + foundEnemies, Console.TextColor.RED);
@@ -270,15 +273,15 @@ public class GameUI {
         do {
             Console.writeLn("---- Choose wisely ----", Console.TextColor.YELLOW);
             int response = Console.getIntInput(weaponString);
-            if(response > 0 && response <= player.getWeapons().size() + 1){
+            if (response > 0 && response <= player.getWeapons().size() + 1) {
                 return response;
             } else {
                 Console.writeLn("Please enter a valid input!", Console.TextColor.RED);
             }
-        }while(true);
+        } while (true);
     }
 
-    private static String getWeaponString(Player player){
+    private static String getWeaponString(Player player) {
         String weaponString = "";
         int amountOfWeapons = player.getWeapons().size();
         for (int i = 0; i < amountOfWeapons; i++) {
@@ -295,24 +298,24 @@ public class GameUI {
 
     public static int getItemBeingUsed(Player player) {
         String itemString = getItemString(player);
-        do{
+        do {
             Console.writeLn("---- Items ----", Console.TextColor.YELLOW);
             int response = Console.getIntInput(itemString);
-            if(response == 1 && player.getItems().size() == 0){
+            if (response == 1 && player.getItems().size() == 0) {
                 return response;
             }
-            if(response > 0 && response <= player.getItems().size() + 1){
+            if (response > 0 && response <= player.getItems().size() + 1) {
                 return response;
             } else {
                 Console.writeLn("Please enter a valid input!", Console.TextColor.RED);
             }
-        }while(true);
+        } while (true);
     }
 
     private static String getItemString(Player player) {
         String itemString = "";
         int amountOfItems = player.getItems().size();
-        if(amountOfItems == 0){
+        if (amountOfItems == 0) {
             return "You currently have no items\n1. Back";
         }
         for (int i = 0; i < amountOfItems; i++) {
@@ -324,23 +327,23 @@ public class GameUI {
 
     public static int getSpellBeingUsed(Player player) {
         String spellString = getSpellString(player);
-        do{
+        do {
             int response = Console.getIntInput(spellString);
-            if(player.getSpells().size() == 0 && response == 1){
+            if (player.getSpells().size() == 0 && response == 1) {
                 return response;
             }
-            if(response > 0 && response <= player.getSpells().size() + 1){
+            if (response > 0 && response <= player.getSpells().size() + 1) {
                 return response;
-            } else{
+            } else {
                 Console.writeLn("Please enter a valid input!", Console.TextColor.RED);
             }
-        }while(true);
+        } while (true);
     }
 
-    private static String getSpellString(Player player){
+    private static String getSpellString(Player player) {
         String spellString = "";
         int amountOfSpells = player.getSpells().size();
-        if(amountOfSpells == 0){
+        if (amountOfSpells == 0) {
             return "You Currently have no spells\n1. Back";
         }
         for (int i = 0; i < amountOfSpells; i++) {
@@ -364,12 +367,12 @@ public class GameUI {
         do {
             Console.writeLn("---- Which player will you choose ----", Console.TextColor.YELLOW);
             int response = Console.getIntInput(playerString);
-            if(response > 0 && response <= players.size() + 1){
+            if (response > 0 && response <= players.size() + 1) {
                 return response;
-            } else{
+            } else {
                 Console.writeLn("Please enter a valid input!", Console.TextColor.RED);
             }
-        }while(true);
+        } while (true);
     }
 
     private static String getPlayerString(ArrayList<Player> players) {
@@ -414,13 +417,13 @@ public class GameUI {
 
     public static void displayGold(ArrayList<Player> players, boolean multiplayer) {
         Console.writeLn("Player 1 now has " + players.get(0).getGold() + " GP!", Console.TextColor.YELLOW);
-        if(multiplayer){
+        if (multiplayer) {
             Console.writeLn("Player 2 now has " + players.get(1).getGold() + " GP!", Console.TextColor.YELLOW);
         }
     }
 
     public static void displayFirstTurn(boolean enemyGoFirst) {
-        if(enemyGoFirst){
+        if (enemyGoFirst) {
             Console.writeLn("Enemies are going first!", Console.TextColor.RED);
         } else {
             Console.writeLn("Player(s) are going first!", Console.TextColor.GREEN);
@@ -446,27 +449,27 @@ public class GameUI {
 
     public static void displaySpellOnEnemy(Spell spell, Lackie enemy) {
         String spellName = spell.getSpellName();
-        if(spell instanceof FireBall fireBall){
+        if (spell instanceof FireBall fireBall) {
             Console.writeLn(spellName + " has been thrown at " + enemy.getName() + " and did " + fireBall.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }else if(spell instanceof Heal heal){
+        } else if (spell instanceof Heal heal) {
             Console.writeLn(spellName + " has been used on " + enemy.getName() + " and healed " + heal.HEAL_AMOUNT + " HP", Console.TextColor.BLUE);
-        }else if(spell instanceof IceSpike iceSpike){
+        } else if (spell instanceof IceSpike iceSpike) {
             Console.writeLn(spellName + " has been used on " + enemy.getName() + " and did " + iceSpike.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }else if(spell instanceof Implosion implosion){
+        } else if (spell instanceof Implosion implosion) {
             Console.writeLn(spellName + " has been used on " + enemy.getName() + " and did " + implosion.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }else if(spell instanceof LightningStrike lightningStrike){
+        } else if (spell instanceof LightningStrike lightningStrike) {
             Console.writeLn(spellName + " has been used on " + enemy.getName() + " and did " + lightningStrike.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }else if(spell instanceof SpeedUp speedUp){
+        } else if (spell instanceof SpeedUp speedUp) {
             Console.writeLn(spellName + " has been used on " + enemy.getName() + " and brought their speed up by " +
                     speedUp.AMOUNT_UP + " points", Console.TextColor.BLUE);
             displayEnemySpeed(enemy);
             return;
-        }else if(spell instanceof StrengthUp){
+        } else if (spell instanceof StrengthUp) {
             Console.writeLn(spellName + " has been used on " + enemy.getName() + " their next attack will deal double damage!", Console.TextColor.BLUE);
             return;
-        }else if(spell instanceof TornadoSpin tornadoSpin){
+        } else if (spell instanceof TornadoSpin tornadoSpin) {
             Console.writeLn(spellName + " has been used on " + enemy.getName() + " and did " + tornadoSpin.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }else if(spell instanceof WaterStrike waterStrike){
+        } else if (spell instanceof WaterStrike waterStrike) {
             Console.writeLn(spellName + " has been used on " + enemy.getName() + " and did " + waterStrike.DAMAGE + " DMG", Console.TextColor.BLUE);
         }
         displayEnemyHealth(enemy);
@@ -478,33 +481,33 @@ public class GameUI {
 
     public static void displaySpellOnPlayer(Spell spell, Player player) {
         String spellName = spell.getSpellName();
-        if(spell instanceof FireBall fireBall){
+        if (spell instanceof FireBall fireBall) {
             Console.writeLn(spellName + " has been used on a player and did " + fireBall.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }else if(spell instanceof Heal heal){
+        } else if (spell instanceof Heal heal) {
             Console.writeLn(spellName + " has been used on a player and healed " + heal.HEAL_AMOUNT + " HP", Console.TextColor.BLUE);
             displayPlayerHeal(heal.HEAL_AMOUNT, player);
             return;
-        }else if(spell instanceof IceSpike iceSpike){
+        } else if (spell instanceof IceSpike iceSpike) {
             Console.writeLn(spellName + " has been used on a player and did " + iceSpike.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }else if(spell instanceof Implosion implosion){
+        } else if (spell instanceof Implosion implosion) {
             Console.writeLn(spellName + " has been used on a player and did " + implosion.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }else if(spell instanceof LightningStrike lightningStrike){
+        } else if (spell instanceof LightningStrike lightningStrike) {
             Console.writeLn(spellName + " has been used on a player and did " + lightningStrike.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }else if(spell instanceof MPRecovery mpRecovery){
+        } else if (spell instanceof MPRecovery mpRecovery) {
             Console.writeLn(spellName + " has been used on a player and they received " + mpRecovery.RECOVER_AMOUNT + " MP", Console.TextColor.BLUE);
             displayPlayerMP(player);
             return;
-        }else if(spell instanceof SpeedUp speedUp){
+        } else if (spell instanceof SpeedUp speedUp) {
             Console.writeLn(spellName + " has been used on a player and they received " + speedUp.AMOUNT_UP + " SPD", Console.TextColor.BLUE);
             displayPlayerSpeed(player);
-        }else if(spell instanceof StrengthUp){
+        } else if (spell instanceof StrengthUp) {
             Console.writeLn(spellName + " has been used on a player and their next attack will deal double damage!", Console.TextColor.BLUE);
             return;
-        }else if(spell instanceof TornadoSpin tornadoSpin){
+        } else if (spell instanceof TornadoSpin tornadoSpin) {
             Console.writeLn(spellName + " has been used on a player and did " + tornadoSpin.DAMAGE + " DMG", Console.TextColor.BLUE);
-        }else if(spell instanceof WaterStrike waterStrike){
+        } else if (spell instanceof WaterStrike waterStrike) {
             Console.writeLn(spellName + " has been used on a player and did " + waterStrike.DAMAGE + " DMG", Console.TextColor.BLUE);
-        } else if(spell instanceof NoSpell noSpell){
+        } else if (spell instanceof NoSpell) {
             Console.writeLn(spellName + " has been used on a player... but it did nothing!", Console.TextColor.BLUE);
             return;
         }
@@ -513,28 +516,28 @@ public class GameUI {
 
     public static void displayItemUsedOnEnemy(Item item, Lackie enemy) {
         String itemName = item.getItemName();
-        if(item instanceof BigHeal bigHeal){
+        if (item instanceof BigHeal bigHeal) {
             Console.writeLn(itemName + " has been used on " + enemy.getName() + " and healed " + bigHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
         }
-        if(item instanceof Grenade grenade){
+        if (item instanceof Grenade grenade) {
             Console.writeLn(itemName + " has been used on " + enemy.getName() + " and did " + grenade.DAMAGE + " DMG", Console.TextColor.YELLOW);
         }
-        if(item instanceof MaxHealPotion){
+        if (item instanceof MaxHealPotion) {
             Console.writeLn(itemName + " has been used on " + enemy.getName() + " and fully healed them", Console.TextColor.YELLOW);
         }
-        if(item instanceof MediumHeal mediumHeal){
+        if (item instanceof MediumHeal mediumHeal) {
             Console.writeLn(itemName + " has been used on " + enemy.getName() + " and healed " + mediumHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
         }
-        if(item instanceof ShockStick shockStick){
+        if (item instanceof ShockStick shockStick) {
             Console.writeLn(itemName + " has been used on " + enemy.getName() + " and did " + shockStick.DAMAGE + " DMG", Console.TextColor.YELLOW);
         }
-        if(item instanceof SmallHeal smallHeal){
+        if (item instanceof SmallHeal smallHeal) {
             Console.writeLn(itemName + " has been used on " + enemy.getName() + " and healed " + smallHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
         }
-        if(item instanceof ThrowingKnife throwingKnife){
+        if (item instanceof ThrowingKnife throwingKnife) {
             Console.writeLn(itemName + " has been used on " + enemy.getName() + " and did " + throwingKnife.DAMAGE + " DMG", Console.TextColor.YELLOW);
         }
-        if(item instanceof Tomahawk tomahawk){
+        if (item instanceof Tomahawk tomahawk) {
             Console.writeLn(itemName + " has been used on " + enemy.getName() + " and did " + tomahawk.DAMAGE + " DMG", Console.TextColor.YELLOW);
         }
         displayEnemyHealth(enemy);
@@ -542,38 +545,38 @@ public class GameUI {
 
     public static void displayItemUsedOnPlayer(Item item, Player player) {
         String itemName = item.getItemName();
-        if(item instanceof BigHeal bigHeal){
+        if (item instanceof BigHeal bigHeal) {
             Console.writeLn(itemName + " has been used on a player and healed " + bigHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
         }
-        if(item instanceof Grenade grenade){
+        if (item instanceof Grenade grenade) {
             Console.writeLn(itemName + " has been used on a player and did " + grenade.DAMAGE + " DMG", Console.TextColor.YELLOW);
         }
-        if(item instanceof MaxHealPotion){
+        if (item instanceof MaxHealPotion) {
             Console.writeLn(itemName + " has been used on a player and fully healed them", Console.TextColor.YELLOW);
         }
-        if(item instanceof MediumHeal mediumHeal){
+        if (item instanceof MediumHeal mediumHeal) {
             Console.writeLn(itemName + " has been used on a player and healed " + mediumHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
         }
-        if(item instanceof MaxMpPotion){
+        if (item instanceof MaxMpPotion) {
             Console.writeLn(itemName + " has been used on a player and fully restored their MP");
             displayPlayerMP(player);
             return;
         }
-        if(item instanceof MpPotion mpPotion){
+        if (item instanceof MpPotion mpPotion) {
             Console.writeLn(itemName + " has been used on a player and restored " + mpPotion.RECOVER_AMOUNT + " MP", Console.TextColor.YELLOW);
             displayPlayerMP(player);
             return;
         }
-        if(item instanceof ShockStick shockStick){
+        if (item instanceof ShockStick shockStick) {
             Console.writeLn(itemName + " has been used on a player and did " + shockStick.DAMAGE + " DMG", Console.TextColor.YELLOW);
         }
-        if(item instanceof SmallHeal smallHeal){
+        if (item instanceof SmallHeal smallHeal) {
             Console.writeLn(itemName + " has been used on a player and healed " + smallHeal.HEAL_AMOUNT + " HP", Console.TextColor.YELLOW);
         }
-        if(item instanceof ThrowingKnife throwingKnife){
+        if (item instanceof ThrowingKnife throwingKnife) {
             Console.writeLn(itemName + " has been used on a player and did " + throwingKnife.DAMAGE + " DMG", Console.TextColor.YELLOW);
         }
-        if(item instanceof Tomahawk tomahawk){
+        if (item instanceof Tomahawk tomahawk) {
             Console.writeLn(itemName + " has been used on a player and did " + tomahawk.DAMAGE + " DMG", Console.TextColor.YELLOW);
         }
         displayPlayerHealth(player);
@@ -632,11 +635,10 @@ public class GameUI {
     }
 
     public static void displayEnemySpecialAttack(Boss enemy) {
-        if(enemy instanceof Baraka baraka){
+        if (enemy instanceof Baraka baraka) {
             Console.writeLn(baraka.getName() + " used ");
         }
         Console.writeLn(enemy.getName() + " used a special attack!!");
-        //TODO: if you want you can make these personalized by doing instanceof and each boss
     }
 
     public static void displayInvalidMovement() {
@@ -646,8 +648,8 @@ public class GameUI {
     public static void displayChest(Chest chest) {
         ArrayList<Item> items = chest.getItems();
         String itemString = "";
-        for (int i = 0; i < items.size(); i++) {
-            itemString += "\n" + items.get(i).getItemName();
+        for (Item item : items) {
+            itemString += "\n" + item.getItemName();
         }
         Console.writeLn("**-- You found a chest! --**", Console.TextColor.PURPLE);
         Console.writeLn("Inside the chest you found" + itemString);
@@ -655,8 +657,10 @@ public class GameUI {
 
     public static boolean isPlayerOneGettingItem(Item item, ArrayList<Player> players) {
         Console.writeLn("---- Who is getting " + item.getItemName() + "? ----", Console.TextColor.YELLOW);
-        return Console.getBooleanInput("1. Player 1\n" + players.get(0).getInventory() +
-                "\n2. Player 2\n" + players.get(1).getInventory(), "1", "2");
+        Console.writeLn("1. Player 1", Console.TextColor.YELLOW);
+        Console.writeLn(players.get(0).getInventory());
+        Console.writeLn("2. Player 2", Console.TextColor.YELLOW);
+        return Console.getBooleanInput(players.get(1).getInventory(), "1", "2");
     }
 
     public static void displayItemAdded(Item item, Player selectedPlayer) {
@@ -678,29 +682,30 @@ public class GameUI {
 
     public static void displayShop(Shop shop) {
         Console.writeLn(shop.toString(true));
+        Console.writeLn("");
         Console.writeLn(shop.toString(false));
     }
 
     public static int displayShopSpells(Shop shop) {
         do {
-            int response = Console.getIntInput(shop.toString(true));
-            if(response >= 1 && response <= 11){
+            int response = Console.getIntInput(shop.toString(true) + "\n---- What spell do you want to buy ----");
+            if (response >= 1 && response <= 11) {
                 return response;
             } else {
                 Console.writeLn("Enter a valid input", Console.TextColor.RED);
             }
-        }while(true);
+        } while (true);
     }
 
     public static int displayShopItems(Shop shop) {
         do {
-            int response = Console.getIntInput(shop.toString(false));
-            if(response >= 1 && response <= 10){
+            int response = Console.getIntInput(shop.toString(false) + "\n---- What item do you want to buy ----");
+            if (response >= 1 && response <= 10) {
                 return response;
             } else {
                 Console.writeLn("Enter a valid input", Console.TextColor.RED);
             }
-        }while(true);
+        } while (true);
     }
 
     public static void displaySpellAdded(Player player, Spell selectedSpell) {
@@ -711,18 +716,18 @@ public class GameUI {
 
     public static int getShopSelection() {
         Console.writeLn("---- What do you want to do ----", Console.TextColor.YELLOW);
-        do{
+        do {
             int response = Console.getIntInput("""
                     1. Buy a spell
                     2. Buy an item
                     3. Don't spend your money >:(
                     """);
-            if(response >= 1 && response <= 3){
+            if (response >= 1 && response <= 3) {
                 return response;
             } else {
                 Console.writeLn("Enter a valid input", Console.TextColor.RED);
             }
-        }while(true);
+        } while (true);
     }
 
     public static void displayNotEnoughMoney() {
@@ -733,8 +738,8 @@ public class GameUI {
         Console.writeLn("You already have that spell", Console.TextColor.RED);
     }
 
-    public static boolean getLevelMagicMore(Player player, boolean isPlayer1) {
-        if(isPlayer1){
+    public static boolean getLevelMagicMore(boolean isPlayer1) {
+        if (isPlayer1) {
             Console.writeLn("Player 1", Console.TextColor.YELLOW);
         } else {
             Console.writeLn("Player 2", Console.TextColor.YELLOW);
@@ -747,14 +752,55 @@ public class GameUI {
     }
 
     public static void displayLevelUp(Player player, boolean isPlayer1) {
-        if(isPlayer1){
-            Console.writeLn("Player 1 ", Console.TextColor.YELLOW);
+        if (isPlayer1) {
+            Console.write("Player 1 ", Console.TextColor.YELLOW);
         } else {
-            Console.writeLn("Player 2 ", Console.TextColor.YELLOW);
+            Console.write("Player 2 ", Console.TextColor.YELLOW);
         }
-        Console.write("Leveled UP!", Console.TextColor.YELLOW);
+        Console.writeLn("Leveled UP!", Console.TextColor.YELLOW);
         Console.writeLn("** NEW STATS **", Console.TextColor.CYAN);
         Console.writeLn("MAX HP: " + player.getMaxHP(), Console.TextColor.RED);
         Console.writeLn("MAX MP: " + player.getMaxMagic(), Console.TextColor.BLUE);
+    }
+
+    public static void displayBossBeaten(Boss boss) {
+        Console.writeLn(boss.getName() + " has been beaten", Console.TextColor.GREEN);
+    }
+
+    public static void displayBossDropWeapon(Boss boss) {
+        Console.writeLn(boss.getName() + " has dropped " + boss.dropWeapon().getWeaponName());
+    }
+
+    public static void displayWhoWillGetWeapon() {
+        Console.writeLn("Who do you want to get the weapon", Console.TextColor.YELLOW);
+    }
+
+    public static void displayPlayerGotWeapon(Player player, Weapon weapon) {
+        Console.writeLn("You pick up the " + weapon.getWeaponName() +
+                " and store it away in your pocket dimension", Console.TextColor.GREEN);
+        Console.writeLn("---- Your new inventory ----", Console.TextColor.YELLOW);
+        Console.writeLn(player.getInventory());
+    }
+
+    public static void displayEnemyDroppedUpgrades(int healthUpgradeAmount, int magicUpgradeAmount, SecretBoss secret, ArrayList<Player> players) {
+        Console.writeLn(secret.getName() + " dropped a red and blue orb", Console.TextColor.GREEN);
+        for (Player player :
+                players) {
+            if(player == players.get(0)) {
+                Console.writeLn("Player 1 touched the red orb and their max health went up " + healthUpgradeAmount + " points!", Console.TextColor.RED);
+                Console.writeLn("Player 1's new health is " + player.getHealth() + "/" + player.getMaxHP());
+                Console.writeLn("Player 1 touched the blue orb and their max magic went up " + magicUpgradeAmount + " points!", Console.TextColor.BLUE);
+                Console.writeLn("Player 1's new magic is " + player.getMagic() + "/" + player.getMaxMagic());
+            } else {
+                Console.writeLn("Player 2 touched the red orb and their max health went up " + healthUpgradeAmount + " points!", Console.TextColor.RED);
+                Console.writeLn("Player 2's new health is " + player.getHealth() + "/" + player.getMaxHP());
+                Console.writeLn("Player 2 touched the blue orb and their max magic went up " + magicUpgradeAmount + " points!", Console.TextColor.BLUE);
+                Console.writeLn("Player 2's new magic is " + player.getMagic() + "/" + player.getMaxMagic());
+            }
+        }
+    }
+
+    public static void displayGoldInShop(Player player) {
+        Console.writeLn("---- You have " + player.getGold() + "GP ----", Console.TextColor.YELLOW);
     }
 }

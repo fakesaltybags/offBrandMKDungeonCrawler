@@ -17,6 +17,7 @@ import edu.neumont.csc150.models.spells.IceSpike;
 import edu.neumont.csc150.models.spells.SpeedUp;
 import edu.neumont.csc150.models.spells.Spell;
 import edu.neumont.csc150.models.spells.WaterStrike;
+import edu.neumont.csc150.models.weapons.Weapon;
 import edu.neumont.csc150.views.GameUI;
 
 import java.util.ArrayList;
@@ -123,6 +124,11 @@ public class SubZero implements Boss {
         Player selectedPlayer = players.get(randomPlayerIndex);
         selectedPlayer.setHealth(selectedPlayer.getHealth() - damage);
         return damage;
+    }
+
+    @Override
+    public Weapon dropWeapon() {
+        return null;
     }
 
     @Override

@@ -51,15 +51,18 @@ public class GameController {
         startFloor(1);
         startFloor(2);
         startFloor(3);
-        //TODO: etc^
     }
 
     private void startFloor(int givenFloor) {
         Map currentMap = new Map(givenFloor);
         int currentFloor = currentMap.getCurrentFloor();
-        moveAndBattle(currentMap, currentFloor);
-        levelUp(currentFloor);
-        openShop(currentFloor, players);
+        do {
+            moveAndBattle(currentMap, currentFloor);
+            if(battleController.getPlayersAlive(players) != 0) {
+                levelUp(currentFloor);
+                openShop(currentFloor, players);
+            }
+        }while(currentMap.getCurrentFloor() < 10);
     }
 
     private void levelUp(int currentFloor) {
@@ -67,7 +70,7 @@ public class GameController {
                 players) {
             boolean isPlayer1;
             isPlayer1 = player == players.get(0);
-            boolean levelMagicMore = GameUI.getLevelMagicMore(player, isPlayer1);
+            boolean levelMagicMore = GameUI.getLevelMagicMore(isPlayer1);
             int magicUpAmount = 10;
             int healthUpAmount = 10;
             switch(currentFloor){
@@ -87,7 +90,6 @@ public class GameController {
                         healthUpAmount = 20;
                     }
                     break;
-                    //TODO: finish this with the newer floors
             }
             player.setMaxMagic(player.getMaxMagic() + magicUpAmount);
             player.setMaxHP(player.getMaxHP() +healthUpAmount);
@@ -114,6 +116,7 @@ public class GameController {
                     GameUI.displayShop(shop);
                     displayedShop = true;
                 }
+                GameUI.displayGoldInShop(player);
                 int selection = GameUI.getShopSelection();
                 switch (selection) {
                     case 1:
@@ -157,20 +160,19 @@ public class GameController {
     private void moveAndBattle(Map currentMap, int currentFloor) {
         do {
             boolean validOption;
+            int movementOption;
             do {
-                int movementOption = GameUI.getMovementOptions(currentMap);
+                movementOption = GameUI.getMovementOptions(currentMap);
                 validOption = currentMap.moveParty(movementOption, players);
                 if(!validOption){
                     GameUI.displayInvalidMovement();
                 }
             }while(!validOption);
-            if(currentFloor < currentMap.getCurrentFloor()){
+            if(movementOption == 5){
                 break;
             }
             if (battleController.checkForBattle(currentMap.getCurrentFloor(), currentMap.getCurrentPos())) {
-                if (battleController.battle(currentMap.getCurrentFloor(), currentMap.getCurrentPos(), players)) {
-                    battleController.setBattleOneOneDone(true);
-                } else {
+                if (!battleController.battle(currentMap.getCurrentFloor(), currentMap.getCurrentPos(), players)) {
                     gameOver();
                     return;
                 }

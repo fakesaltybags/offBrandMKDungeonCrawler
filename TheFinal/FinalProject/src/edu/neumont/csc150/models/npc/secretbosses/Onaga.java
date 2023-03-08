@@ -14,6 +14,8 @@ import edu.neumont.csc150.models.items.Item;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.*;
+import edu.neumont.csc150.models.weapons.Glock;
+import edu.neumont.csc150.models.weapons.Weapon;
 import edu.neumont.csc150.views.GameUI;
 
 import java.util.ArrayList;
@@ -130,6 +132,11 @@ public class Onaga implements SecretBoss {
     }
 
     @Override
+    public Weapon dropWeapon() {
+        return new Glock();
+    }
+
+    @Override
     public int dropGold() {
         return goldDrop;
     }
@@ -220,19 +227,16 @@ public class Onaga implements SecretBoss {
     @Override
     public Item dropRareItem() {
         return null;
-        //TODO: FIX THIS
     }
 
     @Override
     public int dropHealthUpgrade() {
-        return 0;
-        //TODO: FIX THIS
+        return 65;
     }
 
     @Override
     public int dropMpUpgrade() {
-        return 0;
-        //TODO: FIX THIS
+        return 33;
     }
 
     @Override

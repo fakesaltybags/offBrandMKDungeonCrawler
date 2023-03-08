@@ -13,6 +13,8 @@ import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.NoSpell;
 import edu.neumont.csc150.models.spells.Spell;
+import edu.neumont.csc150.models.weapons.Stick;
+import edu.neumont.csc150.models.weapons.Weapon;
 
 import java.util.ArrayList;
 
@@ -93,6 +95,11 @@ public class HsuHao implements SecretBoss{
         Player selectedPlayer = players.get(randomPlayerIndex);
         selectedPlayer.setHealth(selectedPlayer.getHealth() - damage);
         return damage;
+    }
+
+    @Override
+    public Weapon dropWeapon() {
+        return new Stick();
     }
 
     @Override
@@ -186,19 +193,16 @@ public class HsuHao implements SecretBoss{
     @Override
     public Item dropRareItem() {
         return null;
-        //TODO: FIX THIS
     }
 
     @Override
     public int dropHealthUpgrade() {
-        return 0;
-        //TODO: FIX THIS
+        return 25;
     }
 
     @Override
     public int dropMpUpgrade() {
-        return 0;
-        //TODO: FIX THIS
+        return 3;
     }
 
     @Override

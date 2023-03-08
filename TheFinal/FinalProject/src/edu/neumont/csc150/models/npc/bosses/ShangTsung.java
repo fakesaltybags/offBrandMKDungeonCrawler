@@ -14,6 +14,8 @@ import edu.neumont.csc150.models.items.ThrowingKnife;
 import edu.neumont.csc150.models.npc.commonenemy.Lackie;
 import edu.neumont.csc150.models.players.Player;
 import edu.neumont.csc150.models.spells.*;
+import edu.neumont.csc150.models.weapons.Bow;
+import edu.neumont.csc150.models.weapons.Weapon;
 import edu.neumont.csc150.views.GameUI;
 
 import java.util.ArrayList;
@@ -124,6 +126,11 @@ public class ShangTsung implements Boss {
         Player selectedPlayer = players.get(randomPlayerIndex);
         selectedPlayer.setHealth(selectedPlayer.getHealth() - damage);
         return damage;
+    }
+
+    @Override
+    public Weapon dropWeapon() {
+        return new Bow();
     }
 
     @Override
